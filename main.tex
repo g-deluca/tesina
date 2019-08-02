@@ -1,0 +1,57 @@
+\documentclass[a4paper]{book}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage[backend=biber]{biblatex}
+% \usepackage{amsmath}
+% \usepackage{amsfonts}
+% \usepackage{amssymb}
+% \usepackage{amsthm}
+% \usepackage{enumerate}
+% \usepackage{color}
+% \usepackage{graphicx}
+\usepackage{todonotes}
+\usepackage[hidelinks]{hyperref}
+
+\addbibresource{referencias.bib}
+
+\begin{document}
+
+%%%% Title Page
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}  % horizontal line and its thickness
+
+\center
+
+% University
+\textsc{\LARGE Universidad Nacional de Rosario} \\[1cm]
+
+% Document info
+\textsc{\Large Tesina de grado}\\[0.1cm]
+\textsc{\large para la obtención del grado de}\\[0.1cm]
+\textsc{\large Licenciado en Ciencias de la Computación}\\[1cm]
+
+\HRule \\[0.8cm]
+{ \huge \bfseries TBA}\\[0.7cm]        % Assignment
+\HRule \\[2cm]
+
+\large
+\includegraphics[width=0.3\textwidth]{imagenes/unr.jpg}\\[3cm] 	% University logo
+\emph{Alumno:}\\
+Guido De Luca \\[1.5cm]													% Author info
+{\large \today}\\[2cm]
+\vfill
+\end{titlepage}
+
+\tableofcontents
+
+\input{capitulos/estado}
+
+\chapter*{Bibliografía}
+\label{chapter:bib}
+\addcontentsline{toc}{chapter}{\nameref{chapter:bib}}
+\printbibliography[heading=none]
+
+\end{document}
