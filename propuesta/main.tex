@@ -1,0 +1,54 @@
+\documentclass[a4paper]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage[backend=biber, maxbibnames=4]{biblatex}
+% \usepackage{amsmath}
+% \usepackage{amsfonts}
+% \usepackage{amssymb}
+% \usepackage{amsthm}
+% \usepackage{enumerate}
+% \usepackage{color}
+% \usepackage{graphicx}
+\usepackage{todonotes}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\todoGuido}[1]{\todo[color=red]{Guido: {#1}}}
+
+\addbibresource{referencias.bib}
+
+\begin{document}
+
+\title{Propuesta de Tesina para la obtención del grado Licenciado en Ciencias de la Computación}
+\maketitle
+
+\begin{description}
+    \item[Postulante: ] Guido De Luca
+    \item[Director: ] Carlos Luna
+    \item[Codirector: ] Dante Zanarini
+\end{description}
+
+\section{Situación del postulante}
+Al momento de presentar la propuesta, el estudiante se encuentra realizando el
+trabajo final de la materia Compiladores. El resto de las materias se encuentran
+rendidas y aprobadas. Se espera dedicar al menos 20 horas semanales a la realización
+de la tesina.
+
+\section{Título}
+\todo{¿?}
+Extensión de la especificación de un prototipo certificado del sistema de permisos
+de Android
+
+\input{motivacion}
+
+\input{estado-arte}
+
+\input{objetivos-especificos}
+
+\input{metodologia}
+
+\printbibliography
+
+
+\end{document}
