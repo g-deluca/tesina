@@ -1,0 +1,48 @@
+
+\chapter*{Estado del arte}
+\label{chapter:estado}
+\addcontentsline{toc}{chapter}{\nameref{chapter:estado}}
+
+En esta sección se describen algunos trabajos sobre el modelo de seguridad de
+Android. \textit{A priori}, podemos distinguir dos grandes grupos: aquellos que
+reportan alguna falla puntual del sistema y los que buscan dar una descripción
+más general del mismo, ya sea de manera formal o informal.
+
+Dentro del primer grupo mencionado podemos encontrar bla bla bla. TODO: Buscar
+trabajos que apunten a vulnerabilidades específicas. Antes me había concentrado
+en lo que tiene que ver con modelos formales de Android. El paper de Bagheri
+\cite{bagheri} tiene muchas referencias a este tipo de trabajos.
+
+Por otra parte, el trabajo de Bagheri \textit{et. al} \cite{bagheri15} une a los
+dos grupos distinguidos en el primer párrafo. Proponen, a diferencia de los trabajos
+mencionados anteriormente, utilizar un modelo formal para encontrar
+vulnerabilidades en el sistema de permisos de Android. El mismo está escrito en
+Alloy \cite{alloy}, un lenguaje basado en lógica relacional de primer orden, con
+un motor de análisis que realiza \textit{bounded verifiaction} de los
+%
+\todo{traducción de bounded verifiaction?}
+%
+modelos que en este lenguaje se describan.
+
+Analizando este modelo, identificaron distintos tipos de vulnerabilidades que
+permiten esquivar por completo el chequeo de permisos. Particularmente,
+estudiaron la vulnerabilidad
+%
+\todo{mejor traducción para custom-permission?}
+%
+de \textit{permisos personalizados}, mediante la cual una aplicación maliciosa
+puede acceder a todos los recursos de otra que estén protegidos por permisos
+personalizados. Esta falla surge de que el sistema no impone restricciones con
+respecto al nombre de los nuevos permisos que definen y, como consecuencia, dos
+permisos distintos podrían tener el mismo nombre. En \cite{bagheri}, este trabajo
+se extendió para una nueva versión de Android. La falla por permisos personalizados
+ya había sido reportada por Shin \textit{et. al} en \cite{shin-custom}.
+
+% Through an analysis of our model, we identified a number of vulnerabilities
+% in the protocol that allow a malicious application to entirely bypass permission
+% checks. In particular, we performed a study of a vulnerability that has not been
+% studied in the security literature before—called the custom permission vulnerability. To confirm that an abstract attack scenario identified during the analysis
+% is indeed realistic, we demonstrated the attack on concrete Android applications
+% across different versions of Android. Through our study, we show that the custom permission vulnerability is widespread, and that many popular applications
+% are, in fact, susceptible to this type of attacks.
+

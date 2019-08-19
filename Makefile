@@ -5,7 +5,7 @@ TEX_FILES = $(wildcard *.tex)
 all: main.pdf
 
 clean:
-	$(RM) main.pdf
+	$(RM) main.pdf main.aux main.log main.out main.toc
 
 main.pdf: $(TEX_FILES)
 	pdflatex -halt-on-error main.tex
