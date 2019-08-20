@@ -9,8 +9,8 @@ operativo puede encontrarse también en dispositivos como tablets,
 
 Una característica fundamental de esta plataforma es que cualquier aplicación,
 sea principal\footnote{Entendemos como aplicación principal a aquellas
-pre-instaladas con el sistema operativo} o creada por algún desarrollador, puede,
-con los permisos adecuados, utilizar tanto los recursos/servicios del
+pre-instaladas con el sistema operativo} o creada por algún desarrollador,
+puede, con los permisos adecuados, utilizar tanto los recursos/servicios del
 dispositivo móvil como los ofrecidos por el resto de las aplicaciones.
 
 Esta última característica sumada a la popularidad alcanzada por el sistema lo
@@ -23,12 +23,13 @@ permite encontrar vulnerabilidades existentes o prevenir futuras.
 
 El estudio de este modelo se hará desde una perspectiva formal (utilizando una
 especificación desarrollada en Coq) por la ventajas que confiere: poder definir
-qué es lo que se espera del sistema sin ambigüedades y tener, no solo la capacidad
-de probar que ciertas propiedades de seguridad son correctas, sino también una prueba
-tangible y computable de las mismas. Contar con un modelo formalmente especificado
-de los mecanismos de seguridad de esta plataforma permite formular precisamente las propiedades
-que la misma debe garantizar, validar su satisfacción, razonar sobre el comportamiento esperado de
-la misma y eventualmente derivar o inferir la necesidad de mecanismos y/o propiedades
+qué es lo que se espera del sistema sin ambigüedades y tener, no solo la
+capacidad de probar que ciertas propiedades de seguridad son correctas, sino
+también una prueba tangible y computable de las mismas. Contar con un modelo
+formalmente especificado de los mecanismos de seguridad de esta plataforma
+permite formular precisamente las propiedades que la misma debe garantizar,
+validar su satisfacción, razonar sobre el comportamiento esperado de la misma y
+eventualmente derivar o inferir la necesidad de mecanismos y/o propiedades
 previamente no identificados.
 
 El principal objetivo de esta tesina es realizar un análisis exhaustivo de las
@@ -41,14 +42,14 @@ focaliza en el mecanismo de delegación de permisos y en la interacción con el
 framework de aplicaciones para realizar llamadas al sistema.
 
 En este trabajo proponemos una extensión conservativa de dicho modelo. En primer
-lugar, veremos qué elementos del modelo de seguridad formalizado deberían modificarse
-o extenderse para contemplar las versiones más recientes de Android. Luego,
-revisaremos que en este nuevo modelo las propiedades que ya han sido demostradas se
-adapten correctamente. Por último, realizaremos un análisis de las nuevas
-propiedades inherentes a los cambios introducidos.
+lugar, veremos qué elementos del modelo de seguridad formalizado deberían
+modificarse o extenderse para contemplar las versiones más recientes de Android.
+Luego, revisaremos que en este nuevo modelo las propiedades que ya han sido
+demostradas se adapten correctamente. Por último, realizaremos un análisis de
+las nuevas propiedades inherentes a los cambios introducidos.
 
 La extensión se realizará utilizando el mismo framework lógico-matemático
-provisto por el Cálculo de Construcciones Inductivas [citar referencias], en el
-asistente Coq, por lo que será posible derivar una versión actualizada del
+provisto por el Cálculo de Construcciones Inductivas \cite{coqart, coquand:88},
+en el asistente Coq, por lo que será posible derivar una versión actualizada del
 oráculo para el análisis de implementaciones Android existentes obtenido en
 \cite{fgorostiaga}.
