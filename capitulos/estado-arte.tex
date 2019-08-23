@@ -16,39 +16,13 @@ Dentro del primer grupo mencionado podemos encontrar bla bla bla. TODO: Buscar
 trabajos que apunten a vulnerabilidades específicas. El paper de Bagheri
 \cite{bagheri} tiene muchas referencias a este tipo de trabajos.
 
-\subsection*{Enfoque formal}
-
-Por otra parte, el trabajo de Bagheri \textit{et al.} \cite{bagheri15} une a los
-dos grupos distinguidos en el primer párrafo. Proponen, a diferencia de los trabajos
-mencionados anteriormente, utilizar un modelo formal para encontrar
-vulnerabilidades en el sistema de permisos de Android. El mismo está escrito en
-Alloy \cite{alloy}, un lenguaje basado en lógica relacional de primer orden, con
-un motor de análisis que realiza \textit{bounded verifiaction} de los
-%
-\todo{traducción de bounded verifiaction?}
-%
-modelos que en este lenguaje se describan.
-
-Analizando este modelo, identificaron distintos tipos de vulnerabilidades que
-permiten esquivar por completo el chequeo de permisos. Particularmente,
-estudiaron la vulnerabilidad
-%
-\todo{mejor traducción para custom-permission?}
-%
-de \textit{permisos personalizados}, mediante la cual una aplicación maliciosa
-puede acceder a todos los recursos de otra que estén protegidos por permisos
-personalizados. Esta falla surge de que el sistema no impone restricciones con
-respecto al nombre de los nuevos permisos que definen y, como consecuencia, dos
-permisos distintos podrían tener el mismo nombre. En~\cite{bagheri}, este trabajo
-se extendió para una nueva versión de Android. La falla por permisos personalizados
-ya había sido reportada por Shin \textit{et al.} en~\cite{shin-custom}.
-
 \subsection*{Enfoque informal}
 
-Alejándonos del terreno de los métodos formales, encontramos trabajos como el de
-William Enck \textit{et.al}~\cite{enck}, uno de los primeros artículos académicos
-en describir el modelo de seguridad de Android. A través de esta descripción, los
-autores buscaban \textit{desenmascarar} la complejidad a la que debían enfrentarse
+Por otro lado, encontramos trabajos como el de William Enck
+\textit{et.al}~\cite{enck}, uno de los primeros artículos académicos en
+describir el modelo de seguridad de Android. A través de esta descripción, los
+autores buscaban \textit{desenmascarar} la complejidad a la que debían
+enfrentarse
 %
 \todo{traducción literal de unmask}
 %
@@ -64,25 +38,63 @@ y un posterior análisis sobre las medidas que se tomaron a lo largo del tiempo
 para mitigar distintas amenazas.
 
 Este tipo de trabajos constituyen un complemento importante a la documentación
-oficial de Android,
-%
-\todo{citarla?}
-%
-brindándole nuevas herramientas y referencias más claras a los desarrolladores.
-Un ejemplo de esto fue el trabajo de Felt \textit{et al.}~\cite{felt}, quienes
-estudiaron un grupo de aplicaciones disponibles para la versión 2.2 de Android y
-detectaron que muchas de ellas pedían más permisos de los que realmente
-necesitaban. Los autores investigaron las causas de sobreprivilegio de estas
-aplicaciones y encontraron que muchas veces, los desarrolladores intentaban
-otorgar la menor cantidad de privilegios necesarios pero en reiteradas ocasiones
-fallaban por falta de una documentación precisa. En consecuencia, el grupo
-desarrolló Stowaway, una herramienta pionera en la detección de permisos
-innecesarios. En esta línea encontramos también el trabajo de Kathy Wain Yee Au
-\textit{et al.}~\cite{pscout}, el del Piper Chester \textit{et
-al.}~\cite{mperm}, el de Alexandre Bartel \textit{et al.}~\cite{bartel}, y el de
-Sha Wu y Jiajia Liu~\cite{droidtector}; siendo este último el más reciente,
-realizado con la intención de contrarrestar las limitaciones detectadas en los
-trabajos previos.
+oficial de Android, brindándole nuevas herramientas y referencias más claras a
+los desarrolladores. Un ejemplo de esto fue el trabajo de Felt \textit{et
+al.}~\cite{felt}, quienes estudiaron un grupo de aplicaciones disponibles para
+la versión 2.2 de Android y detectaron que muchas de ellas pedían más permisos
+de los que realmente necesitaban. Los autores investigaron las causas de
+sobreprivilegio de estas aplicaciones y encontraron que muchas veces, los
+desarrolladores intentaban otorgar la menor cantidad de privilegios necesarios
+pero en reiteradas ocasiones fallaban por falta de una documentación precisa. En
+consecuencia, el grupo desarrolló Stowaway, una herramienta pionera en la
+detección de permisos innecesarios. En esta línea encontramos también el trabajo
+de Kathy Wain Yee Au \textit{et al.}~\cite{pscout}, el de Piper Chester
+\textit{et al.}~\cite{mperm}, el de Alexandre Bartel \textit{et
+al.}~\cite{bartel}, y el de Sha Wu y Jiajia Liu~\cite{droidtector}; siendo este
+último el más reciente, realizado con la intención de contrarrestar las
+limitaciones detectadas en los trabajos previos.
 %
 \todo{en \cite{droidtector} se comparan todos estos trabajos, incorporo esa comparación acá?}
 %
+
+\subsection*{Enfoque formal}
+
+Entrando en el terreno de los métodos formales, Chaudhuri~\cite{chaudhuri}
+presentó un lenguaje tipado que permite describir un subconjunto de aplicaciones
+de Android y razonar sobre ellas. Adicionalmente, presentó un sistema de tipos
+para este lenguaje, garantizando que las aplicaciones bien tipadas preservan la
+confidencialidad de los datos que manejan. Recientemente, Wilayar Khan
+\textit{et al.}~\cite{khan} formalizaron y demostraron la corrección de este
+sistema de tipos utilizando el asistente de pruebas Coq.
+
+Por otra parte, Bagheri \textit{et al.}~\cite{bagheri15} proponen una
+formalización del sistema de permisos de Android escrita en Alloy~\cite{alloy},
+un lenguaje basado en la lógica relacional de primer orden,
+%
+\todo{traducción de bounded verifiaction?}
+%
+análisis capaz de realizar \textit{bounded verification} de los modelos que en
+este lenguaje se describan. Con la ayuda de este modelo, los autores
+identificaron distintos tipos de vulnerabilidades que permiten esquivar por
+completo el chequeo de permisos. Particularmente, estudiaron la vulnerabilidad
+%
+\todo{mejor traducción para custom-permission?}
+%
+de \textit{permisos personalizados}, mediante la cual una aplicación maliciosa
+puede acceder a todos los recursos de otra que estén protegidos por permisos
+personalizados. Esta falla surge de que el sistema no impone restricciones con
+respecto al nombre de los nuevos permisos que definen y, como consecuencia, dos
+permisos distintos podrían tener el mismo nombre. Este trabajo luego se extendió
+para una nueva versión de Android~\cite{bagheri}. La falla por permisos
+personalizados ya había sido reportada por Shin \textit{et al.}
+en~\cite{shin-custom}.
+
+\todo{debería profundizar más en este párrafo?}
+Una diferencia fundamental entre este enfoque y el de esta tesina es el tipo de
+análisis que se realizó. A pesar de que Alloy es capaz de producir
+contraejemplos de manera automática, algo realmente útil a la hora de buscar
+potenciales fallas; no es posible demostrar propiedades de una manera rigurosa y
+formal.
+
+
+
