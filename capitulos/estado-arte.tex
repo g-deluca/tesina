@@ -28,10 +28,15 @@ enfrentarse
 %
 los desarrolladores a la hora de construir aplicaciones seguras.
 
+\todo{Leer con más detalle \cite{sok} y ver si vale la pena profundizar}
+Dentro de esta línea también se encuentra el trabajo de Yasemin Acat \textit{et
+al.}~\cite{sok}, quienes presentan una visión sistémica e integradora de las
+distintas líneas de investigación en seguridad de Android. Los autores realizan
+un análisis de los distintos enfoques desde los cuales se aborda la seguridad de
+este tipo de sistemas, comparándolos y estableciendo, según ellos, las bases para
+que la investigación futura pueda ser unificada.
+
 Recientemente, René Mayrhofer \textit{et al.}~\cite{mayrhofer} publicaron un
-%
-\todo{llenar gap temporal con algún trabajo más, puede ser \cite{sok}}
-%
 trabajo de similar basado en la versión 9.0 de Android. El mismo, además de dar
 un descripción detallada del modelo, incluye una discusión de sus implicaciones
 y un posterior análisis sobre las medidas que se tomaron a lo largo del tiempo
@@ -54,7 +59,7 @@ al.}~\cite{bartel}, y el de Sha Wu y Jiajia Liu~\cite{droidtector}; siendo este
 último el más reciente, realizado con la intención de contrarrestar las
 limitaciones detectadas en los trabajos previos.
 %
-\todo{en \cite{droidtector} se comparan todos estos trabajos, incorporo esa comparación acá?}
+\todoCarlos{en \cite{droidtector} se comparan todos estos trabajos, incorporo esa comparación acá?}
 %
 
 \subsection*{Enfoque formal}
@@ -67,6 +72,17 @@ confidencialidad de los datos que manejan. Recientemente, Wilayar Khan
 \textit{et al.}~\cite{khan} formalizaron y demostraron la corrección de este
 sistema de tipos utilizando el asistente de pruebas Coq.
 
+En otro trabajo reciente encabezado por W. Khan~\cite{crashsafe}, se definió en
+Coq un modelo para estudiar el sistema de comunicación entre componentes. El
+principal objetivo de este trabajo es estudiar la robustez de la plataforma
+cuando una aplicación detiene su ejecución a causa de un fallo en la resolución
+de un \textit{intent}. A diferencia del resto de los trabajos citados, éste se
+concentra en estudiar propiedades de \textit{safety} y no de \textit{security}, a
+pesar de que este sistema puede ser explotado para filtrar información sensible de
+los usuarios~\cite{iccta}.
+%
+\todo{explicación previa de intent}
+
 Por otra parte, Bagheri \textit{et al.}~\cite{bagheri15} proponen una
 formalización del sistema de permisos de Android escrita en Alloy~\cite{alloy},
 un lenguaje basado en la lógica relacional de primer orden,
@@ -77,11 +93,8 @@ análisis capaz de realizar \textit{bounded verification} de los modelos que en
 este lenguaje se describan. Con la ayuda de este modelo, los autores
 identificaron distintos tipos de vulnerabilidades que permiten esquivar por
 completo el chequeo de permisos. Particularmente, estudiaron la vulnerabilidad
-%
-\todo{mejor traducción para custom-permission?}
-%
-de \textit{permisos personalizados}, mediante la cual una aplicación maliciosa
-puede acceder a todos los recursos de otra que estén protegidos por permisos
+de permisos personalizados, mediante la cual una aplicación maliciosa puede
+acceder a todos los recursos de otra que estén protegidos por permisos
 personalizados. Esta falla surge de que el sistema no impone restricciones con
 respecto al nombre de los nuevos permisos que definen y, como consecuencia, dos
 permisos distintos podrían tener el mismo nombre. Este trabajo luego se extendió
@@ -89,7 +102,7 @@ para una nueva versión de Android~\cite{bagheri}. La falla por permisos
 personalizados ya había sido reportada por Shin \textit{et al.}
 en~\cite{shin-custom}.
 
-\todo{debería profundizar más en este párrafo?}
+\todoCarlos{debería profundizar más en este párrafo?}
 Una diferencia fundamental entre este enfoque y el de esta tesina es el tipo de
 análisis que se realizó. A pesar de que Alloy es capaz de producir
 contraejemplos de manera automática, algo realmente útil a la hora de buscar
