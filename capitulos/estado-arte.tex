@@ -37,10 +37,10 @@ este tipo de sistemas, comparándolos y estableciendo, según ellos, las bases p
 que la investigación futura pueda ser unificada.
 
 Recientemente, René Mayrhofer \textit{et al.}~\cite{mayrhofer} publicaron un
-trabajo de similar basado en la versión 9.0 de Android. El mismo, además de dar
-un descripción detallada del modelo, incluye una discusión de sus implicaciones
-y un posterior análisis sobre las medidas que se tomaron a lo largo del tiempo
-para mitigar distintas amenazas.
+trabajo de características similares a los anteriores basado en la versión 9.0
+de Android. El mismo, además de dar un descripción detallada del modelo, incluye
+una discusión de sus implicaciones y un posterior análisis sobre las medidas que
+se tomaron a lo largo del tiempo para mitigar distintas amenazas.
 
 Este tipo de trabajos constituyen un complemento importante a la documentación
 oficial de Android, brindándole nuevas herramientas y referencias más claras a
@@ -51,16 +51,23 @@ de los que realmente necesitaban. Los autores investigaron las causas de
 sobreprivilegio de estas aplicaciones y encontraron que muchas veces, los
 desarrolladores intentaban otorgar la menor cantidad de privilegios necesarios
 pero en reiteradas ocasiones fallaban por falta de una documentación precisa. En
-consecuencia, el grupo desarrolló Stowaway, una herramienta pionera en la
-detección de permisos innecesarios. En esta línea encontramos también el trabajo
-de Kathy Wain Yee Au \textit{et al.}~\cite{pscout}, el de Piper Chester
-\textit{et al.}~\cite{mperm}, el de Alexandre Bartel \textit{et
-al.}~\cite{bartel}, y el de Sha Wu y Jiajia Liu~\cite{droidtector}; siendo este
-último el más reciente, realizado con la intención de contrarrestar las
-limitaciones detectadas en los trabajos previos.
-%
-\todoCarlos{en \cite{droidtector} se comparan todos estos trabajos, incorporo esa comparación acá?}
-%
+consecuencia, el grupo desarrolló Stowaway, una de las primeras herramientas
+dedicadas a la detección de permisos innecesarios.
+
+Actualmente existe una gran cantidad de herramientas de análisis estático,
+siendo las más recientes: M-Perm~\cite{mperm}; IC3~\cite{ic3}, que incorpora el
+concepto de \textit{propagación de constantes compuestas multi-valuadas} para
+lograr una mayor eficiencia; Covert~\cite{covert} y Separ~\cite{separ}, que
+combinan análisis estático con métodos formales para inferir automáticamente
+propiedades sobre un conjunto de aplicaciones, a partir de las cuales se
+derivarán políticas de seguridad; y Droidtector~\cite{droidtector}, que a
+diferencia del resto no necesita el código fuente de las aplicaciones o de
+Android. Las herramientas de este tipo se focalizan en estudiar una aplicación en
+particular (o en algunos casos, un conjunto de aplicaicones) y extraer
+propiedades de seguridad que solo conciernen a ella. En cambio, en esta tesina
+estudiamos el sistema de permisos subyacente, extrayendo propiedades relevantes
+para todas las aplicaciones y para el sistema en general.
+
 
 \subsection*{Enfoque formal}
 
@@ -74,7 +81,7 @@ sistema de tipos utilizando el asistente de pruebas Coq.
 
 En otro trabajo reciente encabezado por W. Khan~\cite{crashsafe}, se definió en
 Coq un modelo para estudiar el sistema de comunicación entre componentes. El
-principal objetivo de este trabajo es estudiar la robustez de la plataforma
+principal objetivo de este trabajo es analizar la robustez de la plataforma
 cuando una aplicación detiene su ejecución a causa de un fallo en la resolución
 de un \textit{intent}. A diferencia del resto de los trabajos citados, éste se
 concentra en estudiar propiedades de \textit{safety} y no de \textit{security}, a
