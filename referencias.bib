@@ -7,13 +7,6 @@
     pages={73-89},
     year={2015},
 }
-@article{shin-custom,
-    author={Shin and Wook and S. Kwak and S. Kiyomoto and K. Fukushima and T. Tanaka},
-    title={A small but non-negligible flaw in the Android permission scheme},
-    journal={2010 IEEE International Symposium on Policies for Distributed Systems and Networks},
-    pages={107-110},
-    year={2010},
-}
 @misc{coq,
     title={The Coq Proof Assistant},
     howpublished={\url{https://coq.inria.fr/}}
@@ -285,7 +278,7 @@ volume = {21},
 journal = {CLEI Electronic Journal},
 doi = {10.19153/cleiej.21.2.3}
 }
-@article{betarte,
+@article{betarte-2017,
   author    = {Gustavo Betarte and
                Juan Diego Campo and
                Felipe Gorostiaga and
@@ -301,4 +294,70 @@ doi = {10.19153/cleiej.21.2.3}
   timestamp = {Mon, 13 Aug 2018 16:46:51 +0200},
   biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1709-03652},
   bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+@article{betarte-2016,
+author = {Betarte, Gustavo and Campo, Juan and Luna, Carlos and Romano, Agustín},
+year = {2016},
+month = {06},
+pages = {27-68},
+title = {Formal Analysis of Android's Permission-Based Security Model},
+volume = {26},
+journal = {Scientific Annals of Computer Science},
+doi = {10.7561/SACS.2016.1.27}
+}
+@InProceedings{bugliesi,
+author={Bugliesi, Michele
+and Calzavara, Stefano
+and Span{\`o}, Alvise},
+editor={Beyer, Dirk
+and Boreale, Michele},
+title="Lintent: Towards Security Type-Checking of Android Applications",
+booktitle="Formal Techniques for Distributed Systems",
+year="2013",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="289--304",
+abstract="The widespread adoption of Android devices has attracted the attention of a growing computer security audience. Fundamental weaknesses and subtle design flaws of the Android architecture have been identified, studied and fixed, mostly through techniques from data-flow analysis, runtime protection mechanisms, or changes to the operating system. This paper complements this research by developing a framework for the analysis of Android applications based on typing techniques. We introduce a formal calculus for reasoning on the Android inter-component communication API and a type-and-effect system to statically prevent privilege escalation attacks on well-typed components. Drawing on our abstract framework, we develop a prototype implementation of Lintent, a security type-checker for Android applications integrated with the Android Development Tools suite. We finally discuss preliminary experiences with our tool, which highlight real attacks on existing applications.",
+isbn="978-3-642-38592-6"
+}
+@INPROCEEDINGS{shin,
+author={W. {Shin} and S. {Kiyomoto} and K. {Fukushima} and T. {Tanaka}},
+booktitle={2010 IEEE Second International Conference on Social Computing},
+title={A Formal Model to Analyze the Permission Authorization and Enforcement in the Android Framework},
+year={2010},
+volume={},
+number={},
+pages={944-951},
+keywords={authorisation;formal specification;mobile computing;theorem proving;Android permission scheme;state-based model;permission authorization;theorem prover;mechanically checked proofs;security vulnerability;Androids;XML;Mathematical model;Analytical models;Computational modeling;Authorization;permission;formal model;Android security},
+doi={10.1109/SocialCom.2010.140},
+ISSN={},
+month={Aug},}
+@INPROCEEDINGS{shin-custom,
+author={W. {Shin} and S. {Kwak} and S. {Kiyomoto} and K. {Fukushima} and T. {Tanaka}},
+booktitle={2010 IEEE International Symposium on Policies for Distributed Systems and Networks},
+title={A Small But Non-negligible Flaw in the Android Permission Scheme},
+year={2010},
+volume={},
+number={},
+pages={107-110},
+keywords={authorisation;mobile computing;operating systems (computers);Android permission scheme;permission-based security policy;security flaw;Authorization;Credit cards;Permission;Mobile handsets;Android;Permission;Vulnerability},
+doi={10.1109/POLICY.2010.11},
+ISSN={},
+month={July},}
+@InProceedings{fragkaki,
+author="Fragkaki, Elli
+and Bauer, Lujo
+and Jia, Limin
+and Swasey, David",
+editor="Foresti, Sara
+and Yung, Moti
+and Martinelli, Fabio",
+title="Modeling and Enhancing Android's Permission System",
+booktitle="Computer Security -- ESORICS 2012",
+year="2012",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="1--18",
+abstract="Several works have recently shown that Android's security architecture cannot prevent many undesired behaviors that compromise the integrity of applications and the privacy of their data. This paper makes two main contributions to the body of research on Android security: first, it develops a formal framework for analyzing Android-style security mechanisms; and, second, it describes the design and implementation of Sorbet, an enforcement system that enables developers to use permissions to specify secrecy and integrity policies. Our formal framework is composed of an abstract model with several specific instantiations. The model enables us to formally define some desired security properties, which we can prove hold on Sorbet but not on Android. We implement Sorbet on top of Android 2.3.7, test it on a Nexus S phone, and demonstrate its usefulness through a case study.",
+isbn="978-3-642-33167-1"
 }

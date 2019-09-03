@@ -50,6 +50,8 @@ pero en reiteradas ocasiones fallaban por falta de una documentación precisa. E
 consecuencia, el grupo desarrolló Stowaway, una de las primeras herramientas
 dedicadas a la detección de permisos innecesarios.
 
+\todo{Aclarar finalidad de las herramientas}
+%
 Actualmente existe una gran cantidad de herramientas de análisis estático,
 siendo las más recientes: M-Perm~\cite{mperm}; IC3~\cite{ic3}, que incorpora el
 concepto de \textit{propagación de constantes compuestas multi-valuadas} para
@@ -67,13 +69,22 @@ para todas las aplicaciones y para el sistema en general.
 
 \subsection*{Enfoque formal}
 
-Entrando en el terreno de los métodos formales, Chaudhuri~\cite{chaudhuri}
-presentó un lenguaje tipado que permite describir un subconjunto de aplicaciones
-de Android y razonar sobre ellas. Adicionalmente, presentó un sistema de tipos
-para este lenguaje, garantizando que las aplicaciones bien tipadas preservan la
-confidencialidad de los datos que manejan. Recientemente, Wilayar Khan
-\textit{et al.}~\cite{khan} formalizaron y demostraron la corrección de este
-sistema de tipos utilizando el asistente de pruebas Coq.
+Entrando en el terreno de los métodos formales, nos encontramos con el trabajo
+de Chaudhuri~\cite{chaudhuri}, uno de los primeros dentro del área. En él se
+desarrolló un lenguaje que permite describir un subconjunto de aplicaciones de
+Android y razonar sobre ellas. Adicionalmente, se presentó un sistema de tipos
+para este lenguaje, que garantiza que las aplicaciones bien tipadas preservanla
+confidencialidad de los datos que manejan. Parcialmente inspirado en este
+trabajo, Bugliesi \textit{et al.} desarrollaron $\pi$-Perm~\cite{bugliesi}, un
+sistema de tipos y efectos que tiene como finalidad detectar problemas de
+\textit{privilege escalation}. De manera análoga al trabajo de Chaudhuri, una
+expresión bien tipada en $\pi$-Perm garantiza que la aplicación real a la cual
+está representando, no es vulnerable al ataque mencionado. Recientemente,
+Wilayar Khan \textit{et al.} retomaron el lenguaje propuesto por Chaudhuri y lo
+definieron dentro del \textit{framework} lógico-matemático Coq\cite{coq}. De
+esta forma, pudieron no solo estudiar la corrección y seguridad de las
+aplicaciones de manera mecánica y rigurosa, sino que también utilizaron este
+asistente para probar la corrección (\textit{soundness}) del lenguaje en sí.
 
 En otro trabajo reciente encabezado por W. Khan~\cite{crashsafe}, se definió en
 Coq un modelo para estudiar el sistema de comunicación entre componentes. El
@@ -102,21 +113,57 @@ permisos distintos podrían tener el mismo nombre. Este trabajo luego se extendi
 para una nueva versión de Android~\cite{bagheri}. La falla por permisos
 personalizados ya había sido reportada por Shin \textit{et al.}
 en~\cite{shin-custom}.
-
-\todoCarlos{debería profundizar más en este párrafo?}
+%
+\todoCarlos{debería profundizar más en la diferencia?}
+%
 Una diferencia fundamental entre este enfoque y el de esta tesina es el tipo de
 análisis que se realizó. A pesar de que Alloy es capaz de producir
 contraejemplos de manera automática, algo realmente útil a la hora de buscar
 potenciales fallas; no es posible demostrar propiedades de una manera rigurosa y
 formal.
 
-En trabajos previos encabezados por Carlos Luna~\cite{betarte, luna-cleiej}, se
-utilizó el asistente de pruebas Coq~\cite{coq} para dar una descripción formal y
-exhaustiva del sistema de permisos de Android. A partir de esta especificación,
-no solo se probaron propiedades relevantes a la seguridad del modelo, sino que
-también se extrajo una implementación certificada del mismo. Los autores explican
-cómo esta implementación puede utilizarse para generar casos de pruebas abstractos
-dentro del \textit{testing} basado en modelos, o bien, cómo puede usarse para
-monitorear las acciones realizadas en un sistema real y evaluar si las propiedades
-deseadas efectivamente se cumplen. Estos trabajos presentan el modelo que será
-actualizado y expandido en esta tesina.
+En trabajos previos encabezados por Gustavo Betarte y Carlos
+Luna~\cite{betarte-2017, betarte-2016, luna-cleiej}, se utilizó el asistente de
+%
+\todo{explicar de qué se trata un sist. de trans. de estados?}
+%
+pruebas Coq para modelar un sistema de transición de estados que representa,
+principalmente, los distintos estados que atraviesa la plataforma cuando se
+realicen operaciones sobre ella (por ejemplo, al instalar o desinstalar una
+aplicación). A partir de esta especificación, no solo se probaron propiedades
+relevantes a la seguridad del modelo, sino que también se extrajo una
+implementación certificada del mismo. Los autores explican cómo esta
+implementación puede utilizarse para generar casos de pruebas abstractos dentro
+del \textit{testing} basado en modelos, o bien, cómo puede usarse para
+monitorear las acciones realizadas en un sistema real y evaluar si las
+propiedades deseadas efectivamente se cumplen. Estos trabajos presentan el
+modelo que será actualizado y extendido en esta tesina.
+
+%%%%%%%%%%
+% Fragmento tomado de \cite{luna-cleiej}
+%%%
+% In particular, Shin et al. [42, 43] build a formal framework that represents the
+% Android permission system, which is based on the Calculus of Inductive
+% Constructions and it is developed in Coq, as we do. However, that formalization
+% does not consider, for instance, several aspects of the platform covered in our
+% model, namely, the different types of components, the interaction between a
+% running instance and the system, the reading/writing operation on a content
+% provider and the semantics of the permission delegation mechanism. They also do
+% not consider novel aspects of the Android security model, such as managing
+% runtime permissions.
+%%%
+Un enfoque similar a este, es el de Wook Shin \textit{et al.}, quienes también
+utilizaron Coq para representar el modelo~\cite{shin}. Sin embargo, esta
+formalización no considera aspectos de la plataforma que sí son considerados por
+los trabajos anteriores (y por ende, por esta tesina); como por ejemplo, los
+distintos tipos de componentes, la interacción entre instancias de aplicaciones
+en ejecución y el sistema, la operación de escritura/lectura en un
+\textit{content provider} y la semántica del sistema de delegación de permisos.
+Al mismo tiempo, cuando Android incorporó los permisos otorgados en
+\textit{runtime}, este modelo no fue actualizado. El trabajo de Fragkaki \textit{et al.}
+tambień presenta un modelo formal basado en transiciones de
+estado~\cite{fragkaki}, pero el mismo no está desarrolado dentro de un
+\textit{framework} que permita realizar pruebas asisistidas por computadora.
+Además, el modelo se corresponde con una de las primeras versiones de Android,
+por lo que tampoco contempla los cambios en el sistema de permisos introducidos
+a partir de la versión 6.0.
