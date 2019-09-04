@@ -68,32 +68,44 @@ para todas las aplicaciones y para el sistema en general.
 
 
 \subsection*{Enfoque formal}
+Uno de los primeros trabajos en abordar la seguridad de Android desde los
+métodos formales fue el de Chaudhuri~\cite{chaudhuri}. En el mismo, se desarrolló
+un lenguaje que permite describir un subconjunto de aplicaciones de Android y
+razonar sobre ellas. Adicionalmente, se presentó un sistema de tipos para este
+lenguaje y se demostró un teorema que garantiza que las aplicaciones bien
+tipadas preservan la confidencialidad de los datos que manejan. Parcialmente
+inspirado en este trabajo, Bugliesi \textit{et al.} desarrollaron
+$\pi$-Perm~\cite{bugliesi}, un sistema de tipos y efectos que tiene como
+%
+\todo{traducción de privilege escalation}
+%
+finalidad detectar problemas de \textit{privilege escalation}. De manera análoga
+al trabajo de Chaudhuri, una expresión bien tipada en $\pi$-Perm garantiza que
+la aplicación real a la cual está representando, no es vulnerable al ataque
+mencionado. Similarmente, Armando \textit{et al.} definen un
+lenguaje~\cite{armando}, junto a su semántica operacional, que permite describir
+interacciones entre aplicaciones. También definen un sistema de tipos y efectos
+basado en un formalismo del estilo del álgebra de procesos, conocido como
+\textit{history expressions}~\cite{history-expressions}. Intuitivamente, una
+\textit{history expression} sirve para representar los efectos laterales
+vinculados a la seguridad del dispositivo que se producen en una computación.
+Finalmente, los autores prueban que cualquier comportamiento que la plataforma
+pueda tener en \textit{runtime} está contenido en este modelo, y por lo tanto,
+puede analizarse estáticamente.
 
-Entrando en el terreno de los métodos formales, nos encontramos con el trabajo
-de Chaudhuri~\cite{chaudhuri}, uno de los primeros dentro del área. En él se
-desarrolló un lenguaje que permite describir un subconjunto de aplicaciones de
-Android y razonar sobre ellas. Adicionalmente, se presentó un sistema de tipos
-para este lenguaje, que garantiza que las aplicaciones bien tipadas preservanla
-confidencialidad de los datos que manejan. Parcialmente inspirado en este
-trabajo, Bugliesi \textit{et al.} desarrollaron $\pi$-Perm~\cite{bugliesi}, un
-sistema de tipos y efectos que tiene como finalidad detectar problemas de
-\textit{privilege escalation}. De manera análoga al trabajo de Chaudhuri, una
-expresión bien tipada en $\pi$-Perm garantiza que la aplicación real a la cual
-está representando, no es vulnerable al ataque mencionado. Recientemente,
-Wilayar Khan \textit{et al.} retomaron el lenguaje propuesto por Chaudhuri y lo
-definieron dentro del \textit{framework} lógico-matemático Coq\cite{coq}. De
-esta forma, pudieron no solo estudiar la corrección y seguridad de las
-aplicaciones de manera mecánica y rigurosa, sino que también utilizaron este
-asistente para probar la corrección (\textit{soundness}) del lenguaje en sí.
-
-En otro trabajo reciente encabezado por W. Khan~\cite{crashsafe}, se definió en
-Coq un modelo para estudiar el sistema de comunicación entre componentes. El
-principal objetivo de este trabajo es analizar la robustez de la plataforma
-cuando una aplicación detiene su ejecución a causa de un fallo en la resolución
-de un \textit{intent}. A diferencia del resto de los trabajos citados, éste se
-concentra en estudiar propiedades de \textit{safety} y no de \textit{security}, a
-pesar de que este sistema puede ser explotado para filtrar información sensible de
-los usuarios~\cite{iccta}.
+Recientemente, Wilayar Khan \textit{et al.} retomaron el trabajo de Chaudhuri y
+modelaron el lenguaje en él definido dentro del \textit{framework}
+lógico-matemático Coq~\cite{coq}. De esta forma, pudieron no solo estudiar la
+corrección y seguridad de las aplicaciones de manera mecánica y rigurosa, sino
+que también utilizaron este asistente para probar la corrección -o
+\textit{soundness}- del lenguaje en sí. En otro trabajo actual encabezado por
+Khan~\cite{crashsafe}, se definió en Coq un modelo para estudiar el sistema de
+comunicación entre componentes. El principal objetivo de este trabajo es
+analizar la robustez de la plataforma cuando una aplicación detiene su ejecución
+a causa de un fallo en la resolución de un \textit{intent}. A diferencia del
+resto de los trabajos citados, éste se concentra en estudiar propiedades de
+\textit{safety} y no de \textit{security}, a pesar de que este sistema puede ser
+explotado para filtrar información sensible de los usuarios~\cite{iccta}.
 
 Por otra parte, Bagheri \textit{et al.}~\cite{bagheri15} proponen una
 formalización del sistema de permisos de Android escrita en Alloy~\cite{alloy},
@@ -129,7 +141,7 @@ Luna~\cite{betarte-2017, betarte-2016, luna-cleiej}, se utilizó el asistente de
 %
 pruebas Coq para modelar un sistema de transición de estados que representa,
 principalmente, los distintos estados que atraviesa la plataforma cuando se
-realicen operaciones sobre ella (por ejemplo, al instalar o desinstalar una
+realizan operaciones sobre ella (por ejemplo, al instalar o desinstalar una
 aplicación). A partir de esta especificación, no solo se probaron propiedades
 relevantes a la seguridad del modelo, sino que también se extrajo una
 implementación certificada del mismo. Los autores explican cómo esta
