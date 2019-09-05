@@ -3,43 +3,45 @@
 \label{chapter:estado}
 \addcontentsline{toc}{chapter}{\nameref{chapter:estado}}
 
-En esta sección se describen algunos trabajos sobre el modelo de seguridad de
-Android. \textit{A priori}, podemos distinguir dos grandes grupos: aquellos que
-reportan alguna falla puntual del sistema y los que buscan dar una descripción
-más general del mismo, ya sea de manera formal o informal\footnote{Entendemos
-por enfoque informal a aquellos enfoques que no utilizan métodos formales para
-el estudio de la plataforma.}.
-
-\subsection*{Fallas puntuales}
-
-Dentro del primer grupo mencionado podemos encontrar bla bla bla. TODO: Buscar
-trabajos que apunten a vulnerabilidades específicas. El paper de Bagheri
-\cite{bagheri} tiene muchas referencias a este tipo de trabajos.
+En esta sección se describen algunos trabajos académicos relacionados con el
+modelo de seguridad de Android, enfocándose en los más recientes o en los que
+fueron pioneros dentro de un área. A su vez, realizamos una distinción entre aquellos
+que abordan la problemática con un enfoque formal\footnote{Entendemos por enfoque
+formal a la utilización de métodos formales para el estudio de la plataforma} y
+los que no.
 
 \subsection*{Enfoque informal}
+Uno de los primeros artículos académicos en describir el modelo de seguridad de
+%
+\todoCarlos{No estoy seguro de mencionar este trabajo. Es viejo pero fue uno de los primeros.}
+%
+Android fue el de William Enck \textit{et al.}~\cite{enck}. A través de esta
+descripción, los autores buscaban \textit{desenmascarar} la complejidad a la que
+debían enfrentarse los desarrolladores cuando se proponían construir aplicaciones
+seguras.
 
-Por otro lado, encontramos trabajos como el de William Enck
-\textit{et al.}~\cite{enck}, uno de los primeros artículos académicos en
-describir el modelo de seguridad de Android. A través de esta descripción, los
-autores buscaban \textit{desenmascarar} la complejidad a la que debían
-enfrentarse los desarrolladores a la hora de construir aplicaciones seguras.
+Dentro de esta línea, encontramos trabajos recientes como el de Jice Wang y
+Hongqi Wu~\cite{wang}, o el de Shweta Bahndari \textit{et al.}~\cite{bhandari},
+que describen el sistema de comunicación entre aplicaciones y analizan las
+vulnerabilidades intrínsecas del mismo. También encontramos el trabajo de René
+Mayrhofer \textit{et al.}~\cite{mayrhofer}, quienes dan una descripción
+exhaustiva de las características relacionadas a la seguridad de la versión 9.0
+de Android y analizan las medidas que se tomaron a lo largo del tiempo para
+mitigar distintas amenazas.
 
-\todo{Leer con más detalle \cite{sok} y ver si vale la pena profundizar}
-Dentro de esta línea también se encuentra el trabajo de Yasemin Acar \textit{et
-al.}~\cite{sok}, quienes presentan una visión sistémica e integradora de las
-distintas líneas de investigación en seguridad de Android. Los autores realizan
-un análisis de los distintos enfoques desde los cuales se aborda la seguridad de
-este tipo de sistemas, comparándolos y estableciendo, según ellos, las bases para
-que la investigación futura pueda ser unificada.
-
-Recientemente, René Mayrhofer \textit{et al.}~\cite{mayrhofer} publicaron un
-trabajo de características similares a los anteriores basado en la versión 9.0
-de Android. El mismo, además de dar un descripción detallada del modelo, incluye
-una discusión de sus implicaciones y un posterior análisis sobre las medidas que
-se tomaron a lo largo del tiempo para mitigar distintas amenazas.
+\todo{Este no sé si ponerlo}
+Por otro lado, tenemos el trabajo de Yasemin Acar \textit{et al.}~\cite{sok},
+quienes presentan una visión sistémica e integradora de las distintas líneas de
+investigación en Android. Los autores realizan un análisis de los diversos
+enfoques desde los cuales se aborda la seguridad de esta plataforma,
+comparándolos, y estableciendo, según ellos, cuál es el camino para la
+investigación futura.
 
 Este tipo de trabajos constituyen un complemento importante a la documentación
 oficial de Android, brindándole nuevas herramientas y referencias más claras a
+%
+\todoCarlos{Lo mismo con este. Es viejo pero el primero del estilo}
+%
 los desarrolladores. Un ejemplo de esto fue el trabajo de Felt \textit{et
 al.}~\cite{felt}, quienes estudiaron un grupo de aplicaciones disponibles para
 la versión 2.2 de Android y detectaron que muchas de ellas pedían más permisos
@@ -50,27 +52,26 @@ pero en reiteradas ocasiones fallaban por falta de una documentación precisa. E
 consecuencia, el grupo desarrolló Stowaway, una de las primeras herramientas
 dedicadas a la detección de permisos innecesarios.
 
-\todo{Aclarar finalidad de las herramientas}
-%
-Actualmente existe una gran cantidad de herramientas de análisis estático,
-siendo las más recientes: M-Perm~\cite{mperm}; IC3~\cite{ic3}, que incorpora el
-concepto de \textit{propagación de constantes compuestas multi-valuadas} para
-lograr una mayor eficiencia; Covert~\cite{covert} y Separ~\cite{separ}, que
-combinan análisis estático con métodos formales para inferir automáticamente
-propiedades sobre un conjunto de aplicaciones, a partir de las cuales se
-derivarán políticas de seguridad; y Droidtector~\cite{droidtector}, que a
-diferencia del resto no necesita el código fuente de las aplicaciones o de
-Android. Las herramientas de este tipo se focalizan en estudiar una aplicación en
-particular (o en algunos casos, un conjunto de aplicaicones) y extraer
-propiedades de seguridad que solo conciernen a ella. En cambio, en esta tesina
-estudiamos el sistema de permisos subyacente, extrayendo propiedades relevantes
-para todas las aplicaciones y para el sistema en general.
+Actualmente existe una gran cantidad de herramientas de análisis estático que
+ayudan a detectar sobreprivilegios, siendo las más recientes:
+M-Perm~\cite{mperm}; IC3~\cite{ic3}, que incorpora el concepto de
+\textit{propagación de constantes compuestas multi-valuadas} para lograr una
+mayor eficiencia; Covert~\cite{covert} y Separ~\cite{separ}, que combinan
+análisis estático con métodos formales para inferir automáticamente propiedades
+sobre un conjunto de aplicaciones, a partir de las cuales se derivarán políticas
+de seguridad; y Droidtector~\cite{droidtector}, que a diferencia del resto no
+necesita el código fuente de las aplicaciones o de Android para realizar el análisis. Las herramientas de
+este tipo se focalizan en estudiar una aplicación en particular (o en algunos
+casos, un conjunto de aplicaicones) y extraer propiedades de seguridad que solo
+conciernen a ella. En cambio, en esta tesina estudiamos el sistema de permisos
+subyacente, extrayendo propiedades relevantes para todas las aplicaciones y para
+el sistema en general.
 
 
 \subsection*{Enfoque formal}
-Uno de los primeros trabajos en abordar la seguridad de Android desde los
-métodos formales fue el de Chaudhuri~\cite{chaudhuri}. En el mismo, se desarrolló
-un lenguaje que permite describir un subconjunto de aplicaciones de Android y
+Entrando en el terreno de los métodos formales, nos encontramos en primer lugar
+con el trabajo de Chaudhuri~\cite{chaudhuri}. En el mismo, se desarrolló un
+lenguaje que permite describir un subconjunto de aplicaciones de Android y
 razonar sobre ellas. Adicionalmente, se presentó un sistema de tipos para este
 lenguaje y se demostró un teorema que garantiza que las aplicaciones bien
 tipadas preservan la confidencialidad de los datos que manejan. Parcialmente
@@ -83,15 +84,16 @@ finalidad detectar problemas de \textit{privilege escalation}. De manera análog
 al trabajo de Chaudhuri, una expresión bien tipada en $\pi$-Perm garantiza que
 la aplicación real a la cual está representando, no es vulnerable al ataque
 mencionado. Similarmente, Armando \textit{et al.} definen un
-lenguaje~\cite{armando}, junto a su semántica operacional, que permite describir
-interacciones entre aplicaciones. También definen un sistema de tipos y efectos
-basado en un formalismo del estilo del álgebra de procesos, conocido como
-\textit{history expressions}~\cite{history-expressions}. Intuitivamente, una
+lenguaje~\cite{armando}, acompañado por su semántica operacional, que permite
+describir interacciones entre aplicaciones. Al igual que en los trabajos
+anteriores, se define un sistema de tipos y efectos; pero este está basado en un
+formalismo del estilo del álgebra de procesos, conocido como \textit{history
+expressions}~\cite{history-expressions}. Puesto en términos simples, una
 \textit{history expression} sirve para representar los efectos laterales
-vinculados a la seguridad del dispositivo que se producen en una computación.
-Finalmente, los autores prueban que cualquier comportamiento que la plataforma
-pueda tener en \textit{runtime} está contenido en este modelo, y por lo tanto,
-puede analizarse estáticamente.
+vinculados a la seguridad del dispositivo que se producen al realizar una
+computación. Finalmente, los autores prueban que cualquier comportamiento que la
+plataforma pueda tener en \textit{runtime} está contenido en este modelo, y por
+lo tanto, puede analizarse estáticamente.
 
 Recientemente, Wilayar Khan \textit{et al.} retomaron el trabajo de Chaudhuri y
 modelaron el lenguaje en él definido dentro del \textit{framework}
