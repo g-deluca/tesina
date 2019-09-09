@@ -89,9 +89,9 @@ anteriores, se define un sistema de tipos y efectos; pero este está basado en u
 formalismo del estilo del álgebra de procesos, conocido como \textit{history
 expressions}~\cite{history-expressions}. Puesto en términos simples, una
 \textit{history expression} sirve para representar los efectos laterales
-vinculados a la seguridad del dispositivo que se producen al realizar una
+vinculados a la seguridad del dispositivo, que se producen al realizar una
 computación. Finalmente, los autores prueban que cualquier comportamiento que la
-plataforma pueda tener en \textit{runtime} está contenido en este modelo, y por
+plataforma pueda tener en \textit{runtime}, está contenido en este modelo; y por
 lo tanto, puede analizarse estáticamente.
 
 Recientemente, Wilayar Khan \textit{et al.} retomaron el trabajo de Chaudhuri y
@@ -108,24 +108,32 @@ resto de los trabajos citados, éste se concentra en estudiar propiedades de
 \textit{safety} y no de \textit{security}, a pesar de que este sistema puede ser
 explotado para filtrar información sensible de los usuarios~\cite{iccta}.
 
-Por otra parte, Bagheri \textit{et al.}~\cite{bagheri15} proponen una
-formalización del sistema de permisos de Android escrita en Alloy~\cite{alloy},
-un lenguaje basado en la lógica relacional de primer orden,
-%
-\todo{traducción de bounded verifiaction?}
-%
-análisis capaz de realizar \textit{bounded verification} de los modelos que en
-este lenguaje se describan. Con la ayuda de este modelo, los autores
-identificaron distintos tipos de vulnerabilidades que permiten esquivar por
-completo el chequeo de permisos. Particularmente, estudiaron la vulnerabilidad
-de permisos personalizados, mediante la cual una aplicación maliciosa puede
-acceder a todos los recursos de otra que estén protegidos por permisos
-personalizados. Esta falla surge de que el sistema no impone restricciones con
-respecto al nombre de los nuevos permisos que definen y, como consecuencia, dos
-permisos distintos podrían tener el mismo nombre. Este trabajo luego se extendió
-para una nueva versión de Android~\cite{bagheri}. La falla por permisos
-personalizados ya había sido reportada por Shin \textit{et al.}
-en~\cite{shin-custom}.
+Por otra parte, Sadeghi \textit{et al.}~\cite{sadeghi-temp} presentan una
+formalización de la plataforma escrita en TLA+, un lenguaje especificación
+basado en la lógica lineal temporal~\cite{tla+}. Al incoporar el aspecto
+temporal al modelo, los autores buscan definir propiedades cuya veracidad
+dependa del momento en el que se la evalúe y de esta forma, modelar el
+comportamiento del sistema a medida que evoluciona en el tiempo. Luego, proponen
+un monitor de seguridad que otorga permisos temporales a las aplicaciones
+siempre y cuando se cumplan todas las propiedades (o reglas) de seguridad
+previamente definidas. Este permiso ``prestado'' es automáticamente revocado si
+en algún momento el sistema se encuentra en un estado que compromete alguna de
+las reglas.
+
+Similarmente, Bagheri \textit{et al.}~\cite{bagheri15} proponen una
+formalización del sistema de permisos de Android escrita en Alloy~\cite{alloy}:
+un lenguaje basado en la lógica relacional de primer orden, que incorpora una
+herramienta capaz de realizar análisis de satisfacibilidad automáticos sobre los
+modelos en él descriptos. Con la ayuda de esta formalización, los autores
+identificaron distintos tipos de vulnerabilidades que permiten esquivar el
+chequeo de permisos. Particularmente, estudiaron la vulnerabilidad de permisos
+personalizados, mediante la cual una aplicación maliciosa puede acceder a todos
+los recursos de otra que estén protegidos por permisos personalizados. Esta
+falla surge de que el sistema no impone restricciones con respecto al nombre de
+los nuevos permisos que definen y, como consecuencia, dos permisos distintos
+podrían tener el mismo nombre. Este trabajo luego se extendió para una nueva
+versión de Android~\cite{bagheri}. La falla por permisos personalizados había
+sido reportada previamente por Shin \textit{et al.}~\cite{shin-custom}.
 %
 \todoCarlos{debería profundizar más en la diferencia?}
 %
@@ -137,9 +145,6 @@ formal.
 
 En trabajos previos encabezados por Gustavo Betarte y Carlos
 Luna~\cite{betarte-2017, betarte-2016, luna-cleiej}, se utilizó el asistente de
-%
-\todo{explicar de qué se trata un sist. de trans. de estados?}
-%
 pruebas Coq para modelar un sistema de transición de estados que representa,
 principalmente, los distintos estados que atraviesa la plataforma cuando se
 realizan operaciones sobre ella (por ejemplo, al instalar o desinstalar una
@@ -166,11 +171,11 @@ modelo que será actualizado y extendido en esta tesina.
 % runtime permissions.
 %%%
 Un enfoque similar a este, es el de Wook Shin \textit{et al.}, quienes también
-utilizaron Coq para representar el modelo~\cite{shin}. Sin embargo, esta
-formalización no considera aspectos de la plataforma que sí son considerados por
-los trabajos anteriores (y por ende, por esta tesina); como por ejemplo, los
-distintos tipos de componentes, la interacción entre instancias de aplicaciones
-en ejecución y el sistema, la operación de escritura/lectura en un
+utilizaron Coq para modelar el sistema de permisos de Android~\cite{shin}. Sin
+embargo, esta formalización no considera aspectos de la plataforma que sí son
+considerados por los trabajos anteriores (y por ende, por esta tesina); como por
+ejemplo, los distintos tipos de componentes, la interacción entre instancias de
+aplicaciones en ejecución y el sistema, la operación de escritura/lectura en un
 \textit{content provider} y la semántica del sistema de delegación de permisos.
 Al mismo tiempo, cuando Android incorporó los permisos otorgados en
 \textit{runtime}, este modelo no fue actualizado. El trabajo de Fragkaki \textit{et al.}
@@ -178,5 +183,5 @@ tambień presenta un modelo formal basado en transiciones de
 estado~\cite{fragkaki}, pero el mismo no está desarrolado dentro de un
 \textit{framework} que permita realizar pruebas asisistidas por computadora.
 Además, el modelo se corresponde con una de las primeras versiones de Android,
-por lo que tampoco contempla los cambios en el sistema de permisos introducidos
-a partir de la versión 6.0.
+por lo que tampoco contempla los cambios más recientes en el sistema de
+permisos.
