@@ -3,33 +3,30 @@
 \label{chapter:estado}
 \addcontentsline{toc}{chapter}{\nameref{chapter:estado}}
 
-En esta sección se describen algunos trabajos académicos relacionados con el
+En esta sección se presentan algunos trabajos académicos relacionados con el
 modelo de seguridad de Android. Se organizará de la siguiente manera: Primero,
-se describen algunos trabajos informales\footnote{Entendemos por trabajo
-informal a aquellos que describen coloquialmente el sistema, por más rigurosa
-que sea la descripción} que son de interés por abarcar características
-recientes, por la información que condensan o por ser pioneros en el área.
-Luego, se mencionan varias herramientas (o aplicaciones) que utilizan técnicas
-de análisis estático de código para detectar potenciales vulnerabilidades, todas
-desarrolladas dentro de un marco académico. A pesar de que este enfoque  es
-distinto al que se propone en esta tesina, se tomó la decisión de incluirlo en
-este capítulo ya que conforma gran parte de la investigación actual y de los
-últimos años. Por último, se analizan aquellos trabajos que utilizan métodos
-formales para dar una especificación de la plataforma. Estos trabajos se
-describen con más detalle que los anteriores e incluso se contemplan artículos
-que que no son recientes pero presentan un enfoque novedoso y relevante para
-esta tesina.
+se describen trabajos informales\footnote{Entendemos por trabajo informal a
+aquellos que describen coloquialmente el sistema, por más rigurosa que sea la
+descripción} que son de interés por abarcar características nuevas, por la
+información que condensan o por ser pioneros en el área. Luego, se mencionan
+varias herramientas (o aplicaciones) que utilizan técnicas de análisis estático
+de código para detectar potenciales vulnerabilidades, todas desarrolladas dentro
+de un marco académico. A pesar de que este enfoque  es distinto al que se
+propone en esta tesina, se tomó la decisión de incluirlo en este capítulo ya que
+conforma gran parte de la investigación actual y de los últimos años. Por
+último, se analizan aquellos trabajos que utilizan métodos formales para dar una
+especificación de la plataforma. Estos trabajos se describen con más detalle que
+los anteriores e incluso se contemplan artículos que no son recientes pero
+presentan un enfoque novedoso o relevante a este trabajo.
 
-
-\subsection*{Enfoque informal}
-Uno de los primeros artículos académicos en describir el modelo de seguridad de
-%
-\todoCarlos{No estoy seguro de mencionar este trabajo. Es viejo pero fue uno de los primeros.}
-%
-Android fue el de William Enck \textit{et al.}~\cite{enck}. A través de esta
-descripción, los autores buscaban \textit{desenmascarar} la complejidad a la que
-debían enfrentarse los desarrolladores cuando se proponían construir aplicaciones
-seguras.
+Dentro del primer grupo, encontramos artículos como el de William Enck
+\textit{et al.}~\cite{enck}: uno de los primeros trabajos académicos en
+describir el modelo de seguridad de Android. Los autores buscaban
+\textit{desenmascarar} la complejidad a la que debían enfrentarse los
+desarrolladores cuando se proponían construir aplicaciones seguras. A pesar de
+la antigüedad de este artículo, hoy en día sigue siendo relevante por la
+explicación concreta y concisa sobre las bases del sistema de permisos de
+Android.
 
 Dentro de esta línea, encontramos trabajos recientes como el de Jice Wang y
 Hongqi Wu~\cite{wang}, o el de Shweta Bahndari \textit{et al.}~\cite{bhandari},
@@ -49,9 +46,6 @@ investigación futura.
 
 Este tipo de trabajos constituyen un complemento importante a la documentación
 oficial de Android, brindándole nuevas herramientas y referencias más claras a
-%
-\todoCarlos{Lo mismo con este. Es viejo pero el primero del estilo}
-%
 los desarrolladores. Un ejemplo de esto fue el trabajo de Felt \textit{et
 al.}~\cite{felt}, quienes estudiaron un grupo de aplicaciones disponibles para
 la versión 2.2 de Android y detectaron que muchas de ellas pedían más permisos
@@ -78,7 +72,6 @@ subyacente, extrayendo propiedades relevantes para todas las aplicaciones y para
 el sistema en general.
 
 
-\subsection*{Enfoque formal}
 Entrando en el terreno de los métodos formales, nos encontramos en primer lugar
 con el trabajo de Chaudhuri~\cite{chaudhuri}. En el mismo, se desarrolló un
 lenguaje que permite describir un subconjunto de aplicaciones de Android y
