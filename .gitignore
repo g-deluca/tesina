@@ -270,5 +270,5 @@ TSWLatexianTemp*
 *.lpz
 
 # final output
-#*.pdf
+*.pdf
 propuesta/*.pdf
