@@ -1,0 +1,37 @@
+\chapter{El modelo de seguirdad de Android}
+\label{chapter:background}
+
+\section{Arquitectura de la plataforma}
+\label{section:architecture}
+
+El sistema operativo Android está compuesto por cinco capas de software, ordenadas en forma de pila (o
+\textit{stack}), donde cada una de ellas provee un grupo de servicios a la capa inmediatamente
+superior. De esta forma, se va abstrayendo progresivamente la interacción con el hardware (la base de
+la pila) hasta llegar al nivel más alto en el que se ubican las aplicaciones que realizaran las tareas
+requeridas por los usuarios. A continuación, analizaremos brevemente cada uno de estos niveles:
+
+\subsection{Núcleo del sistema operativo: Linux}
+La base de la plataforma Android es el \textit{kernel} de Linux. Desde el punto de vista de la
+seguridad, utilizar a un núcleo tan estudiado a lo largo de los años como pilar de la arquitectura,
+ayuda a generar confianza en la misma. Además, le permite a los fabricantes de dispositivos
+desarrollar controladores de hardware para un kernel ya conocido.
+
+Una de las principales utilidades de Linux de la que Android toma ventaja es del sistema de permisos
+basado en usuarios\footnote{El mismo no debe confundirse con el sistema de permisos implementado por
+Android en una de las capas superiores, que es el que se formaliza y estudia en esta tesina}. Esta
+característica permite que cada aplicación sea ejecutada dentro de su propia máquina virtual con un
+identificador de usuario único (\texttt{UUID}) asignado a la misma. Luego, por defecto, estos
+identificadores se inicializan con permisos de lectura y escritura restringidos, de manera tal que los
+recursos de cada aplicación queden debidamente aislados y protegidos de potenciales \textit{malwares}.
+Sin embargo, este tipo de defensa, implica la existencia de un mecanismo de validación por referencia
+que arbitre las situaciones en las que una aplicación deliberadamente desee compartir recursos con
+otra. Este mecanismo es implementado en las capas superiores de la arquitectura, y es el sistema
+estudiado y formalizado por esta tesina.
+
+Otras características de Linux utilizadas por Android son: la generación de subprocesos, la
+administración de memora de bajo nivel y otras funcionalidades encapsuladas dentro de SELinux
+(\textit{\textbf{S}ecurity \textbf{E}nhanced Linux}) como políticas de control de acceso obligatorio
+(más conocidas como \textit{MAC} por sus siglas en inglés) para distinguir entre aplicaciones del
+sistema y de terceros.
+
+\subsection{Conceptos preliminares}
