@@ -1,0 +1,29 @@
+\chapter{Análisis informal de Android}
+\label{chapter:background}
+
+\section{Arquitectura de la plataforma}
+\label{section:architecture}
+
+El sistema operativo Android está compuesto por cinco capas de software, ordenadas en forma de pila (o
+\textit{stack}), donde cada una de ellas provee un grupo de servicios a la capa inmediatamente
+superior. De esta forma, se va abstrayendo progresivamente la interacción con el hardware (la base de
+la pila) hasta llegar al nivel más alto en el que se ubican las aplicaciones que realizaran las tareas
+requeridas por los usuarios. A continuación, analizaremos brevemente cada uno de estos niveles:
+
+\subsection{Núcleo del sistema operativo: Linux}
+La base de la plataforma Android es el \textit{kernel} de Linux. Esto permite aprovechar diferentes
+utilidades de un software ampliamente conocido y mantenido por la comunidad; como por ejemplo, la
+generación de subprocesos y la administración de memoria de bajo nivel.
+
+A nivel seguridad, Linux provee a Android ciertas características fundamentales para desarrollar el
+sistema de permisos que se construye en las capas superiores. Esas características son: un sistema
+multi-usuarios con permisos por usuario, aislamiento de procesos junto a un mecanismo extensible de
+comunicación entre los mismos (también  conocido como IPC, por sus siglas en inglés:
+\textit{Inter-process communication}) y el hecho de poder remover o deshabilitar partes innecesarias y
+potencialmente inseguras del kernel.
+
+Esto permite que los fabricantes de
+dispositivos desarrollen controladores de hardware para un kernel ampliamente conocido
+
+
+
