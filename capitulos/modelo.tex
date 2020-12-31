@@ -10,7 +10,8 @@ superior. De esta forma, se va abstrayendo progresivamente la interacción con e
 la pila) hasta llegar al nivel más alto en el que se ubican las aplicaciones que realizaran las tareas
 requeridas por los usuarios. A continuación, analizaremos brevemente cada uno de estos niveles:
 
-\subsection{Núcleo del sistema operativo: Linux}
+\subsubsection*{Núcleo del sistema operativo: Linux}
+\label{section:architecture:kernel}
 La base de la plataforma Android es el \textit{kernel} de Linux. Desde el punto de vista de la
 seguridad, utilizar a un núcleo tan estudiado a lo largo de los años como pilar de la arquitectura,
 ayuda a generar confianza en la misma. Además, le permite a los fabricantes de dispositivos
@@ -23,7 +24,7 @@ característica permite que cada aplicación sea ejecutada dentro de su propia m
 identificador de usuario único (\texttt{UUID}) asignado a la misma. Luego, por defecto, estos
 identificadores se inicializan con permisos de lectura y escritura restringidos, de manera tal que los
 recursos de cada aplicación queden debidamente aislados y protegidos de potenciales \textit{malwares}.
-Sin embargo, este tipo de defensa, implica la existencia de un mecanismo de validación por referencia
+Sin embargo, este tipo de defensa, implica la existencia de un mecanismo de validación de referencia
 que arbitre las situaciones en las que una aplicación deliberadamente desee compartir recursos con
 otra. Este mecanismo es implementado en las capas superiores de la arquitectura, y es el sistema
 estudiado y formalizado por esta tesina.
@@ -34,4 +35,30 @@ administración de memora de bajo nivel y otras funcionalidades encapsuladas den
 (más conocidas como \textit{MAC} por sus siglas en inglés) para distinguir entre aplicaciones del
 sistema y de terceros.
 
-\subsection{Conceptos preliminares}
+\subsubsection*{Capa de abstracción de hardware}
+Esta capa contiene módulos de software encargados de abstraer los diferentes componentes de hardware,
+como la antena de \textit{Bluetooth} o la cámara. Estas abstracciones deben ser independientes de los
+\textit{drivers} que se encuentran en el núcleo del sistema, briando flexibilidad y transparencia.
+Cada módulo está autocontenido en una librería, que es cargada dinámicamente cuando alguna capa
+superior lo solicita.
+
+\subsubsection*{Entorno de \textit{runtime} y bibliotecas nativas}
+En esta capa encontramos el entorno de \textit{runtime} (o ART~\cite{art}, por sus siglas en inglés)
+utilizado por todas las aplicaciones del sistema junto con algunas librerías nativas que la plataforma
+le ofrece a los desarrolladores.
+
+\subsubsection*{Marco de trabajo/API de la plataforma}
+En esta capa se encuentran las interfaces que la plataforma le brinda a los desarrolladores de
+aplicaciones para poder acceder a todas las funciones del sistema operativo. Es en esta capa donde
+encontramos los servicios que implementan el mecanismo de validación de referencia mencionado
+\hyperref[section:architecture:kernel]{previamente}.
+
+\subsubsection*{Aplicaciones del sistema y de terceros}
+Las aplicaciones representan el escalón final en esta pila de abstracciones, siendo los puntos de
+entrada para que cualquier usuario de Android interactúe con las funciones del dispositivo. Algunas de
+estas aplicaciones ya vienen preinstaladas en la plataforma (como la de mensajería SMS o la encargada
+de brindar la interfaz de configuración del sistema) mientras que otras pueden ser instaladas a través
+de la tienda oficial o manualmente. 
+
+
+\section{Conceptos preliminares}
