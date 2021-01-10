@@ -62,6 +62,7 @@ de la tienda oficial o manualmente.
 
 
 \section{Conceptos preliminares}
+\label{section:preliminary}
 El mecanismo que arbitra el acceso a los recursos de las aplicaciones está fuertemente basado en las
 interacciones entre las mismas. Por eso, en esta sección, introduciremos algunos conceptos que serán
 necesarios para un mejor entendimiento del sistema en cuestión.
@@ -108,6 +109,42 @@ también todas aquellas que hayan sido previamente autorizadas. Cada recurso all
 identifica con un identificador uniforme de recursos (URI).
 
 \subsection{Interacción entre componentes}
+Una característica particular de Android es que cualquier aplicación puede iniciar un componente de
+otra. Por ejemplo, una aplicación que desee tomar una foto con la cámara del dispositivo, puede
+hacerlo \textit{activando} el componente correspondiente de la aplicación provista por el sistema, en
+lugar de implementar una nueva actividad que lo haga. Sin embargo, como los procesos de las
+aplicaciones ejecutan en procesos aislados y con permisos que limitan el acceso de otras aplicaciones,
+el sistema debe actuar como intermediario en la activación de un componente. Para eso, la aplicación
+en cuestión debe enviar un \textit{intent} que especifique que lo que desea es iniciar una actividad
+en particular. Luego, el sistema activará ese componente en su lugar.
+
+\subsubsection*{Intents}
+Los \textit{intents} son mensajes asíncronos que permiten la comunicación entre componentes y
+aplicaciones. Existen tres casos de uso principales: el inicio de una actividad, el inicio de un
+servicio y la emisión de un evento, como una indicación de que la batería del dispositivo tiene baja
+carga o comenzó a cargarse. Estos mensajes puede ser \textit{explícitos}, en donde el componente de
+destino está especificado; o \textit{implícitos}, donde no existe un destinatario específico, pero el
+mensaje conlleva la información suficiente para que el sistema encuentre algún componente apropiado.
+
+\subsubsection*{Filtros de intents}
+\label{section:preliminary:intent-filter}
+Cuando un intent es implícito, Android busca en los \textit{filtros de intents} de cada aplicación
+para verificar cuales de ellas son aptas recibir ese mensaje. Si un único filtro de intent es
+compatible, la aplicación correspondiente será iniciada. Si existe más de uno, el usuario tendrá la
+posibilidad de elegir qué aplicación se activará. Los filtros de intent se declaran en el
+\textit{manifiesto} de la aplicación y por lo tanto, son estáticos.
+
+\subsection{Manifiesto de la aplicación}
+El archivo de manifiesto de una aplicación es un documento \texttt{xml} que contiene información
+estática sobre la misma. Su tarea principal es declarar cuáles son los componentes que corresponden a
+la aplicación, para que de esta forma, el sistema pueda reconocerlos como tales. Algunas otras
+declaraciones que se encuentran en el manifiesto son:
+\begin{enumerate}
+    \item El nombre del paquete de la aplicación.
+    \item Los filtros de intents \hyperref[section:preliminary:intent-filter]{previamente mencionados}.
+    \item Los aspectos de hardware y software que la aplicación utilizará, como una cámara o los servicios de Bluetooth.
+    \item Los permisos de usuario que requiere la aplicación
+\end{enumerate}
 
 \section{Mecanismo básico de protección: permisos}
 
