@@ -19,15 +19,14 @@ desarrollar controladores de hardware para un kernel ya conocido.
 
 Una de las principales utilidades de Linux de la que Android toma ventaja es del sistema de permisos
 basado en usuarios\footnote{El mismo no debe confundirse con el sistema de permisos implementado por
-Android en una de las capas superiores, que es el que se formaliza y estudia en esta tesina}. Esta
+    Android en una de las capas superiores, que es el que se formaliza y estudia en esta tesina}. Esta
 característica permite que cada aplicación sea ejecutada dentro de su propia máquina virtual con un
 identificador de usuario único (\texttt{UUID}) asignado a la misma. Luego, por defecto, estos
 identificadores se inicializan con permisos de lectura y escritura restringidos, de manera tal que los
 recursos de cada aplicación queden debidamente aislados y protegidos de potenciales \textit{malwares}.
 Sin embargo, este tipo de defensa, implica la existencia de un mecanismo de validación de referencia
 que arbitre las situaciones en las que una aplicación deliberadamente desee compartir recursos con
-otra. Este mecanismo es implementado en las capas superiores de la arquitectura, y es el sistema
-estudiado y formalizado por esta tesina.
+otra. Este mecanismo es implementado en las capas superiores de la arquitectura.
 
 Otras características de Linux utilizadas por Android son: la generación de subprocesos, la
 administración de memora de bajo nivel y otras funcionalidades encapsuladas dentro de SELinux
@@ -58,7 +57,7 @@ Las aplicaciones representan el escalón final en esta pila de abstracciones, si
 entrada para que cualquier usuario de Android interactúe con las funciones del dispositivo. Algunas de
 estas aplicaciones ya vienen preinstaladas en la plataforma (como la de mensajería SMS o la encargada
 de brindar la interfaz de configuración del sistema) mientras que otras pueden ser instaladas a través
-de la tienda oficial o manualmente. 
+de la tienda oficial o manualmente.
 
 
 \section{Conceptos preliminares}
@@ -73,8 +72,8 @@ sí mismas, interactúan entre ellas para otorgar al usuario la funcionalidad es
 una aplicación que reproduce música, existirá un componente que se encargará de presentar la interfaz
 al usuario mientras que otro, independiente de la interfaz, será el encargado de reproducir la pista
 seleccionada. De esta manera, es posible la reproducción de una canción en segundo~plano\footnote{Una
-aplicación se considera en segundo plano cuando se está ejecutando a pesar de no ser la aplicación que
-actualmente se está mostrando en la pantalla.}.
+    aplicación se considera en segundo plano cuando se está ejecutando a pesar de no ser la aplicación que
+    actualmente se está mostrando en la pantalla.}.
 
 Existen cuatro tipos de componentes. Cada uno de ellos representa un punto de entrada por el cual el
 sistema o el usuario pueden comunicarse con la aplicación y tiene un ciclo de vida distinto. A
@@ -93,7 +92,7 @@ ejecución de procesos largos, que de ser interrumpidos podrían afectar el dese
 Los servicios son puntos de entrada generales a la aplicación, pueden ser iniciados tanto por un
 usuario (a través de una actividad), por otro servicio o por el sistema operativo.
 
-\paragraph{Receptores de mensajes (o \textit{intents}): }  
+\paragraph{Receptores de mensajes (o \textit{intents}): }
 Un \textit{receptor de intents} es el componente que se encarga de recibir mensajes del sistema y de
 otras aplicaciones, incluso cuando la misma no está en ejecución. Por ejemplo, esta es la forma en la
 que el sistema le avisa a todas las aplicaciones que la carga de la batería es baja. Cada aplicación
@@ -142,10 +141,64 @@ declaraciones que se encuentran en el manifiesto son:
 \begin{enumerate}
     \item El nombre del paquete de la aplicación.
     \item Los filtros de intents \hyperref[section:preliminary:intent-filter]{previamente mencionados}.
-    \item Los aspectos de hardware y software que la aplicación utilizará, como una cámara o los servicios de Bluetooth.
+    \item Los aspectos de hardware y software que la aplicación utilizará, como una cámara o los
+          servicios de Bluetooth.
     \item Los permisos de usuario que requiere la aplicación
 \end{enumerate}
 
 \section{Mecanismo básico de protección: permisos}
+Como ya mencionamos en la sección \ref{section:architecture:kernel}, existe en Android un mecanismo
+encargado de arbitrar el acceso a la información sensible de las aplicaciones y a algunos recursos del
+sistema. Este mecanismo, al que a lo largo de este trabajo llamaremos \textit{sistema de permisos},
+cumple un rol fundamental en el modelo de seguridad de Android. Este sistema fue el que se ha estudiado
+en profunidad y formalizado en esta tesina.
+
+A grandes rasgos, para que una aplicación pueda acceder a un recurso sensible, tanto del sistema como de
+otra aplicación, debe haber obtenido previamente los permisos necesarios. De ser así, la operación es
+realizada con éxito. Caso contrario, la aplicación debe pedirle al sistema operativo que le otorgue el o
+los permisos en cuestión. Finalmente, el sistema operativo, dependiendo del \textit{nivel de protección}
+de dicho permiso, puede delegar la decisión al usuario a través un de una ventana emergente.
+Análogamente, si un desarrollador desea proteger un recurso de su aplicación, puede definir un permiso y
+establecer que el recurso solo puede ser compartido con aquellas otras aplicaciones que cuenten con dicho
+permiso. De esta forma, nos encontramos con una primer clasificación entre permisos: aquellos definidos
+por las aplicaciones para mantener sus datos protegidos; y los definidos por el sistema, que se necesitan
+para ganar acceso a los recursos del dispositivo que pueden comprometer la privacidad del usuario (como
+la cámara o la lista de contactos).
+
+Cada permiso tiene un nombre único y cuenta un nivel de protección. El nivel de protección determina de
+qué forma procederá el sistema operativo cuando un permiso es solicitado. Existen tres niveles:
+
+\begin{enumerate}
+    \item \textbf{Normal:} Estos permisos pueden ser otorgados automáticamente por el sistema ya que se
+          utilizan para información o recursos que tienen un riesgo muy bajo de comprometer la seguridad.
+    \item \textbf{Peligrosos:} Los permisos de este nivel protegen recursos mucho más sensibles y
+          requieren la aprobación explícita del usuario.
+    \item \textbf{De misma firma:} Un permiso de este tipo se otorga solamente si la aplicación que lo
+          está solicitando y la aplicación que lo declara están firmadas con el mismo certificado.
+\end{enumerate}
+
+A partir de la versión \texttt{6} de Android, todos los permisos peligrosos se otorgan en tiempo de
+ejecución mientras que los correspondientes a los otros niveles se conceden en el momento en el que la
+aplicación se instala.
+
+Los permisos que están asociados a una misma característica de la aplicación o el dispositivo, suelen
+estar agrupados. Por ejemplo, tanto el permiso necesario para leer los mensajes de texto, como el que
+autoriza la recepción de los mismos, pertenecen a un mismo \textit{grupo de permisos} llamado
+\texttt{SMS}. El principal objetivo de agrupar permisos es evitar abrumar al usuario con preguntas sobre
+la concesión de los mismos. De esta forma, si una aplicación requiere un permiso peligroso que está
+agrupado, el sistema le pedirá que autorice a todo el grupo. En la sección
+\ref{subsection:recent-changes:grouped-permissions}, estudiaremos más en detalle qué significa autorizar
+a un grupo, dependiendo de la versión de Android.
+
+\subsection*{Delegación de permisos}
+Existen dos mecanismos mediante los cuales una aplicación puede delegar sus propios permisos a otra. El
+primero consiste en dejar un \texttt{Intent} pendiente, para que otra aplicación pueda tomarlo y
+ejecutarlo con los permisos y la identidad de quien lo creó. El segundo método, en cambio, consiste en
+que una aplicación que cuenta con permisos de escritura/lectura sobre un proveedor de contenido puede
+delegar \textit{temporalmente} esos permisos a otra aplicación. Los permisos delegados serán revocados
+una vez que la actividad o servicio que los recibió haya terminado su ejecución.
 
 \section{Cambios recientes - análisis informal}
+\label{section:recent-changes}
+\subsection{Permisos agrupados}
+\label{subsection:recent-changes:grouped-permissions}
