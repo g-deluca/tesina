@@ -202,3 +202,30 @@ una vez que la actividad o servicio que los recibió haya terminado su ejecució
 \label{section:recent-changes}
 \subsection{Permisos agrupados}
 \label{subsection:recent-changes:grouped-permissions}
+En versiones previas a Android 8, si una aplicación solicitaba un permiso agrupado y este se otorgaba, el
+sistema también otorgaba el resto de los permisos del mismo grupo que estuvieran declarados en el
+manifiesto. Este comportamiento se consideraba incorrecto ya que violaba el principio de mínimo
+privilegio [CITA?] en la plataforma. A partir de la octava versión de Android, este comportamiento ha
+cambiado. Cuando una aplicación pide un permiso agrupado y lo consigue, solo obtiene el permiso que fue
+explícitamente solicitado. Sin embargo, si posteriormente desea conseguir otro permiso perteneciente al
+mismo grupo, el sistema tiene autorización para otorgarlo automáticamente. En otras palabras, cuando una
+aplicación solicita un permiso \textbf{peligroso} agrupado por primera vez, el usuario será quien
+determine si ese permiso es otorgado o no; pero las solicitudes posteriores de permisos del mismo grupo
+serán automáticamente aceptadas por el sistema.
+
+Desde un punto de vista conceptual, este cambio es muy favorable en pos de respetar el principio de
+mínimo privilegio. Sin embargo, cabe preguntarse por qué simplemente no se delega al usuario la
+autorización de cada uno de los permisos peligrosos que una aplicación solicita, que desde un punto de
+vista de dicho principio, es una implementación óptima. La respuesta está en la negociación que los
+autores de la plataforma deben mediar entre políticas muy estrictas de seguridad y una buena experiencia
+de usuario, y que invadir al usuario de advertencias y solicitudes no es algo favorable bajo esta
+perspectiva.
+
+A pesar de lo mencionado en el párrafo anterior, si miramos los cambios introducidos en esta versión
+desde un lugar de seguridad más concreto, seguimos encontrando situaciones peligrosas como la que
+describimos a continuación.
+
+% Cabe preguntarse por qué simplemente no se El \textit{quid} de la cuestión detrás de garantizar
+% automáticamente las solicitudes subsecuentes de permisos del mismo grupo es reducir la cantidad de
+% alertas que se muestran en pantalla para una mejor experiencia de usuario. 
+\subsubsection{Permisos peligrosos y normales en el mismo grupo}
