@@ -200,6 +200,30 @@ una vez que la actividad o servicio que los recibió haya terminado su ejecució
 
 \section{Cambios recientes - análisis informal}
 \label{section:recent-changes}
+En esta sección analizamos informal y brevemente los cambios que fueron introducidos entre Android Nougat
+(7) y Andrid 10 que tuvieron un impacto significativo en el sistema de permisos.
+
+\subsection{Sistema de archivos}
+\label{subsection:recent-changes:filesystem}
+Con intención de aumentar la seguridad de las aplicaciones, el directorio privado de todas aquellas
+orientadas\footnote{
+    
+    Las aplicaciones pueden estar orientadas a distintas versiones del sistema. Android utiliza esta
+    configuración para determinar la compatibilidad de ciertos comportamientos nuevos.
+
+} a una versión posterior a Android 7 tienen permisos restringidos. Solamente la aplicación dueña puede
+leer, escribir y ejecutar. Esta configuración evita la fuga de metadatos de los archivos privados, como
+el tamaño o su existencia. De esta forma, las aplicaciones ya no puede otorgar permisos de
+lectura/escritura a otras para compartir sus archivos, sino que deben hacerlo otorgando permisos
+temporales mediante un proveedor de contenido.
+
+El modelo de Android del cual partimos en esta tesina, ya contemplaba el otorgamiento temporal de
+permisos de lectua/escritura. Además, decidimos \textbf{no} modelar el sistema de archivos de Android en
+este trabajo, dado que nuestro interés se centra en estudiar propiedades más generales relacionadas a los
+permisos y creemos que el modelado de un sistema de archivos require un gran esfuerzo que no aporta tanto
+hacia donde queremos llegar. Por lo tanto, no se introdujeron cambios en el modelo con respecto a nueva
+característica.
+
 \subsection{Permisos agrupados}
 \label{subsection:recent-changes:grouped-permissions}
 En versiones previas a Android 8, si una aplicación solicitaba un permiso agrupado y este se otorgaba, el
@@ -229,3 +253,38 @@ describimos a continuación.
 % automáticamente las solicitudes subsecuentes de permisos del mismo grupo es reducir la cantidad de
 % alertas que se muestran en pantalla para una mejor experiencia de usuario. 
 \subsubsection{Permisos peligrosos y normales en el mismo grupo}
+De acuerdo a la documentación de Android, ``cualquier permiso puede pertenecer a un grupo de permisos sin
+importar el nivel del protección del mismo''\cite{android-permissions}. Sin embargo, en ningún lugar se
+especifica si permisos de distintos niveles de protección (en particular, uno de nivel normal y otro
+peligroso) pueden compartir el mismo grupo ni, en caso de que sea posible, cómo debería el sistema
+manejar el otorgamiento automático de permisos. De aquí se desprenden algunas preguntas interesantes:
+\begin{enumerate}
+    \item Dado que los permisos normales se otorgan en tiempo de instalación y sin explícita aprobación
+    del usuario, ¿habilita esto el posterior otorgamiento automático de los permisos peligrosos del mismo
+    grupo? ¿Se informa de esta decisión al usuario?
+    \item De no ser así, ¿cómo se encarga el sistema de manejar esta situación? 
+\end{enumerate}
+En esta tesina formalizamos el peor de los casos en donde un permiso normal puede habilitar el
+otorgamiento automático de un permiso peligroso sin que el usuario se entere. Este escenario sigue siendo
+válido dada la especificación informal de la plataforma. Analizamos esto formalmente en la sección
+siguiente.
+
+
+\subsection{Cambios en pos de la privacidad del usuario}
+Tanto en Android 9 como en Android 10 se introdujeron varios cambios que apuntan a mejorar la privacidad
+de los usuarios. Entre ellos, descatamos:
+\begin{enumerate}
+    \item Acceso limitado a los sensores del dispositivo cuando las aplicaciones se ejecutan en segundo
+    planos. Por ejemplo, las aplicaciones ya no pueden acceder ni al micrófono ni a la cámara sin
+    notificar al usuario.
+    \item Acceso restringido al registro de llamadas y a números telefónicos
+    \item Acceso restringido a la información obtenida de un análisis de Wi-Fi.
+    \item Se agregó un permiso (peligroso) para acceder a la ubicación en segundo plano.
+    \item Se agregaron restricciones sobre cuándo un servicio puede empezar una actividad. De esta
+    manera, se busca que el usuario tenga más control sobre lo que ve en su pantalla.
+\end{enumerate}
+
+Sin embargo, todos estos cambios son específicos a la implementación y no tienen impacto en una
+representación abstracta como la nuestra.
+
+\subsection{Chequeo de permisos en aplicaciones \textit{legacy}}
