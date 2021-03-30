@@ -7,7 +7,7 @@
 El sistema operativo Android está compuesto por cinco capas de software, ordenadas en forma de pila (o
 \textit{stack}), donde cada una de ellas provee un grupo de servicios a la capa inmediatamente
 superior. De esta forma, se va abstrayendo progresivamente la interacción con el hardware (la base de
-la pila) hasta llegar al nivel más alto en el que se ubican las aplicaciones que realizaran las tareas
+la pila) hasta llegar al nivel más alto, en el que se ubican las aplicaciones que realizarán las tareas
 requeridas por los usuarios. A continuación, analizaremos brevemente cada uno de estos niveles:
 
 \subsubsection*{Núcleo del sistema operativo: Linux}
@@ -15,7 +15,7 @@ requeridas por los usuarios. A continuación, analizaremos brevemente cada uno d
 La base de la plataforma Android es el \textit{kernel} de Linux. Desde el punto de vista de la
 seguridad, utilizar a un núcleo tan estudiado a lo largo de los años como pilar de la arquitectura,
 ayuda a generar confianza en la misma. Además, le permite a los fabricantes de dispositivos
-desarrollar controladores de hardware para un kernel ya conocido.
+desarrollar controladores de hardware para un sistema ya conocido.
 
 Una de las principales utilidades de Linux de la que Android toma ventaja es del sistema de permisos
 basado en usuarios\footnote{El mismo no debe confundirse con el sistema de permisos implementado por
@@ -30,8 +30,8 @@ otra. Este mecanismo es implementado en las capas superiores de la arquitectura.
 
 Otras características de Linux utilizadas por Android son: la generación de subprocesos, la
 administración de memora de bajo nivel y otras funcionalidades encapsuladas dentro de SELinux
-(\textit{\textbf{S}ecurity \textbf{E}nhanced Linux}) como políticas de control de acceso obligatorio
-(más conocidas como \textit{MAC} por sus siglas en inglés) para distinguir entre aplicaciones del
+(\textit{\textbf{S}ecurity \textbf{E}nhanced Linux}) como la política de control de acceso obligatorio
+(más conocida como \textit{MAC} por sus siglas en inglés) para distinguir entre aplicaciones del
 sistema y de terceros.
 
 \subsubsection*{Capa de abstracción de hardware}
@@ -49,7 +49,7 @@ le ofrece a los desarrolladores.
 \subsubsection*{Marco de trabajo/API de la plataforma}
 En esta capa se encuentran las interfaces que la plataforma le brinda a los desarrolladores de
 aplicaciones para poder acceder a todas las funciones del sistema operativo. Es en esta capa donde
-encontramos los servicios que implementan el mecanismo de validación de referencia mencionado
+encontramos los servicios que implementan el mecanismo de validación mencionado
 \hyperref[section:architecture:kernel]{previamente}.
 
 \subsubsection*{Aplicaciones del sistema y de terceros}
@@ -115,7 +115,7 @@ lugar de implementar una nueva actividad que lo haga. Sin embargo, como los proc
 aplicaciones ejecutan en procesos aislados y con permisos que limitan el acceso de otras aplicaciones,
 el sistema debe actuar como intermediario en la activación de un componente. Para eso, la aplicación
 en cuestión debe enviar un \textit{intent} que especifique que lo que desea es iniciar una actividad
-en particular. Luego, el sistema activará ese componente en su lugar.
+en particular. Luego, el sistema será el encargado de activar ese componente.
 
 \subsubsection*{Intents}
 Los \textit{intents} son mensajes asíncronos que permiten la comunicación entre componentes y
@@ -128,7 +128,7 @@ mensaje conlleva la información suficiente para que el sistema encuentre algún
 \subsubsection*{Filtros de intents}
 \label{section:preliminary:intent-filter}
 Cuando un intent es implícito, Android busca en los \textit{filtros de intents} de cada aplicación
-para verificar cuales de ellas son aptas recibir ese mensaje. Si un único filtro de intent es
+para verificar cuales de ellas son aptas para recibir ese mensaje. Si un único filtro de intent es
 compatible, la aplicación correspondiente será iniciada. Si existe más de uno, el usuario tendrá la
 posibilidad de elegir qué aplicación se activará. Los filtros de intent se declaran en el
 \textit{manifiesto} de la aplicación y por lo tanto, son estáticos.
@@ -159,9 +159,9 @@ realizada con éxito. Caso contrario, la aplicación debe pedirle al sistema ope
 los permisos en cuestión. Finalmente, el sistema operativo, dependiendo del \textit{nivel de protección}
 de dicho permiso, puede delegar la decisión al usuario a través un de una ventana emergente.
 Análogamente, si un desarrollador desea proteger un recurso de su aplicación, puede definir un permiso y
-establecer que el recurso solo puede ser compartido con aquellas otras aplicaciones que cuenten con dicho
-permiso. De esta forma, nos encontramos con una primer clasificación entre permisos: aquellos definidos
-por las aplicaciones para mantener sus datos protegidos; y los definidos por el sistema, que se necesitan
+establecer que el recurso solo puede ser compartido con aquellas otras aplicaciones que cuenten con el
+mismo. De esta forma, nos encontramos con una primer clasificación entre permisos: aquellos definidos por
+las aplicaciones para mantener sus datos protegidos; y los definidos por el sistema, que se necesitan
 para ganar acceso a los recursos del dispositivo que pueden comprometer la privacidad del usuario (como
 la cámara o la lista de contactos).
 
@@ -188,7 +188,7 @@ autoriza la recepción de los mismos, pertenecen a un mismo \textit{grupo de per
 la concesión de los mismos. De esta forma, si una aplicación requiere un permiso peligroso que está
 agrupado, el sistema le pedirá que autorice a todo el grupo. En la sección
 \ref{subsection:recent-changes:grouped-permissions}, estudiaremos más en detalle qué significa autorizar
-a un grupo, dependiendo de la versión de Android.
+a un grupo, dependiendo de la versión de Android que se analice.
 
 \subsection*{Delegación de permisos}
 Existen dos mecanismos mediante los cuales una aplicación puede delegar sus propios permisos a otra. El
@@ -220,11 +220,11 @@ temporales mediante un proveedor de contenido.
 El modelo de Android del cual partimos en esta tesina, ya contemplaba el otorgamiento temporal de
 permisos de lectua/escritura. Además, decidimos \textbf{no} modelar el sistema de archivos de Android en
 este trabajo, dado que nuestro interés se centra en estudiar propiedades más generales relacionadas a los
-permisos y creemos que el modelado de un sistema de archivos require un gran esfuerzo que no aporta tanto
-hacia donde queremos llegar. Por lo tanto, no se introdujeron cambios en el modelo con respecto a nueva
+permisos y creemos que el modelado de un sistema de archivos require un gran esfuerzo que no aporta hacia
+donde queremos llegar. Por lo tanto, no se introdujeron cambios en el modelo con respecto a esta nueva
 característica.
 
-\subsection{Permisos agrupados}
+\subsection{Comportamiento de permisos agrupados}
 \label{subsection:recent-changes:grouped-permissions}
 En versiones previas a Android 8, si una aplicación solicitaba un permiso agrupado y este se otorgaba, el
 sistema también otorgaba el resto de los permisos del mismo grupo que estuvieran declarados en el
@@ -239,11 +239,10 @@ serán automáticamente aceptadas por el sistema.
 
 Desde un punto de vista conceptual, este cambio es muy favorable en pos de respetar el principio de
 mínimo privilegio. Sin embargo, cabe preguntarse por qué simplemente no se delega al usuario la
-autorización de cada uno de los permisos peligrosos que una aplicación solicita, que desde un punto de
+autorización de cada uno de los permisos peligrosos que una aplicación solicita, que desde el punto de
 vista de dicho principio, es una implementación óptima. La respuesta está en la negociación que los
 autores de la plataforma deben mediar entre políticas muy estrictas de seguridad y una buena experiencia
-de usuario, y que invadir al usuario de advertencias y solicitudes no es algo favorable bajo esta
-perspectiva.
+de usuario (invadir al usuario de advertencias y solicitudes no es algo favorable en ese sentido).
 
 A pesar de lo mencionado en el párrafo anterior, si miramos los cambios introducidos en esta versión
 desde un lugar de seguridad más concreto, seguimos encontrando situaciones peligrosas como la que
@@ -264,9 +263,9 @@ manejar el otorgamiento automático de permisos. De aquí se desprenden algunas 
     grupo? ¿Se informa de esta decisión al usuario?
     \item De no ser así, ¿cómo se encarga el sistema de manejar esta situación? 
 \end{enumerate}
-En esta tesina formalizamos el peor de los casos en donde un permiso normal puede habilitar el
+En esta tesina formalizamos el peor de los escenarios, en donde un permiso normal puede habilitar el
 otorgamiento automático de un permiso peligroso sin que el usuario se entere. Este escenario sigue siendo
-válido dada la especificación informal de la plataforma. Analizamos esto formalmente en la sección
+válido dada la especificación informal de la plataforma. Analizaremos esto formalmente en la sección
 siguiente.
 
 
@@ -288,3 +287,11 @@ Sin embargo, todos estos cambios son específicos a la implementación y no tien
 representación abstracta como la nuestra.
 
 \subsection{Chequeo de permisos en aplicaciones \textit{legacy}}
+
+A partir de Android 10, cuando una aplicación orientada a una versión previa a Android 6 es ejecutada por
+primera vez, el usuario será alertado. Además, dado que en las versiones más viejas de la plataforma, los
+permisos peligrosos se otorgaban al momento de la instalación, el usuario ahora verá tendrá la
+posibilidad de revisar los mismos antes de que la aplicación se ejecute. Este cambio fue formalizado e
+incluido en nuestro modelo.
+
+
