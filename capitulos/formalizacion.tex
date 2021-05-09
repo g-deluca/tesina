@@ -26,7 +26,60 @@ Para lograrlo, provee tres aspectos fundamentales:
     certificados}. 
 \end{enumerate}
 
-El lenguaje lógico subyacente usado por Coq es el Calculo de Construcciones Inductivas~\cite{cic}
-(también conocido como CIC, por sus siglas en inglés)
+El lenguaje lógico subyacente usado por Coq es el Cálculo de Construcciones Inductivas~\cite{cic}
+(también conocido como CIC, por sus siglas en inglés).
 
+\section{Notación}
+En las siguientes secciones  utilizaremos la misma notación de los trabajos
+previos~\cite{luna-cleiej,betarte-2017,betarte-2016}. La misma es similar a la sintaxis de Haskell.
+
+\subsection{Estructuras de datos y tipos generales}
+TODO: COMPLETAR ESTA SECCIÓN
+
+Los diccionarios (más conocidos como \textit{records} por su nombre en inglés) tendrán la forma $\{
+l_1: T_1, ..., l_n: T_n \}$ y notaremos el acceso a cada uno de sus elementos como $r.l_n$. También
+usaremos $\{ T \}$ para definir el tipo del conjunto que contiene elementos de tipo $T$. 
+
+Definir tipos inductivos blablabla
+
+Para denotar el tipo de las funciones utilizaremos el símbolo $ \rightarrow$. Por ejemplo, una función
+$f$ que toma un argumento de tipo $A$ y uno de tipo $B$ y devuelve un valor de tipo $C$, se notará
+como $F: A \rightarrow B \rightarrow C$. Usaremos siempre la notación currificada.
+
+\subsection{Tipos básicos de Coq}
+A continuación detallaremos algunos de los tipos básicos de Coq más utilizados en esta tesina.
+\subsubsection*{Tipo \textit{option}} 
+\begin{flalign*}
+    Inductive\ option\ T\ &:= &&\\
+    &|\ Some\ :\ T \rightarrow\ option\ T&&\\
+    &|\ None\ :\ option\ T &&
+\end{flalign*}
+    
+
+El tipo \texttt{option}, análogo a la mónada \texttt{Maybe} de Haskell\cite{maybe-haskell}, sirve para
+representar la posible ausencia de valores. Dado que en Coq no es posible definir funciones
+parciales, utilizaremos este tipo para totalizar a las mismas. De esta manera, una función parcial $g$
+de $A$ en $B$, será definida como $g:\ A\ \rightarrow\ option\ B$. 
+
+\subsubsection*{Tipo \textit{list}}
+\begin{flalign*}
+    Inductive\ list\ T\ &:= &&\\
+    &|\ \texttt{(::)}\ :\ T \rightarrow\ list\ T\ \rightarrow\ list\ T\ &&\\
+    &|\ nil\ :\ list\ T &&
+\end{flalign*}
+
+El tipo utilizado para denotar una lista de elementos. Está definido de manera inductiva, siendo
+\texttt{::} un operador de punto fijo. 
+
+\subsubsection*{Tipo \textit{nat}}
+Utilizado para denotar a los números naturales.
+
+\subsubsection*{Tipo \textit{Prop}}
+
+Este tipo representa uno de los dos "universos" donde viven las proposiciones lógicas en Coq. El tipo
+$Prop$ es impredicativo y por lo tanto, una proposición de este tipo no contiene valor
+computacional\cite{proof-irrelevance} y puede ser descartada a la hora de extraer un programa.
+Utilizaremos este tipo para escribir teoremas que nos permitan razonar sobre el modelo. El otro
+universo que contiene proposiciones lógicas se llama $Set$ y las proposiciones de este tipo sí tienen
+valor computacional y deben ser preservadas en los programas extraídos.
 
