@@ -7,10 +7,6 @@ comportamientos que se introdujeron con las versiones 7, 8, 9 y 10 del sistema o
 presentaremos las propiedades más importantes que extrajimos del modelo, focalizándonos en aquellas
 nuevas o en las que se han visto considerablemente afectadas en las nuevas versiones.
 
-Nuestra formalización del modelo de permisos puede pensarse como una máquina de estados (donde
-guardamos la información propia del sistema y los permisos) que puede mutar a través de acciones cuya
-semántica está dada en términos de pre y post condición. Profundizaremos sobre esta decisión en las
-siguientes secciones.
 
 \section{Lenguaje formal utilizado}
 \label{section:formalization:formal-language}
@@ -86,7 +82,26 @@ valor computacional y deben ser preservadas en los programas extraídos.
 
 \section{Formalización de los componentes básicos}
 
+
 \section{Definición de estado}
+Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
+abstracta [CITA?]. En este modelo, los estados del sistema están conformados por dos componentes: uno
+que almacena la información dinámica del sistema, como las aplicaciones instaladas y los permisos otorgados
+a las mismas; y otro que contiene información estática como el manifiesto de cada aplicación.
+
+\begin{align}
+    \text{Insertar definición formal del estado}
+\end{align}
+
+El primer componente está conformado por los siguientes elementos:
+
+\begin{itemize}
+    \item Una lista con los identificadores de las aplicaciones instaladas,
+    \item Una lista  información de las aplicaiones \textit{legacy} que ya han
+        sido verificadas por el usuario. Es un subconjunto de \texttt{InstApps}.
+    \item \texttt{}
+\end{itemize}
+
 
 \section{Acciones}
 
