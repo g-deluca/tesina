@@ -83,25 +83,102 @@ valor computacional y deben ser preservadas en los programas extraídos.
 \section{Formalización de los componentes básicos}
 
 
-\section{Definición de estado}
+\section{Estado del sistema}
+\subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
 abstracta [CITA?]. En este modelo, los estados del sistema están conformados por dos componentes: uno
 que almacena la información dinámica del sistema, como las aplicaciones instaladas y los permisos otorgados
-a las mismas; y otro que contiene información estática como el manifiesto de cada aplicación.
+a las mismas; y otro que contiene información estática como el manifiesto de cada aplicación. Formalmente:
 
-\begin{align}
-    \text{Insertar definición formal del estado}
-\end{align}
+\begin{align*}
+System\ :=\ \{ state: State;\ environment: Environment \}
+\end{align*}
 
-El primer componente está conformado por los siguientes elementos:
+
+El componente $State$ está conformado por los siguientes elementos:
 
 \begin{itemize}
     \item Una lista con los identificadores de las aplicaciones instaladas,
-    \item Una lista  información de las aplicaiones \textit{legacy} que ya han
-        sido verificadas por el usuario. Es un subconjunto de \texttt{InstApps}.
-    \item \texttt{}
+    \item Una lista  información de las aplicaciones \textit{legacy} que ya han sido verificadas por
+    el usuario. Es un subconjunto de las aplicaciones inst.
+    \item Un mapeo entre las aplicaciones instaladas y los permisos otorgados a cada una de ellas.
+    \item Un mapeo entre las aplicaciones instaladas y los grupos de permisos para los cuales el
+    usuario ha permitido el otorgamiento automático de permisos. 
+    \item Un mapeo entre los componentes que define una aplicación y las instancias en ejecución de
+    ellos.
+    \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los permisos
+    permantentes otorgados sobre el mismo.
+    \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los permisos
+    temporales otorgados sobre el mismo.
+    \item Un mapeo indicando el valor de cada uno de los recursos de una aplicación.
+    \item Una lista de los intents que han sido enviados, junto con su emisor.
 \end{itemize}
 
+Por otro lado, el componente $Environment$ contiene la siguiente información:
+
+\begin{itemize}
+    \item Un mapeo que asocia a cada aplicación con su archivo de manifiesto
+    \item Un mapeo que asocia a cada aplicación con el certificado que se utilizó para firmarla
+    \item Un mapeo que asocia a las aplicaciones con los permisos definidos por ellas
+    \item Una lista de las aplicaciones pre-instaladas del sistema
+\end{itemize}
+
+A continuación daremos la definición formal de ambos componentes. El orden en el que se definen los
+campos de cada componente es el mismo que el de las numeraciones previas.
+\begin{flalign*}
+State\ &:=\ \{ &&\\
+       &apps:\ list\ idApp; \\
+       &alreadyVerified:\ list\ idApp; \\
+       &grantedPermGroups:\ mapping\ idApp\ (list\ idGrp); \\
+       &perms:\ mapping\ idApp\ (list\ Perm); \\
+       &running:\ mapping\ iCmp\ Cmp; \\
+       &delPPerms:\ mapping\ (idApp\ *\ CProvider\ *\ uri)\ PType; \\
+       &delTPerms:\ mapping\ (iCmp\ *\ CProvider\ *\ uri)\ PType; \\
+       &resCont:\ mapping\ (idApp\ *\ res)\ Val; \\
+       &sentIntents:\ list\ (iCmp*Intent) \\
+\}
+\end{flalign*}
+
+\begin{flalign*}
+Environment\ &:=\ \{ &&\\
+       &manifest:\ mapping\ idApp\ Manifest; \\
+       &cert:\ mapping\ idApp\ Cert; \\
+       &defPerms:\ mapping\ idApp\ (list\ Perm); \\
+       &systemImage:\ list\ SysImgApp; \\
+\}
+\end{flalign*}
+
+De aquí en adelante, al hablar del estado del sistema, nos estaremos refiriendo al componente
+$System$. En caso de que querramos referirnos a alguno de sus subcomponentes seremos explícitos con su
+nombre en inglés.
+\subsection{Estados válidos del sistema}
+No todos los elementos que habitan el conjunto definido anteriormente son relevantes al sistema que
+queremos estudiar. Por ejemplo, no queremos trabajar sobre un estado en el que una aplicación
+pre-instalada del sistema y una aplicación instalada por el usuario puedan tener el mismo
+identificador. Para evitar estas situaciones, definimos la noción de \textbf{estado válido} que
+restringe el universo de estados a aquellos que cumplen ciertas condiciones básicas e indispensables
+para modelar el sistema de permisos. Se define formalmente un predicado $valid_state$ que se satisface
+cuandos se cumplen las siguientes condiciones:
+
+\begin{itemize}
+    \item Todos los componentes, ya sea que pertenezcan a una aplicación instalada por el usuario o a
+    una aplicación pre-instalada en el sistema tienen identificadores diferentes.
+    \item Ningún componente pertenece a más de una aplicación.
+    \item Ningún componente en ejecución es una instancia de un proveedor de contenido (los mismos no se \textit{ejecutan}).
+    \item Todo permiso temporalmente otorgado ha sido otorgado a un componente en ejecución y es sobre
+    un recurso de un proveedor de contenido existente.
+    \item Todo componente en ejecución pertenece a una aplicación instalada en el sistema.
+    \item Toda aplicación que establece un valor a un recurso está instalada en el sistema.
+    \item El dominio de las funciones parciales que definen el $manifest$, $cert$ y $defPerms$ es el
+    conjunto de todas las aplicaciones instaladas por el usuario.
+    \item El dominio de las funciones parciales que definen $grantedPermGroups$ y $perm$ es el
+    conjunto de todas las aplicaciones del sistema, tanto instaladas por el usuario como
+    pre-instaladas.
+    \item Todas las aplicaciones del sistema tienen identificadores diferentes.
+    \item Todos los permisos definidos por las aplicaciones tienen identificadores diferentes.
+    \item Todos los permisos otorgados existen en el sistema.
+    \item Todos los intents que han sido enviados tienen identificadores diferentes.
+\end{itemize}
 
 \section{Acciones}
 
