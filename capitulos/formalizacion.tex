@@ -155,10 +155,17 @@ nombre en inglés.
 No todos los elementos que habitan el conjunto definido anteriormente son relevantes al sistema que
 queremos estudiar. Por ejemplo, no queremos trabajar sobre un estado en el que una aplicación
 pre-instalada del sistema y una aplicación instalada por el usuario puedan tener el mismo
-identificador. Para evitar estas situaciones, definimos la noción de \textbf{estado válido} que
-restringe el universo de estados a aquellos que cumplen ciertas condiciones básicas e indispensables
-para modelar el sistema de permisos. Se define formalmente un predicado $valid_state$ que se satisface
-cuandos se cumplen las siguientes condiciones:
+identificador. 
+
+Inicialmente, a la hora de definir los componentes, fue necesario pensar qué condiciones debían
+cumplir estos estados para representar estados de Android que tengan sentido. En consecuencia,
+definimos una noción de \textbf{estado válido} para restringir el universo de estados a aquellos que
+cumplen ciertas condiciones que nos garantizarán que nuestros estados del modelo tienen sentido al
+compararlos con estados reales del sistema. Vale aclarar, que nuestra definición de estado válido no
+es completa y que, de alguna manera, está focalizada en las propiedades que probaremos luego.
+
+Se definió formalmente un predicado $valid\_state$ que se satisface cuandos se cumplen las siguientes
+condiciones:
 
 \begin{itemize}
     \item Todos los componentes, ya sea que pertenezcan a una aplicación instalada por el usuario o a
