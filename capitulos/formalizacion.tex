@@ -80,10 +80,11 @@ universo que contiene proposiciones lógicas se llama $Set$ y las proposiciones 
 valor computacional y deben ser preservadas en los programas extraídos.
 
 
-\section{Formalización de los componentes básicos}
-
-
 \section{Estado del sistema}
+\label{section:formalization:state}
+
+\subsection{Formalización de los componentes básicos}
+
 \subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
 abstracta [CITA?]. En este modelo, los estados del sistema están conformados por dos componentes: uno
@@ -151,7 +152,8 @@ Environment\ &:=\ \{ &&\\
 De aquí en adelante, al hablar del estado del sistema, nos estaremos refiriendo al componente
 $System$. En caso de que querramos referirnos a alguno de sus subcomponentes seremos explícitos con su
 nombre en inglés.
-\subsection{Estados válidos del sistema}
+
+\subsubsection{Estados válidos del sistema}
 No todos los elementos que habitan el conjunto definido anteriormente son relevantes al sistema que
 queremos estudiar. Por ejemplo, no queremos trabajar sobre un estado en el que una aplicación
 pre-instalada del sistema y una aplicación instalada por el usuario puedan tener el mismo
@@ -188,6 +190,74 @@ condiciones:
 \end{itemize}
 
 \section{Acciones}
+Modelamos las operaciones de Android que nos interesan estudiar como un conjunto de acciones
+(definidas a través del tipo \texttt{Action}), donde cada una de ellas determina la manera en la que
+nuestro sistema puede transicionar.  La tabla~\ref{table:actions} resume todas las acciones
+disponibles.
+
+La semántica de las mismas está dada en términos de pre-condición y post-condición. Para ello,
+definimos los predicados $Pre$ y $Post$ de manera tal que para que una acción $a$ pueda transicionar
+el sistema desde un estado $s$ hacia otro estado $s'$, deberán cumplirse $Pre\ s\ a$ y $Post\ s\ s'\ a$. A
+continuación y a modo de ejemplo, nos extenderemos sobre las acciones que han sido introducidas o
+modificadas con las últimas actualizaciones del sistema.
+
+\subsubsection{Semántica de \texttt{verifyOldApp}} Esta operación se introdujo al modelo para poder
+razonar sobre el nuevo el comportamiento mencionado en la
+sección~\ref{subsection:recent-changes:legacy-apps}.
+
+\begin{table}
+\caption{Acciones del sistema}
+\label{table:actions}
+\vspace{0.2cm}
+\small
+\begin{tabularx}{\linewidth}{|l X|}
+	\hline
+	$\mathtt{install}~app~m~c~lRes$	& Install application with id $app$, whose manifest is $m$, is signed with certificate $c$ and its resources list is $lRes$. \\
+	\hline
+	$\mathtt{uninstall}~app$	& Uninstall the application with id $app$. \\
+	\hline
+	$\mathtt{read}~ic~cp~u$	& The running comp. $ic$ reads the resource corresponding to URI $u$ from content provider $cp$. \\
+	\hline
+	$\mathtt{write}~ic~cp~u~val$	& The running comp. $ic$ writes value $val$ on the resource corresponding to URI $u$ from content provider $cp$. \\
+	\hline
+	$\mathtt{startActivity}~i~ic$	& The running comp. $ic$ asks to start an activity specified by the intent $i$. \\
+	\hline
+	$\mathtt{startActivityRes}~i~n~ic$	& The running comp. $ic$ asks to start an activity specified by the intent $i$, and expects as return a token $n$. \\
+	\hline
+	$\mathtt{startService}~i~ic$	& The running comp. $ic$ asks to start a service specified by the intent $i$. \\
+	\hline
+	$\mathtt{sendBroadcast}~i~ic~p$	& The running comp. $ic$ sends the intent $i$ as broadcast, specifying that only those components who have the permission $p$ can receive it. \\
+	\hline
+	$\mathtt{sendOrdBroadcast}~i~ic~p$	& The running comp. $ic$ sends the intent $i$ as an ordered broadcast, specifying that only those components who have the permission $p$ can receive it. \\
+	\hline
+	$\mathtt{sendSBroadcast}~i~ic$	& The running comp. $ic$ sends the intent $i$ as a sticky broadcast. \\
+	\hline
+	$\mathtt{resolveIntent}~i~app$	& Application $app$ makes the intent $i$ explicit. \\
+	\hline
+	$\mathtt{stop}~ic$	& The running comp. $ic$ finishes its execution. \\
+	\hline
+	$\mathtt{grantP}~ic~cp~app~u~pt$	& The running comp. $ic$ delegates permanent permissions to application $app$. This delegation enables $app$ to perform operation $pt$ on the resource assigned to URI $u$ from content provider $cp$. \\
+	\hline
+	$\mathtt{revokeDel}~ic~cp~u~pt$	& The running comp. $ic$ revokes delegated permissions on URI $u$ from content provider $cp$ to perform operation $pt$. \\
+	\hline
+	$\mathtt{call}~ic~sac$	& The running comp. $ic$ makes the API call $sac$. \\
+	\hline
+	$\mathtt{grant}~p~app$	& Grant the permission $p$ to the application $app$ with user confirmation. \\ 
+	\hline
+	$\mathtt{grantAuto}~p~app$	& Grant automatically the permission $p$ to the application $app$ (without user confirmation). \\
+	\hline
+	$\mathtt{revoke}~p~app$	& Remove an ungrouped permission $p$ from the application $app$. \\
+	\hline
+	$\mathtt{revokePermGroup}~g~app$	& Remove the every permission of group $g$ from the application $app$. \\
+	\hline
+	$\mathtt{hasPermission}~p~app$	& Check if the application $app$ has the permission $p$. \\
+	\hline
+	$\mathtt{receiveIntent}~i~ic~app$	& Application $app$ receives the intent $i$, sent by the running comp. $ic$. \\
+	\hline
+	$\mathtt{verifyOldApp}~app$	& Application $app$ granted permissions are verified by the user  \\
+	\hline
+  \end{tabularx}
+\end{table}
 
 \section{Ejecuciones}
 
