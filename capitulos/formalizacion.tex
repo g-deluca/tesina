@@ -327,5 +327,23 @@ usuario.
 \end{table}
 
 \section{Ejecuciones}
+Cuando el sistema intenta ejecutar una acción $a$ en un estado válido $s$, hay dos posibles
+resultados. Si la precondición de la acción se cumple, el sistema transicionará hacia otro estado $s'$
+donde la postcondición de $a$ también se satisface. Sin embargo, si la precondición no se cumple, el
+sistema permanecerá en el mismo estado en el que se encontraba al intentar la ejecución de $a$ y
+responderá con un mensaje de error determinado por la relación $ErrorMsg$, definida a continuación.
+Dados el estado $s$ y la aplicación $a$ mencionados previamente, y un código de error $ec$, la
+relación $ErrorMsg s a ec$ se satisface si y sólo si el código $ec$ es una respuesta aceptable cuando
+el sistema falla al ejecutar $a$ en el estado $s$.
+
+Formalmente, las posibles respuestas de sistema se definen a través de la siguiente semántica operacional:
+\footnotesize
+\begin{displaymath}
+\begin{array}{c}
+\inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$Pre(s, a)$$ \hspace{.2cm} $$Post(s, a, s')$$}{$$s\step{a/ok}s'$$}
+\hspace{0.5cm}
+\inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$ErrorMsg(s, a, ec)$$}{$$s\step{a/error(ec)}s$$}
+\end{array}
+\end{displaymath}
 
 \section{Propiedades del modelo}

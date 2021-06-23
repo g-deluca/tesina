@@ -14,10 +14,14 @@
 \usepackage{tabularx}
 \usepackage{todonotes}
 \usepackage[hidelinks]{hyperref}
+\usepackage[inference]{semantic}
+
 
 \newcommand{\todoGuido}[1]{\todo[color=red]{Guido: {#1}}}
 \newcommand{\todoCarlos}[1]{\todo[color=green]{Carlos: {#1}}}
 
+\newcommand{\step}[1]{%
+	\mathbin{\lower0.55ex\hbox{$\lhook\joinrel\xrightarrow{#1}$}}}
 
 \addbibresource{referencias.bib}
 \setcounter{tocdepth}{1}
