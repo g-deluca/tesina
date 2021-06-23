@@ -207,16 +207,43 @@ Esta operación es la encargada de otorgar un permiso $p$ a una aplicación $a$.
 presente en la formalización de la que se partió en esta tesina. Sin embargo, su semántica ha sido
 modificada a raíz de las actualizaciones de la plataforma mencionadas en la sección
 \ref{subsection:recent-changes:grouped-permissions}. En particular, ahora el sistema podrá
-transicionar solo si  el permiso $p$ no pertenece a un grupo o, en caso de que pertenezca, es el
-primero del grupo en ser otorgado a la aplicación. El resto de las precondiciones necesarias para
-transicionar se mantuvieron: el permiso $p$ debe existir (es decir, debe estar definido o bien por el
-sistema o por alguna aplicación), debe estar declarado como usado en el manifiesto de la aplicación
-$a$, debe ser un permiso peligroso y no debe haber sido otorgado a la aplicación previamente.
+transicionar con esta operación solo si  el permiso $p$ no pertenece a un grupo o, en caso de que
+pertenezca, es el primero del grupo en ser otorgado a la aplicación. El resto de las precondiciones
+necesarias para transicionar se mantuvieron: el permiso $p$ debe existir (es decir, debe estar
+definido o bien por el sistema o por alguna aplicación), debe estar declarado como usado en el
+manifiesto de la aplicación $a$, debe ser un permiso peligroso y no debe haber sido otorgado a la
+aplicación previamente.
 
 Si la precondición se cumple, el sistema transicionará hacia un estado en dónde el permiso se agrega a
 los permisos otorgados a la aplicación, es decir, se agrega $p$ al conjunto $perms\ a$; y en caso de
 corresponder, ocurre lo análogo con el grupo de $p$ y $grantedPermGroups\ a$. El resto de los
 componentes del sistema no se verán modificados.
+
+\subsubsection{Semántica de \texttt{grantAuto}}
+
+Para modelar en su totalidad a los cambios mencionados en la sección
+\ref{subsection:recent-changes:grouped-permissions}, además de los cambios en la semántica a la
+operación \texttt{grant}, se introdujo una nueva acción \texttt{grantAuto}. Esta última difiere de la
+primera en que el sistema solo podrá transicionar con ella si el permiso que se intenta otorgar
+pertenece a un grupo que el usuario ya ha autorizado. En caso de que esto se cumpla, el modelo mutará
+hacia un estado en donde la aplicación en cuestión obtuvo el permiso solicitado.
+
+\subsubsection{Semántica de \texttt{revoke} y \texttt{revokePermGroup}}
+
+De manera similar a lo ocurrido con \texttt{grant} y \texttt{grantAuto}, la semántica de las
+operaciones  \texttt{revoke} y \texttt{revokeGroup} también se modificaron con los cambios de las
+últimas versiones. Decidimos modelar estas operaciones de manera tal que se mantenga una relación con
+la experiencia de usuario al revocar permsisos. De esta manera, la operación \texttt{revoke} es la
+encargada de revocar permisos individuales \textbf{no} agrupados mientras que \texttt{revokePermGroup}
+quita todos los permisos pertenecientes al grupo deseado. Nuestro modelo no permite revocar permisos
+que pertenezcan a un grupo de manera individual.
+
+Si el sistema transiciona con \texttt{revoke}, entonces dado un permiso $p$ y una aplicación $a$,
+obtendremos un estado en donde la aplicación $a$ ya no tendrá acceso a los recursos protegidos por
+$p$. Análogamente, dado un permiso $g$ y una aplicación $a'$, al transicionar con
+\texttt{revokePermGroup}, la aplicación $a$ ya no tendrá ningún permiso perteneciente al grupo $g$.
+Además, el sistema ya no estará autorizado a otorgar a la aplicación $a$ permisos del grupo $g$ de
+manera automática.
 
 
 \subsubsection{Semántica de \texttt{verifyOldApp}}
@@ -235,6 +262,14 @@ revocado todos sus permisos y se ha marcado como verificada. Para modelar la acc
 usuario selecciona los permisos que desea mantener mediante la interfaz ofrecida por Android,
 deberemos dar una sucesión de acciones,  donde primero se verifica la aplicación y luego se otorgan
 los permisos que se eligió mantener.
+
+\subsubsection{Semántica de \texttt{receiveIntent}}
+
+A raíz del cambio mencionado previamente y en la sección~\ref{subsection:recent-changes:legacy-apps},
+agregamos una nueva condición que deberá cumplirse para que una aplicación pueda recibir un
+\textit{intent}: para que una aplicación $a$ pueda recibir el intent $i$, entonces la misma no debe
+ser una aplicación \textit{legacy} o, en caso de serlo, debe haber sido previamente verificada por el
+usuario.
 
 
 \begin{table}
