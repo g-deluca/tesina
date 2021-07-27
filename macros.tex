@@ -1,0 +1,224 @@
+\newcommand{\agreement}[4]{\bowtie_{#1,#2} ~#3 ~#4}
+\newcommand{\concex}[3]{(#1 \parallel #2) [#3]}
+\newcommand{\attk}{\mathfrak{A}}
+
+%% %%% Android State
+%
+% %Syntax
+%
+%Auxiliars
+\newcommand{\setof}[1]{\{ #1 \}}
+\newcommand{\ap}[2]{\mbox{$\mathit{#1}(#2)$}}
+\newcommand{\bap}[3]{\mbox{$\mathit{#1}(#2,#3)$}}
+\newcommand{\tap}[4]{\mbox{$\mathit{#1}(#2,#3,#4)$}}
+\newcommand{\qap}[5]{\mbox{$\mathit{#1}(#2,#3,#4,#5)$}}
+\newcommand{\fap}[6]{\mbox{$\mathit{#1}(#2,#3,#4,#5,#6)$}}
+\newcommand{\action}[1]{\mbox{\texttt{#1}}}
+\newcommand{\step}[1]{\mathbin{\lower0.55ex\hbox{$\lhook\joinrel\xrightarrow{#1}$}}}
+\newcommand{\semstep}[1]{\step{#1}}
+\newcommand{\ainstall}[1]{\action{install}~\ensuremath{#1}}
+\newcommand{\astop}[1]{\action{stop}~\ensuremath{#1}}
+\newcommand{\astart}[2]{\action{start}~\ensuremath{#1}~\ensuremath{#2}}
+\newcommand{\aread}[3]{\action{read}~\ensuremath{#1}~\ensuremath{#2}~\ensuremath{#3}}
+\newcommand{\agrantt}[5]{\action{grantT}~\ensuremath{#1}~\ensuremath{#2}~\ensuremath{#3}~\ensuremath{#4}~\ensuremath{#5}}
+\newcommand{\agrantp}[5]{\action{grantP}~\ensuremath{#1}~\ensuremath{#2}~\ensuremath{#3}~\ensuremath{#4}~\ensuremath{#5}}
+\newcommand{\arevoke}[4]{\action{revoke}~\ensuremath{#1}~\ensuremath{#2}~\ensuremath{#3}~\ensuremath{#4}}
+\newcommand{\acall}[2]{\action{call}~\ensuremath{#1}~\ensuremath{#2}}
+%
+%Components
+\newcommand{\Activity}{\mathsf{Activity}}
+\newcommand{\Service}{\mathsf{Service}}
+\newcommand{\BroadReceiv}{\mathsf{BroadReceiv}}
+\newcommand{\ContProv}{\mathsf{ContProv}}
+\newcommand{\ContProvs}{\mathsf{ContProvs}}
+\newcommand{\Comp}{\mathsf{Comp}}
+\newcommand{\CompId}{\mathsf{CompId}}
+\newcommand{\CompInstance}{\mathsf{CompInstance}}
+\newcommand{\CompInsId}{\mathsf{CompInsId}}
+\newcommand{\Comps}{\mathsf{Comps}}
+\newcommand{\iComp}{\mathsf{iComp}}
+\newcommand{\Val}{\mathsf{Val}}
+%
+% Permissions
+%
+\newcommand{\Dangerous}{\mathsf{dangerous}}
+\newcommand{\Normal}{\mathsf{normal}}
+\newcommand{\Signature}{\mathsf{signature}}
+\newcommand{\SignatureSystem}{\mathsf{signature/system}}
+\newcommand{\PermId}{\mathsf{PermId}}
+\newcommand{\PermLvl}{\mathsf{PermLvl}}
+\newcommand{\Perm}{\mathsf{Perm}}
+\newcommand{\OptionPerm}{\mathsf{OptionPerm}}
+\newcommand{\PermGrp}{\mathsf{PermGroup}}
+\newcommand{\Perms}{\mathsf{Perms}}
+\newcommand{\PermTy}{\IdPerm \times \PermLevel}
+%
+% Manifest
+%\newcommand{\CompPerms}{\Comp \to \Perms}
+%\newcommand{\ContProvPerms}{\ContProv \to \Perms}
+\newcommand{\ExtPerms}{\mathsf{ExtPerms}}
+\newcommand{\CompPerms}{\mathsf{CompPerms}}
+\newcommand{\ContProvPerms}{\mathsf{CPPerms}}
+%\newcommand{\ExtPerms}{\OptionPerm \times \CompPerms \times \ContProvPerms \times \ContProvPerms}
+\newcommand{\DelPerms}{\mathsf{DelPerms}}
+%\newcommand{\DelPerms}{\ContProvs \times \UriPerms}
+\newcommand{\Uri}{\mathsf{Uri}}
+\newcommand{\UriPerms}{\mathsf{UriPerms}}
+\newcommand{\ManifestTy}{\Comps \times \Perms \times \Perms \times \Comps \times \ExtPerms \times \DelPerms}
+\newcommand{\Manifest}{\mathsf{Manifest}}
+\newcommand{\SACall}{\mathsf{SACall}}
+%
+% Applications
+\newcommand{\AppId}{\mathsf{AppId}}
+\newcommand{\Cert}{\mathsf{Cert}}
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\ResVal}{\mathsf{Val}}
+\newcommand{\AppRes}{\mathsf{AppRes}}
+\newcommand{\AppTy}{\AppId \times \Cert \times \Manifest \times \AppRes}
+\newcommand{\App}{\mathsf{App}}
+\newcommand{\SysApp}{\mathsf{SysImgApp}}
+
+% Intents
+\newcommand{\Intent}{\mathsf{Intent}}
+
+%
+% Android state
+\newcommand{\InstApps}{\mathsf{InstApps}}
+\newcommand{\VerifiedApps}{\mathsf{VerifiedApps}}
+\newcommand{\GrantedGroups}{\mathsf{PermsGr}}
+\newcommand{\AppsPerms}{\mathsf{AppPS}}
+\newcommand{\AppsDefPerms}{\mathsf{AppDefPS}}
+\newcommand{\CompInsRunning}{\mathsf{CompInsRun}}
+\newcommand{\OpType}{\mathsf{OpTy}}
+\newcommand{\DelPPerm}{\mathsf{DelPP}}
+\newcommand{\DelPPerms}{\mathsf{DelPPerms}}
+\newcommand{\DelTPerm}{\mathsf{DelTP}}
+\newcommand{\DelTPerms}{\mathsf{DelTPerms}}
+\newcommand{\AppResCont}{\mathsf{ARV}}
+\newcommand{\AppsResCont}{\mathsf{ARVS}}
+\newcommand{\SentIntents}{\mathsf{Intents}}
+\newcommand{\AppsCert}{\mathsf{Certs}}
+\newcommand{\AppsManifest}{\mathsf{Manifests}}
+\newcommand{\ImageApps}{\mathsf{SysImage}}
+%
+\newcommand{\AndroidState}{\mathsf{AndroidST}}
+\newcommand{\AndroidStateTy}{\InstApps \times \AppsPerms \times \AppsDefPerms \times \CompInsRunning \times \DelPPerms \times \DelTPerms \times \AppsResCont \times \ImageApps}
+
+\newcommand{\hly}[1]{\sethlcolor{yellow}\hl{#1}}
+\newcommand{\sty}[1]{\hl{ }\st{#1}\hl{ }}
+\newcommand{\hlc}[1]{\sethlcolor{cyan}\hl{#1}}
+
+%
+%%% Semantics
+%\newcommand{\sthos}{oss}
+%\newcommand{\sthactos}{aos\_act}
+%\newcommand{\sthmem}{mem}
+%\newcommand{\sthhyp}{hyp}
+%\newcommand{\sthcache}{cache}
+%\newcommand{\sthhistory}{history}
+%\newcommand{\sthtlb}{tlb}
+%\newcommand{\asswitch}[1]{\osaction{switch}~#1} %\newcommand{\asswitch}[1]{\osaction{switch}~\ensuremath{#1}}
+%\newcommand{\aslswitch}[1]{\osaction{lswitch}~\ensuremath{#1}}
+%\newcommand{\asnewsm}[2]{\osaction{new\_sm}~#1~#2} %\newcommand{\asnewsm}[2]{\osaction{new\_sm}~\ensuremath{#1}~\ensuremath{#2}}
+%\newcommand{\asnew}[2]{\osaction{new}~\ensuremath{#1}~\ensuremath{#2}}
+%\newcommand{\asread}[1]{\osaction{read}~\ensuremath{#1}}
+%\newcommand{\aswrite}[2]{\osaction{write}~\ensuremath{#1}~\ensuremath{#2}}
+%\newcommand{\asreadhyper}[1]{\osaction{read\_hyper}~\ensuremath{#1}}
+%\newcommand{\aswritehyper}[2]{\osaction{write\_hyper}~\ensuremath{#1}~\ensuremath{#2}}
+%\newcommand{\ashcall}[1]{\osaction{hcall}~\ensuremath{#1}}
+%%\newcommand{\aspin}[3]{\osaction{page\_pin}~\ensuremath{#1}~\ensuremath{#2}~\ensuremath{#3}}
+%%\newcommand{\asunpin}[2]{\osaction{unpin}~\ensuremath{#1}~\ensuremath{#2}}
+%%\newcommand{\asdel}[2]{\osaction{del}~\ensuremath{#1}~\ensuremath{#2}}
+%\newcommand{\aspin}[2]{\osaction{page\_pin}~\ensuremath{#1}~\ensuremath{#2}}
+%\newcommand{\asunpin}[1]{\osaction{unpin}~\ensuremath{#1}}
+%\newcommand{\asdel}[1]{\osaction{del}~\ensuremath{#1}}
+%
+%
+%%% Isolation notation
+%\newcommand{\eff}[1]{\mathsf{eff}(#1)}
+%\newcommand{\stealthaction}[1]{\eff{#1}=\emptyset}
+%\newcommand{\stateeq}{\sim}
+%\newcommand{\aoseq}{\sim_{\aos}}
+%\newcommand{\voseq}{\sim_{\vos}}
+%\newcommand{\cacheeq}{\equiv_{NS}}
+%
+%\newcommand{\ssemstep}[1]{\step{#1}}
+%
+%\newcommand{\ssemstepp}[2]{\step{{#1},{#2}}}
+
+%% Response
+\newcommand{\Response}{\mathsf{Response}}
+\newcommand{\error}{\mathsf{error}}
+%% Result
+\newcommand{\Result}{\Response \times \AndroidState}
+
+%% Action semantics
+\newcommand{\Action}{\mathsf{Action}}
+\newlength{\bcextramargin}
+\setlength{\bcextramargin}{1em}
+
+%%%% begin macro %%%%
+\newenvironment{changemargin}[2]{\begin{list}{}{% 
+\setlength{\topsep}{0pt}% 
+\setlength{\leftmargin}{0pt}% 
+\setlength{\rightmargin}{0pt}% 
+\setlength{\listparindent}{\parindent}% 
+\setlength{\itemindent}{\parindent}% 
+\setlength{\parsep}{0pt plus 1pt}% 
+\addtolength{\leftmargin}{#1}% 
+\addtolength{\rightmargin}{#2}% 
+}\item }{\end{list}} 
+%%%% end macro %%%% 
+
+\newcommand{\actdefsection}[1]{
+\begin{changemargin}{-\bcextramargin}{0pt}
+\vspace{1ex}
+\noindent
+\textbf{{#1}}
+\end{changemargin}
+}
+
+
+\newenvironment{actdef}[2]{
+\begin{changemargin}{\bcextramargin}{0pt}
+{#1}
+}
+{
+\end{changemargin}}
+
+
+%%%%% rule
+\newenvironment{actdefrule}[1]{
+\begin{absolutelynopagebreak}
+\noindent
+\actdefsection{Rule}
+\vspace{4pt}
+\begin{tabular}{|c|}
+\hline
+#1
+}
+{\\\hline
+\end{tabular}
+\end{absolutelynopagebreak}
+}
+
+%%%%% text
+\newenvironment{actdeftext}[1]{
+\noindent
+\actdefsection{#1}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+}
+{
+}
+
+\newenvironment{absolutelynopagebreak}
+  {\par\nobreak\vfil\penalty0\vfilneg
+   \vtop\bgroup}
+  {\par\xdef\tpd{\the\prevdepth}\egroup
+   \prevdepth=\tpd}
+
+% Theorem macros. Remove if necessary
+\newcommand{\Theorem}[1]{\textbf{Theorem} \begin{math} #1 \end{math} \\}
+\newcommand{\Mathexecrel}[3]{#1 \semstep{#2} #3}
+\newmdtheoremenv{prop}{Propiedad}

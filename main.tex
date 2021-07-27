@@ -5,6 +5,7 @@
 
 \usepackage[backend=biber]{biblatex}
 \usepackage{amsmath}
+\usepackage{mdframed}
 % \usepackage{amsfonts}
 % \usepackage{amssymb}
 % \usepackage{amsthm}
@@ -19,9 +20,6 @@
 
 \newcommand{\todoGuido}[1]{\todo[color=red]{Guido: {#1}}}
 \newcommand{\todoCarlos}[1]{\todo[color=green]{Carlos: {#1}}}
-
-\newcommand{\step}[1]{%
-	\mathbin{\lower0.55ex\hbox{$\lhook\joinrel\xrightarrow{#1}$}}}
 
 \addbibresource{referencias.bib}
 \setcounter{tocdepth}{1}
@@ -60,6 +58,7 @@ Guido De Luca \\[1.5cm]
 \tableofcontents
 
 
+\input{macros}
 \input{capitulos/estado-arte}
 \input{capitulos/modelo}
 \input{capitulos/formalizacion}

@@ -197,9 +197,11 @@ disponibles.
 
 La semántica de las mismas está dada en términos de pre-condición y post-condición. Para ello,
 definimos los predicados $Pre$ y $Post$ de manera tal que para que una acción $a$ pueda transicionar
-el sistema desde un estado $s$ hacia otro estado $s'$, deberán cumplirse $Pre\ s\ a$ y $Post\ s\ s'\ a$. A
-continuación y a modo de ejemplo, nos extenderemos sobre las acciones que han sido introducidas o
-modificadas con las últimas actualizaciones del sistema.
+el sistema desde un estado $s$ hacia otro estado $s'$, deberán cumplirse $Pre\ s\ a$ y $Post\ s\ s'\
+a$. Notaremos la transición de un estado a otro de la siguiente manera: $s\ \step{a}\ s'$.
+
+A continuación y a modo de ejemplo, describiremos informalmente las acciones que han sido introducidas
+o modificadas con las últimas actualizaciones del sistema.
 
 \subsubsection{Semántica de \texttt{grant}}
 
@@ -337,7 +339,6 @@ relación $ErrorMsg s a ec$ se satisface si y sólo si el código $ec$ es una re
 el sistema falla al ejecutar $a$ en el estado $s$.
 
 Formalmente, las posibles respuestas de sistema se definen a través de la siguiente semántica operacional:
-\footnotesize
 \begin{displaymath}
 \begin{array}{c}
 \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$Pre(s, a)$$ \hspace{.2cm} $$Post(s, a, s')$$}{$$s\step{a/ok}s'$$}
@@ -347,3 +348,132 @@ Formalmente, las posibles respuestas de sistema se definen a través de la sigui
 \end{displaymath}
 
 \section{Propiedades del modelo}
+
+En esta sección presentaremos y discutiremos las propiedades que establecimos y demostramos sobre
+nuestra formalización de Android. Nos enfocamos en propiedades de \textit{safety}\footnote{Utilizamos
+el término en inglés para diferenciarlo de de \textit{security}, dado que en la traducción al español
+mantener esa diferencia es más complejo.} aunque también formalizamos algunos comportamientos
+potencialmente peligrosos que no han sido considerados en la especificación informal de la plataforma.
+
+A raíz del cambio mencionado en la sección \ref{subsection:recent-changes:grouped-permissions}, la
+primer propiedad que formulamos establece una condición necesaria para que nuestra formalización del
+sistema sea consecuente con la documentación de la plataforma: solo los permisos que pertenecen a un
+grupo ya autorizado por el usuario pueden ser otorgados de manera automática por el sistema.
+
+\begin{prop} \label{section:formalization:property1}
+   \mbox{} \\ \\
+   $\forall (s,s': \AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
+   $getPermissionLevel(p) = dangerous \land getPermissionGroup(p) = Some\ g\ \land
+   g \notin getAuthorizedGroups(app,s)
+   \rightarrow\ \neg \Mathexecrel{s}{\texttt{grantAuto}~p~app/ok}{s'}$ \\ \\
+   \textit{El sistema de permisos de Android garantiza que un otorgamiento automático de permisos peligrosos puede ocurrir solamente para aquellos permisos que pertenecen a grupos autorizados por el usuario.}
+\end{prop}
+
+Sin embargo, algunas incógnitas surgen al intentar formalizar en qué situaciones un grupo de permisos
+se encuentra autorizado. Por ejemplo, observamos que existen estados válidos del sistema en los que un
+permiso puede ser otorgado automáticamente a una aplicación, a pesar de que \textbf{actualmente} no
+existan otros permisos de ese mismo grupo ya otorgados a la misma. Esta situación podría alcanzarse
+con la siguiente secuencia de acciones:
+
+\begin{enumerate}
+    \item Una aplicación $A$ declara el permiso $P$ agrupado en el grupo $G$
+    \item Una aplicación $B$ solicita el permiso $P$
+    \item El usuario otorga el permiso $P$ a la aplicación $B$
+    \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son eliminados)
+    \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$ (a
+    pesar de que ya no cuenta con el permiso $P$)
+\end{enumerate}
+
+Es importante mencionar que este escenario no implica que existe un falla de seguridad en el sistema.
+Podría ser una decisión tomada al diseñar la plataforma con la intención de evitar abrumar al usuario
+con advertencias y cuadros de diálogos solicitando acciones. Sin embargo, esta decisión no está clara
+y no es desambiguada en ningún lugar de la documentación. A continuación formalizamos el
+escenario descripto:
+
+\begin{prop} \label{section:formalization:property2}
+    \mbox{} \\ \\
+   $\exists (s:\AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$
+   $valid\_state(s) \land \\
+   getPermissionLevel(p) = dangerous~ \land
+   getPermissionGroup(p) = Some\ g\ \land$
+   $\neg (\exists (p': \Perm), p' \in getGrantedPermsApp(app,s)~ \land$ \\
+   $ getPermissionGroup(p') = Some\ g) \land Pre(s, grantAuto~p~a) \\ \\$
+
+   \textit{El sistema puede otorgar automáticamente un permiso a pesar de que no hay otro permiso del mismo grupo actualmente otorgado a la aplicación.}
+\end{prop}
+
+
+La siguiente propiedad formaliza el escenario mencionado en la sección
+\ref{subsection:recent-changes:grouped-permissions} sobre los permisos normales y peligrosos
+compartiendo el  mismo grupo. Como mencionamos previamente, formalizamos el peor escenario posible que
+satisface la especificación informal de la plataforma. Sin embargo, nuestra postura es que no debería
+permitirse que los permisos de distintos niveles de protección ya que podría facilitar un ataque por
+escalamiento de privilegios.
+
+\begin{prop} \label{section:formalization:property3}
+ \mbox{} \\ \\
+$\forall (s,s': \AndroidState)~(a: \AppId)~(m: \Manifest)~(c: \Cert)~(resources: list~\Res)~(g:\PermGrp)\\
+(pDang~pNorm: \Perm), \Mathexecrel{s}{\texttt{install}~a~m~c~resources/ok}{s'} \rightarrow$ \\
+$getPermissionLevel(pDang) = dangerous~ \rightarrow \\
+getPermissionGroup(pDang) = Some\ g \rightarrow \\
+getPermissionLevel(pNorm) = normal~ \rightarrow \\
+getPermissionGroup(pNorm) = Some\ g \rightarrow \\
+\{pDang,~pNorm\} \subseteq getAppRequestedPerms(m) \rightarrow \\
+Pre(s', grantAuto~pDang~a)$ \\ \\
+
+\textit{Una aplicación que usa un permiso normal y uno peligroso del mismo grupo de permisos, puede obtener el segundo automáticamente luego de ser instalada.}
+\end{prop}
+
+Los usuarios tienen la posibilidad de revocar cualquier permiso previamente otorgado en cualquier
+momento. Sin embargo, en el caso de los permisos agrupados, no es posible hacerlo de manera granular.
+El grupo entero debe ser invalidado. Creemos que esta situación es deseable, considerando que al
+otorgar un permiso agrupado el sistema concede cierto privilegio sobre el grupo entero (en lugar del
+permiso solicitado en sí). Por lo tanto, probamos que nuestro sistema es consistente con este
+comportamiento.
+
+\begin{prop} \label{section:formalization:property4}
+ \mbox{} \\ \\
+$\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
+$\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
+$\neg (\exists (p: \Perm), p \in getGrantedPermsApp(app,s')~ \\
+\land getPermissionGroup(p) = Some\ g) \\ \\$
+
+\textit{Cuando un usuario revoca el acceso a un grupo de permisos para determinada aplicación, todos los permisos individuales son revocados también.}
+\end{prop}
+
+El último cambio incorporado al modelo fue el que mencionamos en la sección
+\ref{subsection:recent-changes:legacy-apps}. El mismo agrega restricciones a las acciones que pueden
+ser ejecutadas por aplicaciones orientadas a versiones viejas de la plataforma, dado que las mismas
+consiguieron todos los permisos en tiempo de instalación. La siguiente propiedad establece que ninguna
+aplicación \textit{legacy} que \textbf{no ha sido verificada aún} puede recibir \textit{intents}. De
+esta manera, ninguna de esas aplicaciones estará en condiciones de iniciar nuevas actividades o
+o servicios maliciosos con los permisos adquiridos en la instalación.
+
+\begin{prop} \label{section:formalization:property5}
+ \mbox{} \\ \\
+$\forall (s,s': \AndroidState)~(i:\Intent)~(ic:\iComp)~(app:\AppId),$ \\
+$oldAppNotVerified(app, s) \rightarrow$ \\
+$\neg \Mathexecrel{s}{\texttt{receiveIntent}~i~ic~app/ok}{s'}$ \\ \\
+
+\textit{Una aplicación vieja que no ha sido verificada por el usuario no está autorizada a recibir intents.}
+\end{prop}
+
+
+Finalmente, incluimos una propiedad que ha estado vigente en el modelo desde que fue actualizado para
+incluir los cambios de la versión 6 de Android. Cualquier aplicación que desee enviar información por
+internet deberá contar con un permiso llamado \texttt{INTERNET}. Sin embargo, como el nivel de
+protección del mismo es "normal", basta con listarlo en la sección de permisos usados del manifiesto
+para conseguirlo. Una vez más, criticamos esto dado que facilita escenarios de fuga de información. La
+propiedad siguiente formaliza este comportamiento, presentando un argumento razonable para volver
+atrás este cambio introducido en Android Marshmallow.
+
+\begin{prop} \label{section:formalization:property6}
+ \mbox{} \\ \\
+$ \forall (s:\AndroidState) (sac:SACall) (c:\Comp) (ic:\iComp) (p:\Perm), \\
+valid\_state(s) \rightarrow permSAC(p, sac) \rightarrow \\
+getPermissionLevel(p) = normal \rightarrow getPermissionId(p) \in \\
+getAppRequestedPerms(getManifestForApp(getAppFromCmp(c,s),s)) \rightarrow\\
+(ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$ \\ \\
+
+\textit{Si la ejecución de un llamado a la API de Android solo requiere permisos con nivel de protección normal, basta con listar dicho permiso en el manifiesto para estar habilitado a realizar el llamado.}
+\end{prop}
