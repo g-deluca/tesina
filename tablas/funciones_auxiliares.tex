@@ -1,0 +1,31 @@
+\begin{table}[thb!]
+    \centering
+    \begin{tabularx}{\linewidth}{|l X|}
+        \hline
+        \textbf{Función/Predicado}   & \textbf{Descripción}                                                                                                                                               \\
+        \hline
+        $getAppFromCmp(c,s)$         & Dado un componente $c$ y un estado $s$, devuelve la aplicación a la cual pertenece dicho componente.                                                               \\
+        \hline
+        $getAppRequestedPerms(m)$    & Dado un manifiesto $m$ de una aplicación, devuelve los permisos listados como usados.                                                                              \\
+        \hline
+        $getGrantedPermsApp(app,s)$  & Devuelve los permisos con los que cuenta la aplicación $app$ en el estado $s$.                                                                                     \\
+        \hline
+        $getAuthorizedGroups(app,s)$ & Dada una aplicación $app$ y un estado $s$, devuelve los grupos de permisos que se encuentran autorizados para otorgar permisos automáticamente a dicha aplicación. \\
+        \hline
+        $getManifestForApp(app,s)$   & Devuelve el manifiesto de la aplicación $app$. El estado es necesario
+        como argumento porque el manifiesto se encuentra guardado en la parte estática del mismo.                                                                                                         \\
+        \hline
+        $getPermissionId(p)$         & Devuelve el identificador del permiso $p$.                                                                                                                         \\
+        \hline
+        $getPermissionLevel(p)$      & Devuelve el nivel de protección del permiso $p$.                                                                                                                   \\
+        \hline
+        $getPermissionGroup(p)$      & Devuelve $Some~g$ si el permiso $p$ pertenece al grupo $g$, o $None$ en caso contrario.                                                                            \\
+        \hline
+        $getRunningComponents(s)$    & Devuelve un conjunto de pares conformados por el ID de una instancia en ejecución con el componente asociado a la misma.                                           \\
+        \hline
+        $oldAppNotVerified(app,s)$   & Válido si y solo si la aplicación $app$ es considerada $legacy$ y el usuario aún no la ha verificado en el estado $s$.                                               \\
+        \hline
+    \end{tabularx}
+    \caption{Funciones auxiliares y predicados}
+    \label{table:auxiliary_functions}
+\end{table}

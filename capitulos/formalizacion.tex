@@ -273,60 +273,7 @@ agregamos una nueva condición que deberá cumplirse para que una aplicación pu
 ser una aplicación \textit{legacy} o, en caso de serlo, debe haber sido previamente verificada por el
 usuario.
 
-
-\begin{table}
-\caption{Acciones del sistema}
-\label{table:actions}
-\vspace{0.2cm}
-\small
-\begin{tabularx}{\linewidth}{|l X|}
-	\hline
-	$\mathtt{install}~app~m~c~res$	& Instala la aplicación con identificador $app$, cuyo manifiesto es $m$, su certificado es $c$ y la lista de recursos es $res$. \\
-	\hline
-	$\mathtt{uninstall}~app$	& Desinstala la aplicación con identificador $app$. \\
-	\hline
-	$\mathtt{read}~ic~cp~u$	& El componente en ejecución $ic$ lee el recurso correspondiente al identificador URI $u$ del proveedor de contenido $cp$. \\
-	\hline
-	$\mathtt{write}~ic~cp~u~val$	& El componente en ejecución $ic$ escribe el valor $val$ en el recurso correspondiente al identificador $u$ del proveedor de contenido $cp$. \\
-	\hline
-	$\mathtt{startActivity}~i~ic$	& El componente en ejecución $ic$ solicita comenzar la actividad especificada por el intent $i$. \\
-	\hline
-	$\mathtt{startActivityRes}~i~n~ic$	& El componente en ejecución $ic$ solicita comenzar la actividad especificada por el intent $i$ y espera como respuesta un token $n$. \\
-	\hline
-	$\mathtt{startService}~i~ic$	& El componente en ejecución $ic$ solicita comenzar el servicio especificado por el intent $i$. \\
-	\hline
-	$\mathtt{sendBroadcast}~i~ic~p$	& El componente en ejecución $ic$ envía el intent $i$ en modo \textit{broadcast}, especificando que solo los componentes que posean el permiso $p$ pueden recibirlo. \\
-	\hline
-	$\mathtt{sendOrdBroadcast}~i~ic~p$	& El componente en ejecución $ic$ envía el intent $i$ en modo \textit{broadcast} ordenado,  especificando que solo los componentes que posean el permiso $p$ pueden recibirlo. \\
-	\hline
-	$\mathtt{sendSBroadcast}~i~ic$	& El componente en ejecución $ic$ envía el intent $i$ en modo \textit{sticky broadcast}. \\
-	\hline
-	$\mathtt{resolveIntent}~i~app$	& La aplicación $app$ vuelve al intent $i$ explícito. \\
-	\hline
-	$\mathtt{stop}~ic$	& El componente en ejecución $ic$ termina su ejecución. \\
-	\hline
-	$\mathtt{grantP}~ic~cp~app~u~op$	& El componente en ejecución $ic$ delega permisos permantentes a la aplicación $app$. Esta delegación autoriza a $app$ a realizar la operación $op$ en el recurso asignado al URI $u$ del proveedor de contenido $cp$. \\
-	\hline
-	$\mathtt{revokeDel}~ic~cp~u~op$	& El componente en ejecución $ic$ revoca los permisos otorgados al recurso $u$ del proveedor de contenidos $cp$ para realizar la operación $op$. \\
-	\hline
-	$\mathtt{call}~ic~sac$	& El componente en ejecución $ic$ realiza el llamado a una función del sistema denominada $sac$. \\
-	\hline
-	$\mathtt{grant}~p~app$	& Otorga el permiso $p$ a la aplicación $app$ con la confirmación del usuario. \\
-	\hline
-	$\mathtt{grantAuto}~p~app$	& Otorga automáticamente el permiso $p$ a la aplicación $app$ (sin requerir confirmación del usuario). \\
-	\hline
-	$\mathtt{revoke}~p~app$	& Revoca un permiso no agrupado $p$ de la aplicación $app$. \\
-	\hline
-	$\mathtt{revokePermGroup}~g~app$	& Revoca todos los permisos pertenecientes al grupo $g$ de la aplicación $app$. \\
-	\hline
-	$\mathtt{hasPermission}~p~app$	& Chequea si la aplicación $app$ posee el permiso $p$. \\
-	\hline
-	$\mathtt{receiveIntent}~i~ic~app$	& La aplicación $app$ recibe el intent $i$, enviado por el componente en ejecución $ic$. \\
-	\hline
-	$\mathtt{verifyOldApp}~app$	& El usuario verifica los permisos que han sido otorgados a la aplicación $app$. Solo se utiliza para aquellas aplicaciones que fueron instaladas previamente a la versión 6 de Android.   \\
-	\hline
-  \end{tabularx}
-\end{table}
+\input{tablas/acciones}
 
 \section{Ejecuciones}
 Cuando el sistema intenta ejecutar una acción $a$ en un estado válido $s$, hay dos posibles
@@ -354,6 +301,11 @@ nuestra formalización de Android. Nos enfocamos en propiedades de \textit{safet
 el término en inglés para diferenciarlo de de \textit{security}, dado que en la traducción al español
 mantener esa diferencia es más complejo.} aunque también formalizamos algunos comportamientos
 potencialmente peligrosos que no han sido considerados en la especificación informal de la plataforma.
+
+En la tabla \ref{table:auxiliary_functions} introducimos algunas funciones y predicados auxiliares que
+nos ayudarán a definir los teoremas presentados.
+
+\input{tablas/funciones_auxiliares}
 
 A raíz del cambio mencionado en la sección \ref{subsection:recent-changes:grouped-permissions}, la
 primer propiedad que formulamos establece una condición necesaria para que nuestra formalización del
