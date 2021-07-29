@@ -84,6 +84,18 @@ valor computacional y deben ser preservadas en los programas extraídos.
 \label{section:formalization:state}
 
 \subsection{Formalización de los componentes básicos}
+En esta sección presentaremos las estructuras de datos utilizadas para formalizar los distintos
+componentes presentados en la sección \ref{section:preliminary}. El orden en el que introduciremos
+dichas abstracciones será incremental con respecto a la complejidad de las mismas y por lo tanto,
+diferirá del orden en el que los componentes fueron presentados anteriormente.
+
+\subsubsection*{Tipos atómicos}
+En la tabla \ref{table:atomic_types} se enumeran las estructuras de datos atómicas. Entendemos por
+estructura de dato atómica a aquellas que representan tipos básicos o bien, a aquellas cuya definición
+queda sujeta a cuestiones de implementación. En el asistente de pruebas Coq, estas estructuras fueron
+definidas como parámetros de tipo $Set$.
+
+\input{tablas/tipos_atomicos}
 
 \subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado

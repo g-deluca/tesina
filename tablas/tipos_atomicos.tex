@@ -1,0 +1,44 @@
+
+\begin{table}[thb!]
+    \centering
+    \begin{tabularx}{\linewidth}{|l X|}
+        \hline
+        \textbf{Nombre del tipo} & \textbf{Descripción}                                                                                                  \\
+        \hline
+        $idApp$                  & Identificadores/nombres de las aplicaciones.                                                                          \\
+        \hline
+        $idPerm$                 & Identificadores/nombres de los permisos.                                                                              \\
+        \hline
+        $idGrp$                  & Identificadores/nombres de los grupos de permisos.                                                                    \\
+        \hline
+        $idCmp$                  & Identificadores/nombres de los componentes de una aplicación.                                                         \\
+        \hline
+        $iCmp$                   & Identificadores/nombres de las instancias en ejecución de los componentes de una aplicación.                          \\
+        \hline
+        $uri$                    & Identificadores de los recursos guardados en los proveedores de contenido.                                            \\
+        \hline
+        $res$                    & Recursos definidos por los proveedores de contenido.                                                                  \\
+        \hline
+        $mimeType$               & Parámetro utilizado para representar los distintos tipos de
+        MIME\cite{mime-types}. Este tipo de datos es utilizado por los $intents$ y los filtros de
+        $intents$ para saber cómo decodificar la información allí almacenada.                                                                            \\
+        \hline
+        $Category$               & Categoría a la que puede pertenecer un $intent$.                                                                      \\
+        \hline
+        $Cert$                   & Certificados con los que se firman las aplicaciones.                                                                  \\
+        \hline
+        $Extra$                  & Abstracción usada para representar el campo de información "extra" que puede enviarse a través de los $intents$.      \\
+        \hline
+        $Flag$                   & Banderas que pueden ser activadas por el emisor de un $intent$ para indicar cómo debe leerse/manejarse ese mensaje.   \\
+        \hline
+        $SACall$                 & Llamadas a la API de Android que interfieren con el modelo de seguridad (por ejemplo, para tener acceso a internet).  \\
+        \hline
+        $Val$                    & Tipo genérico para representar valores. Usado para representar los valores de los recursos ($res$) de una aplicación. \\
+        \hline
+        $vulnerableSdk$          & SDK a partir del cual las aplicaciones empiezan a considerarse como
+        $legacy$ y requieren una verificación del usuario antes de ser ejecutadas por primera vez.                                                       \\
+        \hline
+    \end{tabularx}
+    \caption{Tipos atómicos}
+    \label{table:atomic_types}
+\end{table}
