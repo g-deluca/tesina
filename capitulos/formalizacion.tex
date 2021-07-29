@@ -17,9 +17,9 @@ Para lograrlo, provee tres aspectos fundamentales:
     \item Un lenguaje de especificación que permite escribir expresiones lógicas de alto orden, algoritmos y teoremas;
     \item Un asistente de pruebas que permite desarrollar pruebas matemáticas verificadas;
     \item Una herramienta de extracción de programas, que permite sintetizar programas en lenguajes
-    como OCaml~\cite{ocaml} o Haskell~\cite{haskell} a partir de las especificaciones formales escritas
-    previamente. Los programas construidos de esta manera suelen llamarse \textit{programas
-    certificados}. 
+          como OCaml~\cite{ocaml} o Haskell~\cite{haskell} a partir de las especificaciones formales escritas
+          previamente. Los programas construidos de esta manera suelen llamarse \textit{programas
+              certificados}.
 \end{enumerate}
 
 El lenguaje lógico subyacente usado por Coq es el Cálculo de Construcciones Inductivas~\cite{cic}
@@ -33,8 +33,8 @@ previos~\cite{luna-cleiej,betarte-2017,betarte-2016}. La misma es similar a la s
 TODO: COMPLETAR ESTA SECCIÓN
 
 Los diccionarios (más conocidos como \textit{records} por su nombre en inglés) tendrán la forma $\{
-l_1: T_1, ..., l_n: T_n \}$ y notaremos el acceso a cada uno de sus elementos como $r.l_n$. También
-usaremos $\{ T \}$ para definir el tipo del conjunto que contiene elementos de tipo $T$. 
+    l_1: T_1, ..., l_n: T_n \}$ y notaremos el acceso a cada uno de sus elementos como $r.l_n$. También
+usaremos $\{ T \}$ para definir el tipo del conjunto que contiene elementos de tipo $T$.
 
 Definir tipos inductivos blablabla
 
@@ -44,18 +44,18 @@ como $F: A \rightarrow B \rightarrow C$. Usaremos siempre la notación currifica
 
 \subsection{Tipos básicos de Coq}
 A continuación detallaremos algunos de los tipos básicos de Coq más utilizados en esta tesina.
-\subsubsection*{Tipo \textit{option}} 
+\subsubsection*{Tipo \textit{option}}
 \begin{flalign*}
     Inductive\ option\ T\ &:= &&\\
     &|\ Some\ :\ T \rightarrow\ option\ T&&\\
     &|\ None\ :\ option\ T &&
 \end{flalign*}
-    
+
 
 El tipo \texttt{option}, análogo a la mónada \texttt{Maybe} de Haskell\cite{maybe-haskell}, sirve para
 representar la posible ausencia de valores. Dado que en Coq no es posible definir funciones
 parciales, utilizaremos este tipo para totalizar a las mismas. De esta manera, una función parcial $g$
-de $A$ en $B$, será definida como $g:\ A\ \rightarrow\ option\ B$. 
+de $A$ en $B$, será definida como $g:\ A\ \rightarrow\ option\ B$.
 
 \subsubsection*{Tipo \textit{list}}
 \begin{flalign*}
@@ -65,7 +65,7 @@ de $A$ en $B$, será definida como $g:\ A\ \rightarrow\ option\ B$.
 \end{flalign*}
 
 El tipo utilizado para denotar una lista de elementos. Está definido de manera inductiva, siendo
-\texttt{::} un operador de punto fijo. 
+\texttt{::} un operador de punto fijo.
 
 \subsubsection*{Tipo \textit{nat}}
 Utilizado para denotar a los números naturales.
@@ -104,7 +104,7 @@ que almacena la información dinámica del sistema, como las aplicaciones instal
 a las mismas; y otro que contiene información estática como el manifiesto de cada aplicación. Formalmente:
 
 \begin{align*}
-System\ :=\ \{ state: State;\ environment: Environment \}
+    System\ :=\ \{ state: State;\ environment: Environment \}
 \end{align*}
 
 
@@ -113,16 +113,16 @@ El componente $State$ está conformado por los siguientes elementos:
 \begin{itemize}
     \item Una lista con los identificadores de las aplicaciones instaladas,
     \item Una lista  información de las aplicaciones \textit{legacy} que ya han sido verificadas por
-    el usuario. Es un subconjunto de las aplicaciones inst.
+          el usuario. Es un subconjunto de las aplicaciones inst.
     \item Un mapeo entre las aplicaciones instaladas y los permisos otorgados a cada una de ellas.
     \item Un mapeo entre las aplicaciones instaladas y los grupos de permisos para los cuales el
-    usuario ha permitido el otorgamiento automático de permisos. 
+          usuario ha permitido el otorgamiento automático de permisos.
     \item Un mapeo entre los componentes que define una aplicación y las instancias en ejecución de
-    ellos.
+          ellos.
     \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los permisos
-    permantentes otorgados sobre el mismo.
+          permantentes otorgados sobre el mismo.
     \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los permisos
-    temporales otorgados sobre el mismo.
+          temporales otorgados sobre el mismo.
     \item Un mapeo indicando el valor de cada uno de los recursos de una aplicación.
     \item Una lista de los intents que han sido enviados, junto con su emisor.
 \end{itemize}
@@ -139,26 +139,26 @@ Por otro lado, el componente $Environment$ contiene la siguiente información:
 A continuación daremos la definición formal de ambos componentes. El orden en el que se definen los
 campos de cada componente es el mismo que el de las numeraciones previas.
 \begin{flalign*}
-State\ &:=\ \{ &&\\
-       &apps:\ list\ idApp; \\
-       &alreadyVerified:\ list\ idApp; \\
-       &grantedPermGroups:\ mapping\ idApp\ (list\ idGrp); \\
-       &perms:\ mapping\ idApp\ (list\ Perm); \\
-       &running:\ mapping\ iCmp\ Cmp; \\
-       &delPPerms:\ mapping\ (idApp\ *\ CProvider\ *\ uri)\ PType; \\
-       &delTPerms:\ mapping\ (iCmp\ *\ CProvider\ *\ uri)\ PType; \\
-       &resCont:\ mapping\ (idApp\ *\ res)\ Val; \\
-       &sentIntents:\ list\ (iCmp*Intent) \\
-\}
+    State\ &:=\ \{ &&\\
+    &apps:\ list\ idApp; \\
+    &alreadyVerified:\ list\ idApp; \\
+    &grantedPermGroups:\ mapping\ idApp\ (list\ idGrp); \\
+    &perms:\ mapping\ idApp\ (list\ Perm); \\
+    &running:\ mapping\ iCmp\ Cmp; \\
+    &delPPerms:\ mapping\ (idApp\ *\ CProvider\ *\ uri)\ PType; \\
+    &delTPerms:\ mapping\ (iCmp\ *\ CProvider\ *\ uri)\ PType; \\
+    &resCont:\ mapping\ (idApp\ *\ res)\ Val; \\
+    &sentIntents:\ list\ (iCmp*Intent) \\
+    \}
 \end{flalign*}
 
 \begin{flalign*}
-Environment\ &:=\ \{ &&\\
-       &manifest:\ mapping\ idApp\ Manifest; \\
-       &cert:\ mapping\ idApp\ Cert; \\
-       &defPerms:\ mapping\ idApp\ (list\ Perm); \\
-       &systemImage:\ list\ SysImgApp; \\
-\}
+    Environment\ &:=\ \{ &&\\
+    &manifest:\ mapping\ idApp\ Manifest; \\
+    &cert:\ mapping\ idApp\ Cert; \\
+    &defPerms:\ mapping\ idApp\ (list\ Perm); \\
+    &systemImage:\ list\ SysImgApp; \\
+    \}
 \end{flalign*}
 
 De aquí en adelante, al hablar del estado del sistema, nos estaremos refiriendo al componente
@@ -169,7 +169,7 @@ nombre en inglés.
 No todos los elementos que habitan el conjunto definido anteriormente son relevantes al sistema que
 queremos estudiar. Por ejemplo, no queremos trabajar sobre un estado en el que una aplicación
 pre-instalada del sistema y una aplicación instalada por el usuario puedan tener el mismo
-identificador. 
+identificador.
 
 Inicialmente, a la hora de definir los componentes, fue necesario pensar qué condiciones debían
 cumplir estos estados para representar estados de Android que tengan sentido. En consecuencia,
@@ -183,18 +183,18 @@ condiciones:
 
 \begin{itemize}
     \item Todos los componentes, ya sea que pertenezcan a una aplicación instalada por el usuario o a
-    una aplicación pre-instalada en el sistema tienen identificadores diferentes.
+          una aplicación pre-instalada en el sistema tienen identificadores diferentes.
     \item Ningún componente pertenece a más de una aplicación.
     \item Ningún componente en ejecución es una instancia de un proveedor de contenido (los mismos no se \textit{ejecutan}).
     \item Todo permiso temporalmente otorgado ha sido otorgado a un componente en ejecución y es sobre
-    un recurso de un proveedor de contenido existente.
+          un recurso de un proveedor de contenido existente.
     \item Todo componente en ejecución pertenece a una aplicación instalada en el sistema.
     \item Toda aplicación que establece un valor a un recurso está instalada en el sistema.
     \item El dominio de las funciones parciales que definen el $manifest$, $cert$ y $defPerms$ es el
-    conjunto de todas las aplicaciones instaladas por el usuario.
+          conjunto de todas las aplicaciones instaladas por el usuario.
     \item El dominio de las funciones parciales que definen $grantedPermGroups$ y $perm$ es el
-    conjunto de todas las aplicaciones del sistema, tanto instaladas por el usuario como
-    pre-instaladas.
+          conjunto de todas las aplicaciones del sistema, tanto instaladas por el usuario como
+          pre-instaladas.
     \item Todas las aplicaciones del sistema tienen identificadores diferentes.
     \item Todos los permisos definidos por las aplicaciones tienen identificadores diferentes.
     \item Todos los permisos otorgados existen en el sistema.
@@ -210,7 +210,7 @@ disponibles.
 La semántica de las mismas está dada en términos de pre-condición y post-condición. Para ello,
 definimos los predicados $Pre$ y $Post$ de manera tal que para que una acción $a$ pueda transicionar
 el sistema desde un estado $s$ hacia otro estado $s'$, deberán cumplirse $Pre\ s\ a$ y $Post\ s\ s'\
-a$. Notaremos la transición de un estado a otro de la siguiente manera: $s\ \step{a}\ s'$.
+    a$. Notaremos la transición de un estado a otro de la siguiente manera: $s\ \step{a}\ s'$.
 
 A continuación y a modo de ejemplo, describiremos informalmente las acciones que han sido introducidas
 o modificadas con las últimas actualizaciones del sistema.
@@ -299,19 +299,19 @@ el sistema falla al ejecutar $a$ en el estado $s$.
 
 Formalmente, las posibles respuestas de sistema se definen a través de la siguiente semántica operacional:
 \begin{displaymath}
-\begin{array}{c}
-\inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$Pre(s, a)$$ \hspace{.2cm} $$Post(s, a, s')$$}{$$s\step{a/ok}s'$$}
-\hspace{0.5cm}
-\inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$ErrorMsg(s, a, ec)$$}{$$s\step{a/error(ec)}s$$}
-\end{array}
+    \begin{array}{c}
+        \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$Pre(s, a)$$ \hspace{.2cm} $$Post(s, a, s')$$}{$$s\step{a/ok}s'$$}
+        \hspace{0.5cm}
+        \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$ErrorMsg(s, a, ec)$$}{$$s\step{a/error(ec)}s$$}
+    \end{array}
 \end{displaymath}
 
 \section{Propiedades del modelo}
 
 En esta sección presentaremos y discutiremos las propiedades que establecimos y demostramos sobre
 nuestra formalización de Android. Nos enfocamos en propiedades de \textit{safety}\footnote{Utilizamos
-el término en inglés para diferenciarlo de de \textit{security}, dado que en la traducción al español
-mantener esa diferencia es más complejo.} aunque también formalizamos algunos comportamientos
+    el término en inglés para diferenciarlo de de \textit{security}, dado que en la traducción al español
+    mantener esa diferencia es más complejo.} aunque también formalizamos algunos comportamientos
 potencialmente peligrosos que no han sido considerados en la especificación informal de la plataforma.
 
 En la tabla \ref{table:auxiliary_functions} introducimos algunas funciones y predicados auxiliares que
@@ -325,12 +325,12 @@ sistema sea consecuente con la documentación de la plataforma: solo los permiso
 grupo ya autorizado por el usuario pueden ser otorgados de manera automática por el sistema.
 
 \begin{prop} \label{section:formalization:property1}
-   \mbox{} \\ \\
-   $\forall (s,s': \AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
-   $getPermissionLevel(p) = dangerous \land getPermissionGroup(p) = Some\ g\ \land
-   g \notin getAuthorizedGroups(app,s)
-   \rightarrow\ \neg \Mathexecrel{s}{\texttt{grantAuto}~p~app/ok}{s'}$ \\ \\
-   \textit{El sistema de permisos de Android garantiza que un otorgamiento automático de permisos peligrosos puede ocurrir solamente para aquellos permisos que pertenecen a grupos autorizados por el usuario.}
+    \mbox{} \\ \\
+    $\forall (s,s': \AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
+    $getPermissionLevel(p) = dangerous \land getPermissionGroup(p) = Some\ g\ \land
+        g \notin getAuthorizedGroups(app,s)
+        \rightarrow\ \neg \Mathexecrel{s}{\texttt{grantAuto}~p~app/ok}{s'}$ \\ \\
+    \textit{El sistema de permisos de Android garantiza que un otorgamiento automático de permisos peligrosos puede ocurrir solamente para aquellos permisos que pertenecen a grupos autorizados por el usuario.}
 \end{prop}
 
 Sin embargo, algunas incógnitas surgen al intentar formalizar en qué situaciones un grupo de permisos
@@ -345,7 +345,7 @@ con la siguiente secuencia de acciones:
     \item El usuario otorga el permiso $P$ a la aplicación $B$
     \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son eliminados)
     \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$ (a
-    pesar de que ya no cuenta con el permiso $P$)
+          pesar de que ya no cuenta con el permiso $P$)
 \end{enumerate}
 
 Es importante mencionar que este escenario no implica que existe un falla de seguridad en el sistema.
@@ -356,14 +356,14 @@ escenario descripto:
 
 \begin{prop} \label{section:formalization:property2}
     \mbox{} \\ \\
-   $\exists (s:\AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$
-   $valid\_state(s) \land \\
-   getPermissionLevel(p) = dangerous~ \land
-   getPermissionGroup(p) = Some\ g\ \land$
-   $\neg (\exists (p': \Perm), p' \in getGrantedPermsApp(app,s)~ \land$ \\
-   $ getPermissionGroup(p') = Some\ g) \land Pre(s, grantAuto~p~a) \\ \\$
+    $\exists (s:\AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$
+    $valid\_state(s) \land \\
+        getPermissionLevel(p) = dangerous~ \land
+        getPermissionGroup(p) = Some\ g\ \land$
+    $\neg (\exists (p': \Perm), p' \in getGrantedPermsApp(app,s)~ \land$ \\
+    $ getPermissionGroup(p') = Some\ g) \land Pre(s, grantAuto~p~a) \\ \\$
 
-   \textit{El sistema puede otorgar automáticamente un permiso a pesar de que no hay otro permiso del mismo grupo actualmente otorgado a la aplicación.}
+    \textit{El sistema puede otorgar automáticamente un permiso a pesar de que no hay otro permiso del mismo grupo actualmente otorgado a la aplicación.}
 \end{prop}
 
 
@@ -375,17 +375,17 @@ permitirse que los permisos de distintos niveles de protección ya que podría f
 escalamiento de privilegios.
 
 \begin{prop} \label{section:formalization:property3}
- \mbox{} \\ \\
-$\forall (s,s': \AndroidState)~(a: \AppId)~(m: \Manifest)~(c: \Cert)~(resources: list~\Res)~(g:\PermGrp)\\
-(pDang~pNorm: \Perm), \Mathexecrel{s}{\texttt{install}~a~m~c~resources/ok}{s'} \rightarrow$ \\
-$getPermissionLevel(pDang) = dangerous~ \rightarrow \\
-getPermissionGroup(pDang) = Some\ g \rightarrow \\
-getPermissionLevel(pNorm) = normal~ \rightarrow \\
-getPermissionGroup(pNorm) = Some\ g \rightarrow \\
-\{pDang,~pNorm\} \subseteq getAppRequestedPerms(m) \rightarrow \\
-Pre(s', grantAuto~pDang~a)$ \\ \\
+    \mbox{} \\ \\
+    $\forall (s,s': \AndroidState)~(a: \AppId)~(m: \Manifest)~(c: \Cert)~(resources: list~\Res)~(g:\PermGrp)\\
+        (pDang~pNorm: \Perm), \Mathexecrel{s}{\texttt{install}~a~m~c~resources/ok}{s'} \rightarrow$ \\
+    $getPermissionLevel(pDang) = dangerous~ \rightarrow \\
+        getPermissionGroup(pDang) = Some\ g \rightarrow \\
+        getPermissionLevel(pNorm) = normal~ \rightarrow \\
+        getPermissionGroup(pNorm) = Some\ g \rightarrow \\
+        \{pDang,~pNorm\} \subseteq getAppRequestedPerms(m) \rightarrow \\
+        Pre(s', grantAuto~pDang~a)$ \\ \\
 
-\textit{Una aplicación que usa un permiso normal y uno peligroso del mismo grupo de permisos, puede obtener el segundo automáticamente luego de ser instalada.}
+    \textit{Una aplicación que usa un permiso normal y uno peligroso del mismo grupo de permisos, puede obtener el segundo automáticamente luego de ser instalada.}
 \end{prop}
 
 Los usuarios tienen la posibilidad de revocar cualquier permiso previamente otorgado en cualquier
@@ -396,13 +396,13 @@ permiso solicitado en sí). Por lo tanto, probamos que nuestro sistema es consis
 comportamiento.
 
 \begin{prop} \label{section:formalization:property4}
- \mbox{} \\ \\
-$\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
-$\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
-$\neg (\exists (p: \Perm), p \in getGrantedPermsApp(app,s')~ \\
-\land getPermissionGroup(p) = Some\ g) \\ \\$
+    \mbox{} \\ \\
+    $\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
+    $\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
+    $\neg (\exists (p: \Perm), p \in getGrantedPermsApp(app,s')~ \\
+    \land getPermissionGroup(p) = Some\ g) \\ \\$
 
-\textit{Cuando un usuario revoca el acceso a un grupo de permisos para determinada aplicación, todos los permisos individuales son revocados también.}
+    \textit{Cuando un usuario revoca el acceso a un grupo de permisos para determinada aplicación, todos los permisos individuales son revocados también.}
 \end{prop}
 
 El último cambio incorporado al modelo fue el que mencionamos en la sección
@@ -414,12 +414,12 @@ esta manera, ninguna de esas aplicaciones estará en condiciones de iniciar nuev
 o servicios maliciosos con los permisos adquiridos en la instalación.
 
 \begin{prop} \label{section:formalization:property5}
- \mbox{} \\ \\
-$\forall (s,s': \AndroidState)~(i:\Intent)~(ic:\iComp)~(app:\AppId),$ \\
-$oldAppNotVerified(app, s) \rightarrow$ \\
-$\neg \Mathexecrel{s}{\texttt{receiveIntent}~i~ic~app/ok}{s'}$ \\ \\
+    \mbox{} \\ \\
+    $\forall (s,s': \AndroidState)~(i:\Intent)~(ic:\iComp)~(app:\AppId),$ \\
+    $oldAppNotVerified(app, s) \rightarrow$ \\
+    $\neg \Mathexecrel{s}{\texttt{receiveIntent}~i~ic~app/ok}{s'}$ \\ \\
 
-\textit{Una aplicación vieja que no ha sido verificada por el usuario no está autorizada a recibir intents.}
+    \textit{Una aplicación vieja que no ha sido verificada por el usuario no está autorizada a recibir intents.}
 \end{prop}
 
 
@@ -432,12 +432,12 @@ propiedad siguiente formaliza este comportamiento, presentando un argumento razo
 atrás este cambio introducido en Android Marshmallow.
 
 \begin{prop} \label{section:formalization:property6}
- \mbox{} \\ \\
-$ \forall (s:\AndroidState) (sac:SACall) (c:\Comp) (ic:\iComp) (p:\Perm), \\
-valid\_state(s) \rightarrow permSAC(p, sac) \rightarrow \\
-getPermissionLevel(p) = normal \rightarrow getPermissionId(p) \in \\
-getAppRequestedPerms(getManifestForApp(getAppFromCmp(c,s),s)) \rightarrow\\
-(ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$ \\ \\
+    \mbox{} \\ \\
+    $ \forall (s:\AndroidState) (sac:SACall) (c:\Comp) (ic:\iComp) (p:\Perm), \\
+        valid\_state(s) \rightarrow permSAC(p, sac) \rightarrow \\
+        getPermissionLevel(p) = normal \rightarrow getPermissionId(p) \in \\
+        getAppRequestedPerms(getManifestForApp(getAppFromCmp(c,s),s)) \rightarrow\\
+        (ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$ \\ \\
 
-\textit{Si la ejecución de un llamado a la API de Android solo requiere permisos con nivel de protección normal, basta con listar dicho permiso en el manifiesto para estar habilitado a realizar el llamado.}
+    \textit{Si la ejecución de un llamado a la API de Android solo requiere permisos con nivel de protección normal, basta con listar dicho permiso en el manifiesto para estar habilitado a realizar el llamado.}
 \end{prop}
