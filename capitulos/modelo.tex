@@ -147,6 +147,7 @@ declaraciones que se encuentran en el manifiesto son:
 \end{enumerate}
 
 \section{Mecanismo básico de protección: permisos}
+\label{section:android:permissions}
 Como ya mencionamos en la sección \ref{section:architecture:kernel}, existe en Android un mecanismo
 encargado de arbitrar el acceso a la información sensible de las aplicaciones y a algunos recursos del
 sistema. Este mecanismo, al que a lo largo de este trabajo llamaremos \textit{sistema de permisos},
@@ -183,7 +184,7 @@ aplicación se instala.
 
 Los permisos que están asociados a una misma característica de la aplicación o el dispositivo, suelen
 estar agrupados. Por ejemplo, tanto el permiso necesario para leer los mensajes de texto, como el que
-autoriza la recepción de los mismos, pertenecen a un mismo \textit{grupo de permisos} llamado
+autoriza el envío de los mismos, pertenecen a un mismo \textit{grupo de permisos} llamado
 \texttt{SMS}. El principal objetivo de agrupar permisos es evitar abrumar al usuario con preguntas sobre
 la concesión de los mismos. De esta forma, si una aplicación requiere un permiso peligroso que está
 agrupado, el sistema le pedirá que autorice a todo el grupo. En la sección

@@ -97,6 +97,73 @@ definidas como parámetros de tipo $Set$.
 
 \input{tablas/tipos_atomicos}
 
+\subsubsection*{Permisos}
+Los permisos descriptos en la sección \ref{section:android:permissions} fueron formalizados como un
+registro de tres campos: el nombre o identificador del permiso en cuestión, el nombre o identificador del
+grupo al que pertenece el permiso (en caso de que no pertenezca a ningún, lo representaremos mediante el
+valor \textit{None}) y el nivel de protección del mismo. Formalmente,
+
+\begin{align*}
+    Perm\ :=\ \{ idP: idPerm;\ maybeGrp: option\ idGrp;\ pl: permLevel \}
+\end{align*}
+
+El tipo de datos \textit{permLevel} es un tipo de datos enumerado cuyos valores posibles son:
+\textit{normal}, \textit{dangerous} y \textit{signature}. Cada uno de estos valores representa uno de los
+niveles de protección descriptos en la sección \ref{section:android:permissions}.
+
+\subsubsection*{Intents}
+De manera análoga a los permisos (y a la mayoría de los componentes que mencionaremos), también
+utilizamos registros para formalizar a los \textit{intents}. En este caso, los registros poseen una mayor
+cantidad de campos, algunos de ellos representados con estructuras complejas como un nuevo registro. Los
+nueve campos que definen a un \textit{intent} son:
+
+\begin{itemize}
+    \item \textit{idI}, el nombre o identificador del intent,
+    \item \textit{cmpName}, en caso de que el intent esté dirigido a un componente en particular, el
+    identificador del mismo
+    \item \textit{intType}, define el caso de uso del intent. Puede ser: iniciar una actividad, iniciar
+    un servicio o transmitir un evento por \textit{broadcast} a cualquier aplicación interesada
+	\item \textit{action}, la acción que ejecutará el intent. Por ejemplo, el valor \texttt{ACTION\_VIEW}
+	en este campo junto con el \texttt{URI} de un contacto, resultará en el sistema mostrando la
+	información de dicho contacto
+    \item \textit{data}, contiene la información necesaria para identificar los datos que son necesarios
+    para ejecutar la acción en cuestión
+    \item \textit{category}, contiene información adicional sobre la acción a ejecutar
+    \item \textit{extra}, contiene información adicional de cualquier tipo
+    \item \textit{flags}, banderas que contienen información sobre cómo manejar el \textit{intent}
+    \item\textit{brperm}, en caso de que el componente que recibe el intent necesite un permiso para
+    ejecutarlo, el mismo deberá estar listado aquí
+\end{itemize}
+
+
+Formalmente, un \textit{intent} está definido con la siguiente estructura:
+
+\begin{align*}
+    Intent\ &:=\ \{ \\
+        &idI: idInt; \\
+        &cmpName: option\ idCmp; \\
+        &intType: intentType \\
+        &action: option\ intentAction \\
+        &data: Data \\
+        &category: list\ Category \\
+        &extra: option\ Extra \\
+        &flags: option\ Flag \\
+        &brperm: option\ Perm \\
+    \}
+\end{align*}
+
+La estructura $Data$ está definida a su vez como un record que contiene un URI al recurso que obtendrá
+quien reciba el intent, el tipo de dato al que se intentará acceder y, opcionalmente, el tipo de dato en
+formato MIME.
+
+\begin{align*}
+    Data\ :=\ \{ path: option\ uri;\ type: dataType;\ mime: option mimeType \}
+\end{align*}
+
+La estructura $dataType$ es una enumeración que contiene los siguientes valores: $content$, $file$ y
+$other$.
+
+
 \subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
 abstracta [CITA?]. En este modelo, los estados del sistema están conformados por dos componentes: uno
