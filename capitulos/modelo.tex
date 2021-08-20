@@ -67,6 +67,7 @@ interacciones entre las mismas. Por eso, en esta sección, introduciremos alguno
 necesarios para un mejor entendimiento del sistema en cuestión.
 
 \subsection{Componentes de una aplicación}
+\label{section:preliminary:components}
 Las aplicaciones de Android están conformadas por distintas piezas, que a pesar de ser funcionales por
 sí mismas, interactúan entre ellas para otorgar al usuario la funcionalidad esperada. Por ejemplo, en
 una aplicación que reproduce música, existirá un componente que se encargará de presentar la interfaz
@@ -92,8 +93,8 @@ ejecución de procesos largos, que de ser interrumpidos podrían afectar el dese
 Los servicios son puntos de entrada generales a la aplicación, pueden ser iniciados tanto por un
 usuario (a través de una actividad), por otro servicio o por el sistema operativo.
 
-\paragraph{Receptores de mensajes (o \textit{intents}): }
-Un \textit{receptor de intents} es el componente que se encarga de recibir mensajes del sistema y de
+\paragraph{Receptores de anuncios: }
+Un \textit{receptor de anuncios} es el componente que se encarga de recibir mensajes del sistema y de
 otras aplicaciones, incluso cuando la misma no está en ejecución. Por ejemplo, esta es la forma en la
 que el sistema le avisa a todas las aplicaciones que la carga de la batería es baja. Cada aplicación
 establece cuáles son los mensajes de su interés, el resto de los mensajes que reciba simplemente serán

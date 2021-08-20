@@ -185,6 +185,41 @@ conjunto entre la acción y la categoría. En una implementación real, los filt
 construirse con más campos. Sin embargo, para este modelo elegimos estos tres ya que los mismos
 representan las características definitorias de un intent implícito\cite{android-intents}. 
 
+\subsubsection*{Componentes de una aplicación}
+Como mencionamos previamente en la sección \ref{section:preliminary:components}, existen cuatro tipos de
+componentes que pueden conformar a una aplicación de Android: actividades, servicios, receptores de
+anuncios y proveedores de contenido. Los tres primeros fueron definidos análogamente. Todos están
+representados por un registro de cuatro campos que contiene: un identificador, un indicador sobre si el
+componente está exportado o no (es decir, si componentes de otras aplicaciones pueden interactuar con el
+mismo), el permiso (en caso de existir) que protege al componente y una lista de los filtros de
+\textit{intents} definidos por el mismo. A modo de ejemplo, mostraremos la definición formal de una
+actividad:
+
+\begin{align*}
+    Activity\ &:=\ \{ \\
+        &id: idCmp; \\
+        &exp: bool \\
+        &perm: option\ Perm \\
+        &intFilter: list\ IntentFilter \\
+    \}
+\end{align*}
+
+Para el caso de los proveedores de contenidos, el registro se extiende con los siguientes valores:
+
+\begin{itemize}
+    \item \textit{readPerm} y \textit{writePerm}, permitiendo una mayor granularidad en los permisos
+    necesarios para leer o escribir del mismo. En caso de que estos valores existan, tienen priorided por
+    encima de \textit{perm}.
+    \item \textit{grantU} (nombrado así para acortar el nombre \textit{grantUriPermissions}), un campo de
+    valor \textit{booleano} encargado de indicar si el componente tiene la capacidad de delegar permisos
+    de escritura/lectura sobre sus recursos.
+    \item \textit{map\_res}, un mapa que asocia URIs con recursos.
+    \item \textit{uri}, una lista con todos los URIs pertenecientes al proveedor de contenido. El valor
+    de este campo coincide con el listado de las claves del mapa definido anteriormente. Sin embargo,
+    decidimos agregarlo al componente para simplificar algunas demostraciones.
+\end{itemize}
+
+
 
 \subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
