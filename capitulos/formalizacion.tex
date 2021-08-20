@@ -123,12 +123,16 @@ nueve campos que definen a un \textit{intent} son:
     identificador del mismo
     \item \textit{intType}, define el caso de uso del intent. Puede ser: iniciar una actividad, iniciar
     un servicio o transmitir un evento por \textit{broadcast} a cualquier aplicación interesada
-	\item \textit{action}, la acción que ejecutará el intent. Por ejemplo, el valor \texttt{ACTION\_VIEW}
-	en este campo junto con el \texttt{URI} de un contacto, resultará en el sistema mostrando la
-	información de dicho contacto
+	\item \textit{action}, la acción que ejecutará el intent. Los valores posibles de este campo son
+	genéricos; por ejemplo, tenemos la acción de "ver" (representada por la constante
+	\texttt{ACTION\_VIEW}) o la acción de "enviar" (representada por \texttt{ACTION\_SEND}). Para definir
+	qué dato puede verse o enviarse y para definir qué componente será el encargado de hacerlo, deben
+	utilizarse otros datos presentes en el \textit{intent} (\textit{data} y \textit{category},
+	respectivamente).
     \item \textit{data}, contiene la información necesaria para identificar los datos que son necesarios
     para ejecutar la acción en cuestión
-    \item \textit{category}, contiene información adicional sobre la acción a ejecutar
+    \item \textit{category}, contiene información adicional sobre la acción y el componente que puede
+    llevarla a cabo. Es utilizado principalmente en los intents implícitos.
     \item \textit{extra}, contiene información adicional de cualquier tipo
     \item \textit{flags}, banderas que contienen información sobre cómo manejar el \textit{intent}
     \item\textit{brperm}, en caso de que el componente que recibe el intent necesite un permiso para
@@ -162,6 +166,24 @@ formato MIME.
 
 La estructura $dataType$ es una enumeración que contiene los siguientes valores: $content$, $file$ y
 $other$.
+
+\subsubsection*{Filtros de intents}
+Los filtros de intents están definidos como registros de tres valores. Cada uno de ellos actúa como un
+filtro sobre algún campo del intent en cuestión. Formalmente:
+
+\begin{align*}
+    IntentFilter\ &:=\ \{ \\
+        &actFilter: list\ intentAction; \\
+        &dataFilter: list\ Data \\
+        &catFitler: list\ Category \\
+    \}
+\end{align*}
+
+Coloquialmente, al construir un elemento de tipo \texttt{IntentFilter} construiremos un filtro que
+establecerá qué tipos de acciones pueden ejecutarse sobre qué datos. El "tipo de acción" se define en
+conjunto entre la acción y la categoría. En una implementación real, los filtros de intents pueden
+construirse con más campos. Sin embargo, para este modelo elegimos estos tres ya que los mismos
+representan las características definitorias de un intent implícito\cite{android-intents}. 
 
 
 \subsection{Definición de estado}
