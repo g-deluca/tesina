@@ -161,7 +161,7 @@ quien reciba el intent, el tipo de dato al que se intentará acceder y, opcional
 formato MIME.
 
 \begin{align*}
-    Data\ :=\ \{ path: option\ uri;\ type: dataType;\ mime: option mimeType \}
+    Data\ :=\ \{ path: option\ uri;\ type: dataType;\ mime: option\ mimeType \}
 \end{align*}
 
 La estructura $dataType$ es una enumeración que contiene los siguientes valores: $content$, $file$ y
@@ -220,6 +220,52 @@ Para el caso de los proveedores de contenidos, el registro se extiende con los s
 \end{itemize}
 
 
+\subsubsection*{Manifiesto}
+Como mencionamos previamente en \ref{section:preliminary:manifest}, el manifiesto de una aplicación
+contiene información estática sobre la misma. Nuestra representación de un manifiesto, está acotada a los
+datos que nos interesaban ver en algunas propiedades y por supuesto, es incompleta. Lo definimos a través
+de un registro de seis valores, conformado por:
+
+\begin{itemize}
+    \item \textit{cmp}, aquí se listan los componentes que conforman la aplicación.
+    \item \textit{targetSdk}, la versión de Android para la cual fue pensada/diseñada la aplicación.
+    \item \textit{minSdk}, la versión mínima de Android necesaria para poder ejecutar la aplicación.
+    Aquellos dispositivos que cumplan con este valor pero no con el anterior, podrán ejecutar la
+    aplicación con capacidades reducidas.
+    \item \textit{use}, aquí se declaran los permisos que la aplicación necesitará para funcionar
+    correctamente. Los permisos que no estén aquí declarados no podrán ser otorgados a la aplicación bajo
+    ninguna circunstancia.
+    \item \textit{usrP}, aquí se listan los permisos declarados por la aplicación
+    \item \textit{appE}, aquí se declara, si corresponde, un permiso de seguridad que se puede utilizar
+    para limitar el acceso a funciones o componentes específicos de esta aplicación.
+\end{itemize}
+
+Formalmente,
+
+\begin{align*}
+    Manifest\ &:=\ \{ \\
+        &cmp: list\ Cmp; \\
+        &minSdk: option\ nat \\
+        &targetSdk: option\ nat \\
+        &use: list\ idPerm \\
+        &usrP: list\ Perm \\
+        &appE: option\ Perm \\
+    \}
+\end{align*}
+
+\subsubsection*{Aplicaciones}
+A diferencia de los componentes que definimos hasta ahora, las aplicaciones instaladas por el usuario no
+poseen una estructura delimitada por un registro. La representación de las mismas es más abstracta:
+consta de un identificador (de tipo $idApp$) y de distintos \textit{mapeos}, guardados en el estado del
+sistema, hacia las distintas partes que la conforman. Por ejemplo, el estado del sistema mantendrá una
+relación entre los identificadores de las aplicaciones ($idApp$) y su manifiesto (de tipo $Manifest$). A
+continuación, cuando definamos el estado, se explicitarán todos los datos asociados a las aplicaciones.
+
+Distinto es lo que sucede con las aplicaciones pre-instaladas en el sistema. Las mismas sí cuentan con
+una estructura definida por un registro, con la siguiente información: un identificador, el certificado
+con el que fue firmada, el manifiesto y un listado de los recursos y permisos que la aplicación define.
+Como estas aplicaciones no pueden ser desinstaladas ni modificadas, esta información se almacenará en
+forma de lista en la parte estática del estado del sistema.
 
 \subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
