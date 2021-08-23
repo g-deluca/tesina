@@ -30,20 +30,38 @@ En las siguientes secciones  utilizaremos la misma notación de los trabajos
 previos~\cite{luna-cleiej,betarte-2017,betarte-2016}. La misma es similar a la sintaxis de Haskell.
 
 \subsection{Estructuras de datos y tipos generales}
-TODO: COMPLETAR ESTA SECCIÓN
-
 Los diccionarios (más conocidos como \textit{records} por su nombre en inglés) tendrán la forma $\{
     l_1: T_1, ..., l_n: T_n \}$ y notaremos el acceso a cada uno de sus elementos como $r.l_n$. También
 usaremos $\{ T \}$ para definir el tipo del conjunto que contiene elementos de tipo $T$.
 
-Definir tipos inductivos blablabla
+Para representar tuplas utilizaremos el producto cartesiano. Por ejempo, si $A$ y $B$ son los tipos de
+los elementos de una tupla de tipo $T$, lo notaremos como $ T = (A * B)$.
 
-Para denotar el tipo de las funciones utilizaremos el símbolo $ \rightarrow$. Por ejemplo, una función
-$f$ que toma un argumento de tipo $A$ y uno de tipo $B$ y devuelve un valor de tipo $C$, se notará
-como $F: A \rightarrow B \rightarrow C$. Usaremos siempre la notación currificada.
+Finalmente, para denotar mapeos entre valores (o funciones parciales), decidimos usar la palabra clave
+utilizada en Coq: \textit{mapping}. En caso de querer relacionar elementos de tipo $A$ con elementos de
+tipo $B$, notaremos $mapping\ A\ B$
+
+
+\subsubsection*{Tipos enumerados}
+Para definir enumeraciones utilizaremos los tipos inductivos nativos de Coq. Puede parecer algo excesivo
+utilizar algo tan complejo como la inducción para representar una enumeración de valores, pero es la
+única forma en la que puede lograrse dicha representación sin utilizar librerías o extensiones del
+lenguaje. En definitiva, un tipo enumerado es un tipo inductivo cuyos habitantes están definidos por
+extensión.
+
+Por ejemplo, el nivel de protección de los permisos está definido de la siguiente manera:
+
+\begin{flalign*}
+    Inductive\ permLevel: Set\ &:= &&\\
+    &|\ dangerous &&\\
+    &|\ normal &&\\
+    &|\ signature &&\\
+    &|\ signatureOrSys &&
+\end{flalign*}
 
 \subsection{Tipos básicos de Coq}
 A continuación detallaremos algunos de los tipos básicos de Coq más utilizados en esta tesina.
+
 \subsubsection*{Tipo \textit{option}}
 \begin{flalign*}
     Inductive\ option\ T\ &:= &&\\
