@@ -20,3 +20,75 @@ A continuación, describiremos las principales características de nuestra imple
 de permisos de Android y algunas propiedades demostradas sobre la misma.
 
 \section{Características principales}
+Nuestra implementación de la plataforma consiste de un conjunto de funciones definidas en Coq de
+manera tal que por cada acción dada en la especificación existe una función encargada de llevarla a
+cabo. Estas funciones son, básicamente, transformadores de estado. Si bien sus definiciones son
+distintas entre sí, pues tienen semánticas muy diferentes, todas respetan el mismo patrón. Primero,
+en un estado inicial, se evalúa si una expresión \textit{booleana} equivalente a la precondición de
+la acción se satisface. En caso de que la misma se satisfaga, se ejecuta una función auxiliar
+encargada de mutar el estado de manera tal que el nuevo estado cumpla con la postcondición
+establecida por la acción del modelo. En caso de que la precondición no se cumpla, el estado no
+sufre cambios y se devuelve un mensaje de error.
+
+A modo de ejemplo, explicaremos con un poco más de detalle la implementación de la acción $grant$.
+En la figura \ref{fig:install_action} puede observarse su definición formal. La definición formal
+completa del esta y el resto de las operaciones puede encontrarse en el anexo.
+\todoGuido{Tiene sentido agregar un anexo para esto? Si no referencio directamente el código}
+
+\begin{figure}[ht]
+    \begin{displaymath}
+        \begin{array}{l}
+            \textbf{Definition}\ grant\_safe(perm, app, s)\ : Result\ :=                \\
+            \quad \textbf{match}\ grant\_pre(perm, app, s)\ \textbf{with}               \\
+            \quad \hspace{1cm} |\ Some\ ec\ \Rightarrow\ \{\ap{error}{ec},s\}           \\
+            \quad \hspace{1cm} |\ None\ \Rightarrow\ \{ok, grant\_post(perm, app, s) \} \\
+            \quad\ \textbf{end}.                                                        \\
+        \end{array}
+    \end{displaymath}
+    \caption{Definición de la función $grant\_safe$, encargada de ejecutar la acción $grant$.}
+    \label{fig:install_action}
+\end{figure}
+
+La función $grant\_pre$ se define como la conjunción de todas las condiciones establecidas por la
+precondición de $grant$. En ella también se especifica el error que debe mostrarse cuando alguna de
+ellas no se cumple. Por otro lado, la función $grant\_post$ implementa la modificación esperada en el
+estado: el permiso $perm$ pasa a formar parte de los permisos otorgados a la aplicación $app$ y, si
+el mismo estuviera agrupado, su grupo también se agregaría al listado de grupos autorizados por el
+usuario para el otorgamiento automático de permisos a la aplicación correspondiente.
+
+Luego, tanto a $grant\_safe$ como al resto de las operaciones definidas de manera análoga, se las
+agrupa en una función llamada $step$, que actúa principalmente como un despachador de acciones. En
+la figura \ref{fig:step} se muestra la estructura de la misma.
+
+\begin{figure}[ht]
+    \begin{displaymath}
+        \begin{array}{l}
+            \textbf{Definition}\ step(s,a)\ :=\                                                               \\
+            \quad \textbf{match}\ a\ \textbf{with}                                                            \\
+            \quad  \hspace{1cm} |\ \ldots \Rightarrow\ \ldots                                                 \\
+            \quad  \hspace{1cm} |\  \texttt{grant}\ perm\ app\ \Rightarrow\ grant\_safe(perm, app, s)         \\
+            \quad  \hspace{1cm} |\  \texttt{grantAuto}\ perm\ app\ \Rightarrow\ grantAuto\_safe(perm, app, s) \\
+            \quad  \hspace{1cm} |\ \ldots \Rightarrow\ \ldots                                                 \\
+            \quad\ \textbf{end}.
+        \end{array}
+    \end{displaymath}
+    \caption{Estructura de la función $step$}
+    \label{fig:step}
+\end{figure}
+
+Finalmente, definimos una función $trace$ que captura la idea de ejecutar acciones sucesivas en el
+sistema. Dado un estado inicial y una lista de acciones, esta función será la encargada de ir
+concatenandolas de manera tal que el estado obtenido como resultado de una acción sea utilizado como
+estado inicial de la siguiente. Mostramos su definición a continuación.
+
+\begin{displaymath}
+    \begin{array}{l}
+        \textbf{Function}\ trace\ (s:\AndroidState)\ (actions:list\ \Action)\ :\ list\ \AndroidState \ :=                             \\
+        \quad \textbf{match}\ actions\ \textbf{with}                                                                                  \\
+        \quad \hspace{1cm} |\ nil\ \Rightarrow\ nil                                                                                   \\
+        \quad \hspace{1cm} |\ action::rest\ \Rightarrow\ \textbf{let}\ s'\ :=\ (step\ s\ action).st\ \textbf{in}\ s'::trace\ s'\ rest \\
+        \quad \textbf{end}.
+    \end{array}
+\end{displaymath}
+
+\section{Corrección de la implementación}
