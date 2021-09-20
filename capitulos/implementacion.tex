@@ -55,6 +55,7 @@ ellas no se cumple. Por otro lado, la función $grant\_post$ implementa la modif
 estado: el permiso $perm$ pasa a formar parte de los permisos otorgados a la aplicación $app$ y, si
 el mismo estuviera agrupado, su grupo también se agregaría al listado de grupos autorizados por el
 usuario para el otorgamiento automático de permisos a la aplicación correspondiente.
+\todoGuido{en algún lugar de por acá tengo que mostrar el tipo Result}
 
 Luego, tanto a $grant\_safe$ como al resto de las operaciones definidas de manera análoga, se las
 agrupa en una función llamada $step$, que actúa principalmente como un despachador de acciones. En
@@ -94,18 +95,69 @@ estado inicial de la siguiente. Mostramos su definición a continuación.
 \section{Corrección de la implementación}
 Como mencionamos previamente, contar con una formalización de un sistema, permite desarrollar
 sistemas correctos, confiables, en el sentido de tener garantías de que el comportamiento de los
-mismos será adecuado según lo dictamine la especificación de cada uno. En este caso, formulamos un
+mismos será adecuado según lo dictamine la especificación de cada uno. En este caso, demostramos un
 teorema en Coq que garantiza que cualquier acción ejecutada por nuestra implementación, partiendo de
 un estado válido, es un ejecución correcta del sistema.
 
 
 \begin{theorem}
-    [Correctness of the reference validation mechanism] \label{theorem:soundness}
-    \footnotesize
+    [Corrección del monitor de referencia] \label{theorem:soundness}
     \mbox{} \\
     $ \begin{array}[t]{l}
-            \forall\ (s:\AndroidState)\ (a:\Action),
-            \ap{valid\_state}{s} \rightarrow\
+            \forall\ (s:\AndroidState)\ (a:\Action),     \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\
             s\step{a/step(s,a).resp} \bap{step}{s}{a}.st \\
         \end{array} $
 \end{theorem}
+
+Comenzamos la demostración de este teorema haciendo inducción en la acción a ejecutar. De esta
+manera, podemos subdividir la prueba en lemas más pequeños, y demostrar la corrección de cada una de
+las operaciones por separado. Luego, cada uno de estos sub-lemas posee la misma estructura: dada una
+acción, demostraremos por un lado que la ejecución es correcta cuando se cumple la pre-condición; y
+por otro, demostraremos que la ejecución también lo es cuando la pre-condición no se satisface. A
+modo de ejemplo, presentamos el caso de la operación $grant$.
+
+\begin{lemma}
+    [Corrección de una ejecución válida de $grant$]
+    \mbox{} \\
+    $ \begin{array}[t]{l}
+            \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),                          \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\ Pre(s, grant\ p\ a) \rightarrow \\
+            \quad \quad Post(                                                             \\
+            \quad \quad \quad grant\_safe(p, app, s).st,\ grant\ p\ a)                    \\
+        \end{array} $
+\end{lemma}
+
+\begin{lemma}
+    [Corrección de una ejecución errónea de $grant$]
+    \mbox{} \\
+    $ \begin{array}[t]{l}
+            \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),                                           \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\ \neg Pre(s, grant\ p\ a) \rightarrow             \\
+            \quad \quad grant\_safe(p, app, s).st = s\ \land                                               \\
+            \quad \quad \quad (\exists\ (ec: \ErrorCode),\ grant\_safe(p,\ app,\ s).response\ =\ error\ ec \\
+            \quad \quad \quad \quad \land\ ErrorMsg\ s\ (grant\ p\ a)\ ec)                                 \\
+        \end{array} $
+\end{lemma}
+
+Con esos dos lemas demostrados, obtener una prueba de la corrección de la operación $grant$ se
+reduce, a grandes rasgos, a diferenciar los casos en que la pre-condición se cumple de lo que no,
+para luego aplicar el sub-lema correspondiente.
+
+\begin{theorem}
+    [Corrección de la operación $grant$] \label{lemma:soundness:grant}
+    \mbox{} \\
+    $ \begin{array}[t]{l}
+            \forall\ (s:\AndroidState)\ (app:\AppId) (p:\Perm),                                                    \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\                                                          \\
+            \quad \quad \quad s\step{grant\ p\ a\ /\ step(s,\ grant\ p\ a).response} \bap{step}{s}{grant\ p\ a}.st \\
+        \end{array} $
+\end{theorem}
+
+La demostración completa del lema \ref{lemma:soundness:grant} puede encontrarse en el módulo
+\texttt{GrantIsSound.v} en el código de la formalización\cite{github-code}. Análogamente, la
+demostración para cada una de las otras acciones puede encontrarse en el módulo
+\texttt{<Action>IsSound.v}. La demostración del teorema \ref{theorem:soundness} se encuentra en el
+módulo \texttt{Soundness.v}.
+
+\section{Propiedades sobre la implementación}
