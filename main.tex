@@ -8,7 +8,7 @@
 \usepackage{mdframed}
 % \usepackage{amsfonts}
 % \usepackage{amssymb}
-% \usepackage{amsthm}
+\usepackage{amsthm}
 % \usepackage{enumerate}
 % \usepackage{color}
 % \usepackage{graphicx}
@@ -18,8 +18,10 @@
 \usepackage[inference]{semantic}
 
 
-\newcommand{\todoGuido}[1]{\todo[color=red]{Guido: {#1}}}
+\newcommand{\todoGuido}[1]{\todo[color=pink]{Guido: {#1}}}
 \newcommand{\todoCarlos}[1]{\todo[color=green]{Carlos: {#1}}}
+\newcommand{\thmref}[1]{Theorem~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
 
 \addbibresource{referencias.bib}
 \setcounter{tocdepth}{1}

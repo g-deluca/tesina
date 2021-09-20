@@ -159,66 +159,67 @@
 
 %%%% begin macro %%%%
 \newenvironment{changemargin}[2]{\begin{list}{}{% 
-\setlength{\topsep}{0pt}% 
-\setlength{\leftmargin}{0pt}% 
-\setlength{\rightmargin}{0pt}% 
-\setlength{\listparindent}{\parindent}% 
-\setlength{\itemindent}{\parindent}% 
-\setlength{\parsep}{0pt plus 1pt}% 
-\addtolength{\leftmargin}{#1}% 
-\addtolength{\rightmargin}{#2}% 
-}\item }{\end{list}} 
+        \setlength{\topsep}{0pt}% 
+        \setlength{\leftmargin}{0pt}% 
+        \setlength{\rightmargin}{0pt}% 
+        \setlength{\listparindent}{\parindent}% 
+        \setlength{\itemindent}{\parindent}% 
+              \setlength{\parsep}{0pt plus 1pt}% 
+              \addtolength{\leftmargin}{#1}% 
+              \addtolength{\rightmargin}{#2}% 
+              }\item }{\end{list}}
 %%%% end macro %%%% 
 
 \newcommand{\actdefsection}[1]{
-\begin{changemargin}{-\bcextramargin}{0pt}
-\vspace{1ex}
-\noindent
-\textbf{{#1}}
-\end{changemargin}
+    \begin{changemargin}{-\bcextramargin}{0pt}
+        \vspace{1ex}
+        \noindent
+        \textbf{{#1}}
+    \end{changemargin}
 }
 
 
 \newenvironment{actdef}[2]{
-\begin{changemargin}{\bcextramargin}{0pt}
-{#1}
-}
-{
-\end{changemargin}}
+    \begin{changemargin}{\bcextramargin}{0pt}
+        {#1}
+        }
+        {
+    \end{changemargin}}
 
 
 %%%%% rule
 \newenvironment{actdefrule}[1]{
-\begin{absolutelynopagebreak}
-\noindent
-\actdefsection{Rule}
-\vspace{4pt}
-\begin{tabular}{|c|}
-\hline
-#1
-}
-{\\\hline
-\end{tabular}
-\end{absolutelynopagebreak}
+    \begin{absolutelynopagebreak}
+        \noindent
+        \actdefsection{Rule}
+        \vspace{4pt}
+        \begin{tabular}{|c|}
+            \hline
+            #1
+            }
+            { \\\hline
+        \end{tabular}
+    \end{absolutelynopagebreak}
 }
 
 %%%%% text
 \newenvironment{actdeftext}[1]{
-\noindent
-\actdefsection{#1}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{1pt}
+    \noindent
+    \actdefsection{#1}
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{1pt}
 }
 {
 }
 
 \newenvironment{absolutelynopagebreak}
-  {\par\nobreak\vfil\penalty0\vfilneg
-   \vtop\bgroup}
-  {\par\xdef\tpd{\the\prevdepth}\egroup
-   \prevdepth=\tpd}
+{\par\nobreak\vfil\penalty0\vfilneg
+    \vtop\bgroup}
+{\par\xdef\tpd{\the\prevdepth}\egroup
+    \prevdepth=\tpd}
 
 % Theorem macros. Remove if necessary
 \newcommand{\Theorem}[1]{\textbf{Theorem} \begin{math} #1 \end{math} \\}
 \newcommand{\Mathexecrel}[3]{#1 \semstep{#2} #3}
 \newmdtheoremenv{prop}{Propiedad}
+\newmdtheoremenv{theorem}{Teorema}

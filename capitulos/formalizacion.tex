@@ -138,39 +138,39 @@ nueve campos que definen a un \textit{intent} son:
 \begin{itemize}
     \item \textit{idI}, el nombre o identificador del intent,
     \item \textit{cmpName}, en caso de que el intent esté dirigido a un componente en particular, el
-    identificador del mismo
+          identificador del mismo
     \item \textit{intType}, define el caso de uso del intent. Puede ser: iniciar una actividad, iniciar
-    un servicio o transmitir un evento por \textit{broadcast} a cualquier aplicación interesada
-	\item \textit{action}, la acción que ejecutará el intent. Los valores posibles de este campo son
-	genéricos; por ejemplo, tenemos la acción de "ver" (representada por la constante
-	\texttt{ACTION\_VIEW}) o la acción de "enviar" (representada por \texttt{ACTION\_SEND}). Para definir
-	qué dato puede verse o enviarse y para definir qué componente será el encargado de hacerlo, deben
-	utilizarse otros datos presentes en el \textit{intent} (\textit{data} y \textit{category},
-	respectivamente).
+          un servicio o transmitir un evento por \textit{broadcast} a cualquier aplicación interesada
+    \item \textit{action}, la acción que ejecutará el intent. Los valores posibles de este campo son
+          genéricos; por ejemplo, tenemos la acción de "ver" (representada por la constante
+          \texttt{ACTION\_VIEW}) o la acción de "enviar" (representada por \texttt{ACTION\_SEND}). Para definir
+          qué dato puede verse o enviarse y para definir qué componente será el encargado de hacerlo, deben
+          utilizarse otros datos presentes en el \textit{intent} (\textit{data} y \textit{category},
+          respectivamente).
     \item \textit{data}, contiene la información necesaria para identificar los datos que son necesarios
-    para ejecutar la acción en cuestión
+          para ejecutar la acción en cuestión
     \item \textit{category}, contiene información adicional sobre la acción y el componente que puede
-    llevarla a cabo. Es utilizado principalmente en los intents implícitos.
+          llevarla a cabo. Es utilizado principalmente en los intents implícitos.
     \item \textit{extra}, contiene información adicional de cualquier tipo
     \item \textit{flags}, banderas que contienen información sobre cómo manejar el \textit{intent}
     \item\textit{brperm}, en caso de que el componente que recibe el intent necesite un permiso para
-    ejecutarlo, el mismo deberá estar listado aquí
+          ejecutarlo, el mismo deberá estar listado aquí
 \end{itemize}
 
 
 Formalmente, un \textit{intent} está definido con la siguiente estructura:
 
 \begin{align*}
-    Intent\ &:=\ \{ \\
-        &idI: idInt; \\
-        &cmpName: option\ idCmp; \\
-        &intType: intentType \\
-        &action: option\ intentAction \\
-        &data: Data \\
-        &category: list\ Category \\
-        &extra: option\ Extra \\
-        &flags: option\ Flag \\
-        &brperm: option\ Perm \\
+    Intent\  & :=\ \{                       \\
+             & idI: idInt;                  \\
+             & cmpName: option\ idCmp;      \\
+             & intType: intentType          \\
+             & action: option\ intentAction \\
+             & data: Data                   \\
+             & category: list\ Category     \\
+             & extra: option\ Extra         \\
+             & flags: option\ Flag          \\
+             & brperm: option\ Perm         \\
     \}
 \end{align*}
 
@@ -190,10 +190,10 @@ Los filtros de intents están definidos como registros de tres valores. Cada uno
 filtro sobre algún campo del intent en cuestión. Formalmente:
 
 \begin{align*}
-    IntentFilter\ &:=\ \{ \\
-        &actFilter: list\ intentAction; \\
-        &dataFilter: list\ Data \\
-        &catFitler: list\ Category \\
+    IntentFilter\  & :=\ \{                         \\
+                   & actFilter: list\ intentAction; \\
+                   & dataFilter: list\ Data         \\
+                   & catFitler: list\ Category      \\
     \}
 \end{align*}
 
@@ -201,7 +201,7 @@ Coloquialmente, al construir un elemento de tipo \texttt{IntentFilter} construir
 establecerá qué tipos de acciones pueden ejecutarse sobre qué datos. El "tipo de acción" se define en
 conjunto entre la acción y la categoría. En una implementación real, los filtros de intents pueden
 construirse con más campos. Sin embargo, para este modelo elegimos estos tres ya que los mismos
-representan las características definitorias de un intent implícito\cite{android-intents}. 
+representan las características definitorias de un intent implícito\cite{android-intents}.
 
 \subsubsection*{Componentes de una aplicación}
 Como mencionamos previamente en la sección \ref{section:preliminary:components}, existen cuatro tipos de
@@ -214,11 +214,11 @@ mismo), el permiso (en caso de existir) que protege al componente y una lista de
 actividad:
 
 \begin{align*}
-    Activity\ &:=\ \{ \\
-        &id: idCmp; \\
-        &exp: bool \\
-        &perm: option\ Perm \\
-        &intFilter: list\ IntentFilter \\
+    Activity\  & :=\ \{                        \\
+               & id: idCmp;                    \\
+               & exp: bool                     \\
+               & perm: option\ Perm            \\
+               & intFilter: list\ IntentFilter \\
     \}
 \end{align*}
 
@@ -226,15 +226,15 @@ Para el caso de los proveedores de contenidos, el registro se extiende con los s
 
 \begin{itemize}
     \item \textit{readPerm} y \textit{writePerm}, permitiendo una mayor granularidad en los permisos
-    necesarios para leer o escribir del mismo. En caso de que estos valores existan, tienen priorided por
-    encima de \textit{perm}.
+          necesarios para leer o escribir del mismo. En caso de que estos valores existan, tienen priorided por
+          encima de \textit{perm}.
     \item \textit{grantU} (nombrado así para acortar el nombre \textit{grantUriPermissions}), un campo de
-    valor \textit{booleano} encargado de indicar si el componente tiene la capacidad de delegar permisos
-    de escritura/lectura sobre sus recursos.
+          valor \textit{booleano} encargado de indicar si el componente tiene la capacidad de delegar permisos
+          de escritura/lectura sobre sus recursos.
     \item \textit{map\_res}, un mapa que asocia URIs con recursos.
     \item \textit{uri}, una lista con todos los URIs pertenecientes al proveedor de contenido. El valor
-    de este campo coincide con el listado de las claves del mapa definido anteriormente. Sin embargo,
-    decidimos agregarlo al componente para simplificar algunas demostraciones.
+          de este campo coincide con el listado de las claves del mapa definido anteriormente. Sin embargo,
+          decidimos agregarlo al componente para simplificar algunas demostraciones.
 \end{itemize}
 
 
@@ -248,26 +248,26 @@ de un registro de seis valores, conformado por:
     \item \textit{cmp}, aquí se listan los componentes que conforman la aplicación.
     \item \textit{targetSdk}, la versión de Android para la cual fue pensada/diseñada la aplicación.
     \item \textit{minSdk}, la versión mínima de Android necesaria para poder ejecutar la aplicación.
-    Aquellos dispositivos que cumplan con este valor pero no con el anterior, podrán ejecutar la
-    aplicación con capacidades reducidas.
+          Aquellos dispositivos que cumplan con este valor pero no con el anterior, podrán ejecutar la
+          aplicación con capacidades reducidas.
     \item \textit{use}, aquí se declaran los permisos que la aplicación necesitará para funcionar
-    correctamente. Los permisos que no estén aquí declarados no podrán ser otorgados a la aplicación bajo
-    ninguna circunstancia.
+          correctamente. Los permisos que no estén aquí declarados no podrán ser otorgados a la aplicación bajo
+          ninguna circunstancia.
     \item \textit{usrP}, aquí se listan los permisos declarados por la aplicación
     \item \textit{appE}, aquí se declara, si corresponde, un permiso de seguridad que se puede utilizar
-    para limitar el acceso a funciones o componentes específicos de esta aplicación.
+          para limitar el acceso a funciones o componentes específicos de esta aplicación.
 \end{itemize}
 
 Formalmente,
 
 \begin{align*}
-    Manifest\ &:=\ \{ \\
-        &cmp: list\ Cmp; \\
-        &minSdk: option\ nat \\
-        &targetSdk: option\ nat \\
-        &use: list\ idPerm \\
-        &usrP: list\ Perm \\
-        &appE: option\ Perm \\
+    Manifest\  & :=\ \{                 \\
+               & cmp: list\ Cmp;        \\
+               & minSdk: option\ nat    \\
+               & targetSdk: option\ nat \\
+               & use: list\ idPerm      \\
+               & usrP: list\ Perm       \\
+               & appE: option\ Perm     \\
     \}
 \end{align*}
 
@@ -493,6 +493,8 @@ Formalmente, las posibles respuestas de sistema se definen a través de la sigui
         \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$ErrorMsg(s, a, ec)$$}{$$s\step{a/error(ec)}s$$}
     \end{array}
 \end{displaymath}
+
+\todoGuido{Falta el teorema de invarianza!!}
 
 \section{Propiedades del modelo}
 

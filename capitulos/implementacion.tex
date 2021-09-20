@@ -92,3 +92,20 @@ estado inicial de la siguiente. Mostramos su definición a continuación.
 \end{displaymath}
 
 \section{Corrección de la implementación}
+Como mencionamos previamente, contar con una formalización de un sistema, permite desarrollar
+sistemas correctos, confiables, en el sentido de tener garantías de que el comportamiento de los
+mismos será adecuado según lo dictamine la especificación de cada uno. En este caso, formulamos un
+teorema en Coq que garantiza que cualquier acción ejecutada por nuestra implementación, partiendo de
+un estado válido, es un ejecución correcta del sistema.
+
+
+\begin{theorem}
+    [Correctness of the reference validation mechanism] \label{theorem:soundness}
+    \footnotesize
+    \mbox{} \\
+    $ \begin{array}[t]{l}
+            \forall\ (s:\AndroidState)\ (a:\Action),
+            \ap{valid\_state}{s} \rightarrow\
+            s\step{a/step(s,a).resp} \bap{step}{s}{a}.st \\
+        \end{array} $
+\end{theorem}
