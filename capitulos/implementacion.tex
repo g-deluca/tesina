@@ -161,3 +161,123 @@ demostración para cada una de las otras acciones puede encontrarse en el módul
 módulo \texttt{Soundness.v}.
 
 \section{Propiedades sobre la implementación}
+De la misma manera en la que en la sección \ref{section:formalization:properties} describimos las
+propiedades demostradas sobre la especificación, a continuación presentaremos algunas propiedades
+que fueron demostradas sobre nuestra implementación. Las mismas, en general, establecen condiciones
+de \textit{safety} sobre ciertas trazas de ejecución que consideramos de interés.
+
+La primer propiedad establece que si nuestra implementación permite que una aplicación
+\textit{legacy} sea ejecutada normalmente, entonces podemos asegurar que el usuario la ha verificado
+previamente. Para generalizar esta situación, definimos una traza $t$ de longitud $l$, de la que
+solo sabemos que:
+\begin{itemize}
+    \item En el primer estado de la traza la aplicación \textbf{no} está en condiciones de ser
+          ejecutada
+    \item En el último estado de la traza la aplicación \textbf{sí} puede ser ejecutada
+\end{itemize}
+
+Además de estas condiciones necesarias y relevantes para la propiedad en cuestión, requerimos que
+durante la ejecución de la traza $t$, la aplicación no sea desinstalada. Esto es necesario porque,
+dado el nivel de abstracción del modelo, si desinstalamos la aplicación e instalamos una nueva,
+ambas aplicaciones podrían recibir el mismo identificador. De esta manera, al evaluar una condición
+en el estado inicial de la traza estaríamos referenciando a una aplicación; mientras que al evaluar
+la isma condición en el estado final, estaríamos refiriéndonos a una aplicación distinta. La
+decisión de agregar la precondición de que la aplicación no sea desinstalada a esta -y a las
+siguientes- propiedades, fue tomada en pos de mantener la sencillez en las demostraciones.
+
+\begin{prop}
+    \label{section:implementation:oldapp}
+    \mbox{} \\
+    $	\forall
+        (initState,lastState:\AndroidState)
+        (app:AppId)
+        (l: list\ \Action)$, \\
+    $	valid\_state(initState) \rightarrow
+        app \in getInstalledApps(initState) \rightarrow \\
+        oldAppNotVerified(a, initState) \rightarrow
+        canRun(a, lastState) \rightarrow \\
+        last(trace(initState,l),initState) = lastState \rightarrow  \\
+        uninstall~app \notin l \rightarrow
+        verifyOldApp~app \in l $ \\ \\
+    \textit{Si una aplicación vieja puede ser ejecutada entonces debe haber sido autorizada por el usuario previamente.}
+\end{prop}
+
+Similarmente, la siguiente propiedad establece que si al comenzar una traza de ejecución una
+aplicación no posee un permiso peligroso y en el estado final sí, entonces en algún momento de la
+ejecución de esa traza el permiso fue explícitamente otorgado. Notar que "explícitamente" significa
+que el permiso puede haber sido otorgado por el usuario o automáticamente por el sistema. Lo que se
+busca resaltar es que hay una entidad responsable de ese otorgamiento. Esta propiedad es importante
+para marcar la diferencia con lo que ocurría en versions previas de Android, explicado en la
+sección~\ref{subsection:recent-changes:grouped-permissions}.
+
+\begin{prop}
+    \label{impproperty2}
+    \mbox{} \\
+    $	\forall
+        (initState,lastState:\AndroidState)
+        (app:AppId)
+        (p:\Perm)
+        (l: list\ \Action)$, \\
+    $	valid\_state(initState) \rightarrow
+        app \in getInstalledApps(initState) \rightarrow$ \\
+    $	getPermissionLevel(p)= dangerous \rightarrow $\\
+    $	appHasPermission(app,p,lastState) \rightarrow$\\
+    $	\neg appHasPermission(app,p,initState)\rightarrow
+        \texttt{uninstall}~app \notin l \rightarrow $ \\
+    $	last(trace(initState,l),initState) = lastState \rightarrow
+        (\texttt{grant}~p~app \in l \lor \texttt{grantAuto}~p~app \in l)$ \\ \\
+    \textit{La única forma de que una aplicación consiga un permiso es si el usuario lo autoriza, o
+        si el usuario había autorizado un grupo previamente y el sistema puede otorgar el permiso
+        automáticamente.}
+\end{prop}
+
+La siguiente propiedad demuestra que la única forma de recuperar un permiso peligroso luego de que
+el mismo fue revocado es si el mismo se otorga nuevamente mediante las operaciones conocidas.
+
+\begin{prop}
+    \mbox{} \\
+    $	\forall
+        (initState,sndState,lastState:\AndroidState)
+        (app:\AppId)
+        (p:\Perm)
+        (l: list~\Action)$, \\
+    $	valid\_state(initState) \rightarrow
+        getPermissionLevel(p) = dangerous \rightarrow$ \\
+    $   p \notin getDefPermsForApp(app,initState) \rightarrow$ \\
+    $	step(initState,\texttt{revoke}~p~app).st = sndState \rightarrow$ \\
+    $	step(initState, \texttt{revoke}~p~app)).resp=ok \rightarrow \\
+        \texttt{uninstall}~app \notin l \rightarrow
+        \texttt{grant}~p~app \notin l \rightarrow
+        \texttt{grantAuto}~p~app \notin l \rightarrow $\\
+    $	last(trace(sndState,l),sndState) = lastState \rightarrow$\\
+    $	\neg appHasPermission(app,p,lastState)$ \\ \\
+    \textit{Si un permiso fue revocado, solo volver a otorgarlo con las acciones establecidas
+        permitirá que una aplicación vuelva a tenerlo.}
+\end{prop}
+
+\begin{prop}
+    \mbox{} \\
+    $	\forall
+        (s:\AndroidState)
+        (p:\Perm)
+        (app,app':\AppId)
+        (ic,ic': \iComp)
+        (c,c':\Comp)
+        (u:\Uri)
+        (cp:CProvider), $ \\
+    $	valid\_state(s) \rightarrow
+        step(s,\texttt{grant}~p~app).resp = ok \rightarrow $ \\
+    $	getAppFromCmp(c,s) = app \rightarrow
+        getAppFromCmp(c',s) = app' \rightarrow$ \\
+    $	(ic, c) \in getRunningComponents(s) \rightarrow \\
+        (ic', c') \in getRunningComponents(s) \rightarrow$ \\
+    $	canGrant(cp,u,s) \rightarrow
+        existsRes(cp,u,s) \rightarrow
+        componentIsExported(cp) \rightarrow$ \\
+    $	permissionRequiredRead(cp) = Some~p \rightarrow$ \\
+    $	\mathsf{let}~opsResult := trace(s,\texttt{[}\texttt{grant}~p~app, \texttt{grantP}~ic~cp~app'~u~Read$,\\
+    $ \texttt{revoke}~p~app\texttt{]}~\mathsf{in}$
+    $	step(last(opsResult,s), \texttt{read}~ic'~cp~u).resp=ok$ \\ \\
+    \textit{In Android 10, if a permission $p$ is revoked for an application $app$ not necessarily shall it be revoked for the applications to which $app$ delegated $p$.}
+    %\textit{In Android 6, revoking a permission does not invalidate the right of performing an operation over resources protected by it that the application may have delegated.}
+\end{prop}
