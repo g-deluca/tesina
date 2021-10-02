@@ -231,8 +231,9 @@ sección~\ref{subsection:recent-changes:grouped-permissions}.
         automáticamente.}
 \end{prop}
 
-La siguiente propiedad demuestra que la única forma de recuperar un permiso peligroso luego de que
-el mismo fue revocado es si el mismo se otorga nuevamente mediante las operaciones conocidas.
+La última propiedad que presentaremos en esta tesina demuestra que la única forma de recuperar un
+permiso peligroso luego de que el mismo fue revocado es si el mismo se otorga nuevamente mediante
+las operaciones conocidas.
 
 \begin{prop}
     \mbox{} \\
@@ -255,29 +256,7 @@ el mismo fue revocado es si el mismo se otorga nuevamente mediante las operacion
         permitirá que una aplicación vuelva a tenerlo.}
 \end{prop}
 
-\begin{prop}
-    \mbox{} \\
-    $	\forall
-        (s:\AndroidState)
-        (p:\Perm)
-        (app,app':\AppId)
-        (ic,ic': \iComp)
-        (c,c':\Comp)
-        (u:\Uri)
-        (cp:CProvider), $ \\
-    $	valid\_state(s) \rightarrow
-        step(s,\texttt{grant}~p~app).resp = ok \rightarrow $ \\
-    $	getAppFromCmp(c,s) = app \rightarrow
-        getAppFromCmp(c',s) = app' \rightarrow$ \\
-    $	(ic, c) \in getRunningComponents(s) \rightarrow \\
-        (ic', c') \in getRunningComponents(s) \rightarrow$ \\
-    $	canGrant(cp,u,s) \rightarrow
-        existsRes(cp,u,s) \rightarrow
-        componentIsExported(cp) \rightarrow$ \\
-    $	permissionRequiredRead(cp) = Some~p \rightarrow$ \\
-    $	\mathsf{let}~opsResult := trace(s,\texttt{[}\texttt{grant}~p~app, \texttt{grantP}~ic~cp~app'~u~Read$,\\
-    $ \texttt{revoke}~p~app\texttt{]}~\mathsf{in}$
-    $	step(last(opsResult,s), \texttt{read}~ic'~cp~u).resp=ok$ \\ \\
-    \textit{In Android 10, if a permission $p$ is revoked for an application $app$ not necessarily shall it be revoked for the applications to which $app$ delegated $p$.}
-    %\textit{In Android 6, revoking a permission does not invalidate the right of performing an operation over resources protected by it that the application may have delegated.}
-\end{prop}
+Más propiedades sobre nuestra implementación del modelo pueden encontrarse en el repositorio que
+contiene el código en \texttt{Coq}\cite{github-code}. Sin embargo, decidimos no agregarlas a este
+informe ya que no están estrictamente relacionadas con los cambios introducidos en este tesina. Sin
+embargo, dichas propiedades aún son válidas en la versión 10 de la plataforma.
