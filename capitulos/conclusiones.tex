@@ -1,0 +1,43 @@
+\chapter{Conclusiones y trabajo futuro}
+
+En esta tesina hemos actualizado una especificación formal previa del modelo de permisos de
+Android\cite{luna-cleiej,betarte-2016}, agregando funcionalidades nuevas y modificando la semántica
+de algunas operaciones ya existentes de acuerdo a los cambios introducidos en las versiones 7, 8, 9
+y 10 de la plataforma. Con un acercamiento conservador, primero revisamos las propiedades ya
+existentes del modelo para verificar si seguían siendo válidas. Algunas de ellas fueron eliminadas,
+otras mínimamente modificadas por cambios en el modelo que no las afectaban directamente y otras han
+cambiado radicalmente para adaptarse a los modificaciones introducidas por las últimas versiones de
+la plataforma. También se han agregado propiedades completamente nuevas. Entre las propiedades
+agregadas, se han incluido varias cuyo principal objetivo es resaltar cómo los métodos formales
+pueden ayudar a desambiguar comportamientos poco claros que pueden ser inferidos a partir de una
+especificación informal. En particular, la propiedad \ref{section:formalization:property3} presenta
+un escenario en donde una aplicación podría conseguir acceso a los permisos peligrosos de una
+aplicación sin consentimiento explícito del usuario. Este escenario es posible dentro de la
+especificación informal descripta en la documentación oficial de Android.
+
+Además -y en consecuencia de haber actualizado la formalización- hemos actualizado la implementación
+funcional del monitor de referencia con las nuevas características y hemos actualizado su prueba de
+corrección. El código Coq en su totalidad puede encontrarse en Github\cite{github-code} y contiene
+aproximadamente 23000 líneas de código, incluyendo las pruebas.
+
+El objetivo más importante de esta tesina es tratar de mantener al día esta formalización del
+sistema de permisos de Android para formar un \textit{framework} confiable que nos permita razonar y
+establecer propiedades sobre el mismo. Utilizar modelos idealizados y prototipos certificados es
+algo positivo \textit{per se}, que permite generar más transparencia en los mecanismos de seguridad
+de Android y da lugar a un entendimiento más claro sobre el funcionamiento de la plataforma. Sin
+embargo, no hay duda que el paso definitivo sería que el framework que construimos nos permita
+establecer garantías sobre la implementación real de la plataforma. En pos de ese objetivo, hay
+mucho trabajo por delante aún. Por ejemplo, es posible utilizar el programa extraído en
+\textit{Haskell} para comparar los resultados producidos por las acciones reales de la plataforma
+con las acciones del monitor de referencia. Esto permitiría monitorear las acciones que se llevan a
+cabo en una implementación real de Android y evaluar, en tiempo real, si las políticas de seguridad
+se cumplen o no. La metodología para lograr ese objetivo ya fue descripta en el trabajo a partir del
+cual esta tesina comenzó\cite{luna-cleiej}.
+
+En Septiembre del 2020, la versión 11 de Android fue lanzada oficialmente. Esta versión incluye
+algunos cambios que siguen apostando a mejorar la seguridad del sistema de permisos, como por
+ejemplo permisos que se eliminan automáticamente cuando las aplicaciones entrán en desuso por mucho
+tiempo; o permisos que pueden utilizarse una única vez en los recursos más sensibles, como la cámara
+o el micrófono. Estos cambios podrían ser formalizados y agregados al modelo en el futuro. Al
+momento de redactar esta tesina, la versión 12 de Android se encuentra en \textit{beta}.
+\todoGuido{Ver si hay algo interesante para incluir sobre esto}
