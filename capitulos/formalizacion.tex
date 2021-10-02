@@ -494,16 +494,35 @@ Formalmente, las posibles respuestas de sistema se definen a través de la sigui
     \end{array}
 \end{displaymath}
 
-\todoGuido{Falta el teorema de invarianza!!}
+El siguiente teorema garantiza que toda ejecución mantiene la validez del estado del sistema. Su
+demostración se realizó utilizando el asistente de pruebas \texttt{Coq} y puede encontrarse en el
+archivo \texttt{ValidityInvariance.v}. Consiste, fundamentalmente, en un análisis por cosas en la
+acción a ejecutar ya que previamente se han demostrado por separado que cada acción preserva la
+validez del estado.
+
+\begin{theorem} [Las ejecuciones preservan la validez del estado]
+    \label{lemma:valid-state-correct}
+    \mbox{}\\
+    $\begin{array}{l}
+            \forall\ (s\ s':\AndroidState)(a:\Action) (r:Response),
+            s\step{a/r}s' \rightarrow valid\_state(s')
+        \end{array}$
+\end{theorem}
+
+Demostrar este tipo de invariantes del sistema resulta muy útil para luego estudiar otro tipo de
+propiedades del mismo. En particular, todas las propiedades que presentaremos a continuación fueron
+analizadas solo en estados válidos del modelo.
 
 \section{Propiedades del modelo}
 \label{section:formalization:properties}
 
 En esta sección presentaremos y discutiremos las propiedades que establecimos y demostramos sobre
-nuestra formalización de Android. Nos enfocamos en propiedades de \textit{safety}\footnote{Utilizamos
-    el término en inglés para diferenciarlo de de \textit{security}, dado que en la traducción al español
+nuestra formalización de Android. Todas las propiedades han sido demostradas utilizando el asistente
+de pruebas \texttt{Coq}. Nos enfocamos en propiedades de \textit{safety}\footnote{Utilizamos el
+    término en inglés para diferenciarlo de de \textit{security}, dado que en la traducción al español
     mantener esa diferencia es más complejo.} aunque también formalizamos algunos comportamientos
-potencialmente peligrosos que no han sido considerados en la especificación informal de la plataforma.
+potencialmente peligrosos que no han sido considerados en la especificación informal de la
+plataforma.
 
 En la tabla \ref{table:auxiliary_functions} introducimos algunas funciones y predicados auxiliares que
 nos ayudarán a definir los teoremas presentados.

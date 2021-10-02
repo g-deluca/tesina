@@ -144,7 +144,7 @@ Con esos dos lemas demostrados, obtener una prueba de la corrección de la opera
 reduce, a grandes rasgos, a diferenciar los casos en que la pre-condición se cumple de lo que no,
 para luego aplicar el sub-lema correspondiente.
 
-\begin{theorem}
+\begin{lemma}
     [Corrección de la operación $grant$] \label{lemma:soundness:grant}
     \mbox{} \\
     $ \begin{array}[t]{l}
@@ -152,7 +152,7 @@ para luego aplicar el sub-lema correspondiente.
             \quad \quad \ap{valid\_state}{s} \rightarrow\                                                          \\
             \quad \quad \quad s\step{grant\ p\ a\ /\ step(s,\ grant\ p\ a).response} \bap{step}{s}{grant\ p\ a}.st \\
         \end{array} $
-\end{theorem}
+\end{lemma}
 
 La demostración completa del lema \ref{lemma:soundness:grant} puede encontrarse en el módulo
 \texttt{GrantIsSound.v} en el código de la formalización\cite{github-code}. Análogamente, la
