@@ -1,25 +1,25 @@
 \chapter{Formalización del sistema de permisos}
 \label{chapter:formalization}
 
-En este capítulo describiremos la extensión que realizamos sobre una formalización
-previa\cite{luna-cleiej} del sistema de permisos de la plataforma para modelar los nuevos
-comportamientos que se introdujeron con las versiones 7, 8, 9 y 10 del sistema operativo. También
-presentaremos las propiedades más importantes que extrajimos del modelo, focalizándonos en aquellas
-nuevas o en las que se han visto considerablemente afectadas en las nuevas versiones.
-
+En este capítulo se describe la extensión realizada sobre una formalización previa\cite{luna-cleiej}
+del sistema de permisos de la plataforma. El objetivo de la misma es poder modelar los nuevos
+comportamientos que se introdujeron con las versiones 7, 8, 9 y 10 del sistema operativo Android. Al
+final del capítulo se presentan las nuevas propiedades que se han probado sobre la formalización
+actualizada, poniendo el foco en aquellas estrechamente relacionadas con los cambios modelados.
 
 \section{Lenguaje formal utilizado}
 \label{section:formalization:formal-language}
 La especificación del sistema se realizó dentro del framework de trabajo Coq~\cite{coq}. Coq es un
-asistente de pruebas interactivo, que permite el desarrollo de programas consistentes con su especificación.
-Para lograrlo, provee tres aspectos fundamentales:
+asistente de pruebas interactivo, que permite el desarrollo de programas consistentes con su
+especificación. Para lograrlo, provee tres aspectos fundamentales:
 \begin{enumerate}
-    \item Un lenguaje de especificación que permite escribir expresiones lógicas de alto orden, algoritmos y teoremas;
+    \item Un lenguaje de especificación que permite escribir expresiones lógicas de alto orden,
+          algoritmos y teoremas;
     \item Un asistente de pruebas que permite desarrollar pruebas matemáticas verificadas;
     \item Una herramienta de extracción de programas, que permite sintetizar programas en lenguajes
-          como OCaml~\cite{ocaml} o Haskell~\cite{haskell} a partir de las especificaciones formales escritas
-          previamente. Los programas construidos de esta manera suelen llamarse \textit{programas
-              certificados}.
+          como OCaml~\cite{ocaml} o Haskell~\cite{haskell} a partir de las especificaciones formales
+          escritas previamente. Los programas construidos de esta manera suelen llamarse
+          \textit{programas certificados}.
 \end{enumerate}
 
 El lenguaje lógico subyacente usado por Coq es el Cálculo de Construcciones Inductivas~\cite{cic}
@@ -30,24 +30,24 @@ En las siguientes secciones  utilizaremos la misma notación de los trabajos
 previos~\cite{luna-cleiej,betarte-2017,betarte-2016}. La misma es similar a la sintaxis de Haskell.
 
 \subsection{Estructuras de datos y tipos generales}
-Los diccionarios (más conocidos como \textit{records} por su nombre en inglés) tendrán la forma $\{
-    l_1: T_1, ..., l_n: T_n \}$ y notaremos el acceso a cada uno de sus elementos como $r.l_n$. También
-usaremos $\{ T \}$ para definir el tipo del conjunto que contiene elementos de tipo $T$.
+Los diccionarios (más conocidos como \textit{records} por su nombre en inglés) tendrán la forma
+$\{l_1: T_1, ..., l_n: T_n \}$ y notaremos el acceso a cada uno de sus elementos como $r.l_n$.
+También usaremos $\{ T \}$ para notar a un conjunto que contiene elementos de tipo $T$.
 
-Para representar tuplas utilizaremos el producto cartesiano. Por ejempo, si $A$ y $B$ son los tipos de
-los elementos de una tupla de tipo $T$, lo notaremos como $ T = (A * B)$.
+Para representar tuplas utilizaremos el producto cartesiano. Por ejempo, si $A$ y $B$ son los tipos
+de los elementos de una tupla de tipo $T$, lo notaremos como $ T = (A * B)$.
 
-Finalmente, para denotar mapeos entre valores (o funciones parciales), decidimos usar la palabra clave
-utilizada en Coq: \textit{mapping}. En caso de querer relacionar elementos de tipo $A$ con elementos de
-tipo $B$, notaremos $mapping\ A\ B$
+Finalmente, para denotar mapeos entre valores (o funciones parciales), decidimos usar la palabra
+clave utilizada en Coq: \textit{mapping}. En caso de querer relacionar elementos de tipo $A$ con
+elementos de tipo $B$, notaremos $mapping\ A\ B$
 
 
 \subsubsection*{Tipos enumerados}
-Para definir enumeraciones utilizaremos los tipos inductivos nativos de Coq. Puede parecer algo excesivo
-utilizar algo tan complejo como la inducción para representar una enumeración de valores, pero es la
-única forma en la que puede lograrse dicha representación sin utilizar librerías o extensiones del
-lenguaje. En definitiva, un tipo enumerado es un tipo inductivo cuyos habitantes están definidos por
-extensión.
+Para definir enumeraciones utilizaremos los tipos inductivos nativos de Coq. Puede parecer algo
+excesivo utilizar algo tan complejo como la inducción para representar una enumeración de valores,
+pero es la única forma en la que puede lograrse dicha representación sin utilizar librerías o
+extensiones del lenguaje. En definitiva, un tipo enumerado es un tipo inductivo cuyos habitantes
+están definidos por extensión.
 
 Por ejemplo, el nivel de protección de los permisos está definido de la siguiente manera:
 
@@ -70,10 +70,8 @@ A continuación detallaremos algunos de los tipos básicos de Coq más utilizado
 \end{flalign*}
 
 
-El tipo \texttt{option}, análogo a la mónada \texttt{Maybe} de Haskell\cite{maybe-haskell}, sirve para
-representar la posible ausencia de valores. Dado que en Coq no es posible definir funciones
-parciales, utilizaremos este tipo para totalizar a las mismas. De esta manera, una función parcial $g$
-de $A$ en $B$, será definida como $g:\ A\ \rightarrow\ option\ B$.
+El tipo \texttt{option}, análogo a la mónada \texttt{Maybe} de Haskell\cite{maybe-haskell}, sirve
+para representar la posible ausencia de valores.
 
 \subsubsection*{Tipo \textit{list}}
 \begin{flalign*}
@@ -85,17 +83,16 @@ de $A$ en $B$, será definida como $g:\ A\ \rightarrow\ option\ B$.
 El tipo utilizado para denotar una lista de elementos. Está definido de manera inductiva, siendo
 \texttt{::} un operador de punto fijo.
 
-\subsubsection*{Tipo \textit{nat}}
-Utilizado para denotar a los números naturales.
+\subsubsection*{Tipo \textit{nat}} Utilizado para denotar a los números naturales.
 
 \subsubsection*{Tipo \textit{Prop}}
 
-Este tipo representa uno de los dos "universos" donde viven las proposiciones lógicas en Coq. El tipo
-$Prop$ es impredicativo y por lo tanto, una proposición de este tipo no contiene valor
+Este tipo representa uno de los dos ``universos'' donde viven las proposiciones lógicas en Coq. El
+tipo $Prop$ es impredicativo y por lo tanto, una proposición de este tipo no contiene valor
 computacional\cite{proof-irrelevance} y puede ser descartada a la hora de extraer un programa.
 Utilizaremos este tipo para escribir teoremas que nos permitan razonar sobre el modelo. El otro
-universo que contiene proposiciones lógicas se llama $Set$ y las proposiciones de este tipo sí tienen
-valor computacional y deben ser preservadas en los programas extraídos.
+universo que contiene proposiciones lógicas se llama $Set$ y las proposiciones de este tipo sí
+tienen valor computacional y deben ser preservadas en los programas extraídos.
 
 
 \section{Estado del sistema}
@@ -109,48 +106,49 @@ diferirá del orden en el que los componentes fueron presentados anteriormente.
 
 \subsubsection*{Tipos atómicos}
 En la tabla \ref{table:atomic_types} se enumeran las estructuras de datos atómicas. Entendemos por
-estructura de dato atómica a aquellas que representan tipos básicos o bien, a aquellas cuya definición
-queda sujeta a cuestiones de implementación. En el asistente de pruebas Coq, estas estructuras fueron
-definidas como parámetros de tipo $Set$.
+estructura de dato atómica a aquellas que representan tipos básicos o bien, a aquellas cuya
+definición queda sujeta a cuestiones de implementación. En el asistente de pruebas Coq, estas
+estructuras fueron definidas como parámetros de tipo $Set$.
 
 \input{tablas/tipos_atomicos}
 
 \subsubsection*{Permisos}
 Los permisos descriptos en la sección \ref{section:android:permissions} fueron formalizados como un
-registro de tres campos: el nombre o identificador del permiso en cuestión, el nombre o identificador del
-grupo al que pertenece el permiso (en caso de que no pertenezca a ningún, lo representaremos mediante el
-valor \textit{None}) y el nivel de protección del mismo. Formalmente,
+registro de tres campos: el nombre o identificador del permiso en cuestión, el nombre o
+identificador del grupo al que pertenece el permiso (en caso de que no pertenezca a ningún, lo
+representaremos mediante el valor \textit{None}) y el nivel de protección del mismo. Formalmente,
 
 \begin{align*}
     Perm\ :=\ \{ idP: idPerm;\ maybeGrp: option\ idGrp;\ pl: permLevel \}
 \end{align*}
 
 El tipo de datos \textit{permLevel} es un tipo de datos enumerado cuyos valores posibles son:
-\textit{normal}, \textit{dangerous} y \textit{signature}. Cada uno de estos valores representa uno de los
-niveles de protección descriptos en la sección \ref{section:android:permissions}.
+\textit{normal}, \textit{dangerous} y \textit{signature}. Cada uno de estos valores representa uno
+de los niveles de protección descriptos en la sección \ref{section:android:permissions}.
 
 \subsubsection*{Intents}
 De manera análoga a los permisos (y a la mayoría de los componentes que mencionaremos), también
-utilizamos registros para formalizar a los \textit{intents}. En este caso, los registros poseen una mayor
-cantidad de campos, algunos de ellos representados con estructuras complejas como un nuevo registro. Los
-nueve campos que definen a un \textit{intent} son:
+utilizamos registros para formalizar a los \textit{intents}. En este caso, los registros poseen una
+mayor cantidad de campos, algunos de ellos representados con estructuras complejas como un nuevo
+registro. Los nueve campos que definen a un \textit{intent} son:
 
 \begin{itemize}
     \item \textit{idI}, el nombre o identificador del intent,
     \item \textit{cmpName}, en caso de que el intent esté dirigido a un componente en particular, el
           identificador del mismo
-    \item \textit{intType}, define el caso de uso del intent. Puede ser: iniciar una actividad, iniciar
-          un servicio o transmitir un evento por \textit{broadcast} a cualquier aplicación interesada
+    \item \textit{intType}, define el caso de uso del intent. Puede ser: iniciar una actividad,
+          iniciar un servicio o transmitir un evento por \textit{broadcast} a cualquier aplicación
+          interesada
     \item \textit{action}, la acción que ejecutará el intent. Los valores posibles de este campo son
-          genéricos; por ejemplo, tenemos la acción de "ver" (representada por la constante
-          \texttt{ACTION\_VIEW}) o la acción de "enviar" (representada por \texttt{ACTION\_SEND}). Para definir
-          qué dato puede verse o enviarse y para definir qué componente será el encargado de hacerlo, deben
-          utilizarse otros datos presentes en el \textit{intent} (\textit{data} y \textit{category},
-          respectivamente).
-    \item \textit{data}, contiene la información necesaria para identificar los datos que son necesarios
-          para ejecutar la acción en cuestión
-    \item \textit{category}, contiene información adicional sobre la acción y el componente que puede
-          llevarla a cabo. Es utilizado principalmente en los intents implícitos.
+          genéricos; por ejemplo, tenemos la acción de ``ver'' (representada por la constante
+          \texttt{ACTION\_VIEW}) o la acción de ``enviar'' (representada por \texttt{ACTION\_SEND}).
+          Para definir qué dato puede verse o enviarse y para definir qué componente será el
+          encargado de hacerlo, deben utilizarse otros datos presentes en el \textit{intent}
+          (\textit{data} y \textit{category}, respectivamente).
+    \item \textit{data}, contiene la información necesaria para identificar los datos que son
+          necesarios para ejecutar la acción en cuestión
+    \item \textit{category}, contiene información adicional sobre la acción y el componente que
+          puede llevarla a cabo. Es utilizado principalmente en los intents implícitos.
     \item \textit{extra}, contiene información adicional de cualquier tipo
     \item \textit{flags}, banderas que contienen información sobre cómo manejar el \textit{intent}
     \item\textit{brperm}, en caso de que el componente que recibe el intent necesite un permiso para
@@ -174,9 +172,15 @@ Formalmente, un \textit{intent} está definido con la siguiente estructura:
     \}
 \end{align*}
 
-La estructura $Data$ está definida a su vez como un record que contiene un URI al recurso que obtendrá
-quien reciba el intent, el tipo de dato al que se intentará acceder y, opcionalmente, el tipo de dato en
-formato MIME.
+La estructura $Data$ está definida a su vez como un record que contiene un URI al recurso que
+obtendrá quien reciba el intent, el tipo de dato al que se intentará acceder y, opcionalmente, el
+tipo de dato en formato MIME\footnote{
+
+    Conocido de esta manera por sus siglas en inglés (\textit{Multipurpose Internet Mail
+        Extensions}). Es un estándar que se utiliza para indicar la naturaleza y el formato de un
+    documento.
+
+}.
 
 \begin{align*}
     Data\ :=\ \{ path: option\ uri;\ type: dataType;\ mime: option\ mimeType \}
@@ -186,8 +190,8 @@ La estructura $dataType$ es una enumeración que contiene los siguientes valores
 $other$.
 
 \subsubsection*{Filtros de intents}
-Los filtros de intents están definidos como registros de tres valores. Cada uno de ellos actúa como un
-filtro sobre algún campo del intent en cuestión. Formalmente:
+Los filtros de intents están definidos como registros de tres valores. Cada uno de ellos actúa como
+un filtro sobre algún campo del intent en cuestión. Formalmente:
 
 \begin{align*}
     IntentFilter\  & :=\ \{                         \\
@@ -198,20 +202,23 @@ filtro sobre algún campo del intent en cuestión. Formalmente:
 \end{align*}
 
 Coloquialmente, al construir un elemento de tipo \texttt{IntentFilter} construiremos un filtro que
-establecerá qué tipos de acciones pueden ejecutarse sobre qué datos. El "tipo de acción" se define en
-conjunto entre la acción y la categoría. En una implementación real, los filtros de intents pueden
+establecerá qué tipos de acciones pueden ejecutarse sobre qué datos. El ``tipo de acción'' se define
+en conjunto entre la acción y la categoría. Por ejemplo, si una aplicación define un filtro de
+\textit{intents} donde la categoría es \texttt{CATEGORY\_BROWSABLE} y la acción es
+\texttt{ACTION\_VIEW}, entonces estará en condiciones de ser elegida para abrir un \textit{link} que
+ha sido clickeado desde un navegador. En una implementación real, los filtros de intents pueden
 construirse con más campos. Sin embargo, para este modelo elegimos estos tres ya que los mismos
 representan las características definitorias de un intent implícito\cite{android-intents}.
 
 \subsubsection*{Componentes de una aplicación}
-Como mencionamos previamente en la sección \ref{section:preliminary:components}, existen cuatro tipos de
-componentes que pueden conformar a una aplicación de Android: actividades, servicios, receptores de
-anuncios y proveedores de contenido. Los tres primeros fueron definidos análogamente. Todos están
-representados por un registro de cuatro campos que contiene: un identificador, un indicador sobre si el
-componente está exportado o no (es decir, si componentes de otras aplicaciones pueden interactuar con el
-mismo), el permiso (en caso de existir) que protege al componente y una lista de los filtros de
-\textit{intents} definidos por el mismo. A modo de ejemplo, mostraremos la definición formal de una
-actividad:
+Como mencionamos previamente en la sección \ref{section:preliminary:components}, existen cuatro
+tipos de componentes que pueden conformar a una aplicación de Android: actividades, servicios,
+receptores de anuncios y proveedores de contenido. Los tres primeros fueron definidos análogamente.
+Todos están representados por un registro de cuatro campos que contiene: un identificador, un
+indicador sobre si el componente está exportado o no (es decir, si componentes de otras aplicaciones
+pueden interactuar con el mismo), el permiso (en caso de existir) que protege al componente y una
+lista de los filtros de \textit{intents} definidos por el mismo. A modo de ejemplo, mostraremos la
+definición formal de una actividad:
 
 \begin{align*}
     Activity\  & :=\ \{                        \\
@@ -226,36 +233,36 @@ Para el caso de los proveedores de contenidos, el registro se extiende con los s
 
 \begin{itemize}
     \item \textit{readPerm} y \textit{writePerm}, permitiendo una mayor granularidad en los permisos
-          necesarios para leer o escribir del mismo. En caso de que estos valores existan, tienen priorided por
-          encima de \textit{perm}.
-    \item \textit{grantU} (nombrado así para acortar el nombre \textit{grantUriPermissions}), un campo de
-          valor \textit{booleano} encargado de indicar si el componente tiene la capacidad de delegar permisos
-          de escritura/lectura sobre sus recursos.
+          necesarios para leer o escribir del mismo. En caso de que estos valores existan, tienen
+          priorided por encima de \textit{perm}.
+    \item \textit{grantU} (nombrado así para acortar el nombre \textit{grantUriPermissions}), un
+          campo de valor \textit{booleano} encargado de indicar si el componente tiene la capacidad
+          de delegar permisos de escritura/lectura sobre sus recursos.
     \item \textit{map\_res}, un mapa que asocia URIs con recursos.
-    \item \textit{uri}, una lista con todos los URIs pertenecientes al proveedor de contenido. El valor
-          de este campo coincide con el listado de las claves del mapa definido anteriormente. Sin embargo,
-          decidimos agregarlo al componente para simplificar algunas demostraciones.
+    \item \textit{uri}, una lista con todos los URIs pertenecientes al proveedor de contenido. El
+          valor de este campo coincide con el listado de las claves del mapa definido anteriormente.
+          Sin embargo, decidimos agregarlo al componente para simplificar algunas demostraciones.
 \end{itemize}
 
 
 \subsubsection*{Manifiesto}
 Como mencionamos previamente en \ref{section:preliminary:manifest}, el manifiesto de una aplicación
-contiene información estática sobre la misma. Nuestra representación de un manifiesto, está acotada a los
-datos que nos interesaban ver en algunas propiedades y por supuesto, es incompleta. Lo definimos a través
-de un registro de seis valores, conformado por:
+contiene información estática sobre la misma. Nuestra representación de un manifiesto, está acotada
+a los datos que nos interesaban ver en algunas propiedades y por supuesto, es incompleta. Lo
+definimos a través de un registro de seis valores, conformado por:
 
 \begin{itemize}
     \item \textit{cmp}, aquí se listan los componentes que conforman la aplicación.
     \item \textit{targetSdk}, la versión de Android para la cual fue pensada/diseñada la aplicación.
     \item \textit{minSdk}, la versión mínima de Android necesaria para poder ejecutar la aplicación.
-          Aquellos dispositivos que cumplan con este valor pero no con el anterior, podrán ejecutar la
-          aplicación con capacidades reducidas.
+          Aquellos dispositivos que cumplan con este valor pero no con el anterior, podrán ejecutar
+          la aplicación con capacidades reducidas.
     \item \textit{use}, aquí se declaran los permisos que la aplicación necesitará para funcionar
-          correctamente. Los permisos que no estén aquí declarados no podrán ser otorgados a la aplicación bajo
-          ninguna circunstancia.
+          correctamente. Los permisos que no estén aquí declarados no podrán ser otorgados a la
+          aplicación bajo ninguna circunstancia.
     \item \textit{usrP}, aquí se listan los permisos declarados por la aplicación
-    \item \textit{appE}, aquí se declara, si corresponde, un permiso de seguridad que se puede utilizar
-          para limitar el acceso a funciones o componentes específicos de esta aplicación.
+    \item \textit{appE}, aquí se declara, si corresponde, un permiso de seguridad que se puede
+          utilizar para limitar el acceso a funciones o componentes específicos de esta aplicación.
 \end{itemize}
 
 Formalmente,
@@ -272,50 +279,53 @@ Formalmente,
 \end{align*}
 
 \subsubsection*{Aplicaciones}
-A diferencia de los componentes que definimos hasta ahora, las aplicaciones instaladas por el usuario no
-poseen una estructura delimitada por un registro. La representación de las mismas es más abstracta:
-consta de un identificador (de tipo $idApp$) y de distintos \textit{mapeos}, guardados en el estado del
-sistema, hacia las distintas partes que la conforman. Por ejemplo, el estado del sistema mantendrá una
-relación entre los identificadores de las aplicaciones ($idApp$) y su manifiesto (de tipo $Manifest$). A
-continuación, cuando definamos el estado, se explicitarán todos los datos asociados a las aplicaciones.
+A diferencia de los componentes que definimos hasta ahora, las aplicaciones instaladas por el
+usuario no poseen una estructura delimitada por un registro. La representación de las mismas es más
+abstracta: consta de un identificador (de tipo $idApp$) y de distintos \textit{mapeos}, guardados en
+el estado del sistema, hacia las distintas partes que la conforman. Por ejemplo, el estado del
+sistema mantendrá una relación entre los identificadores de las aplicaciones ($idApp$) y su
+manifiesto (de tipo $Manifest$). A continuación, cuando definamos el estado, se explicitarán todos
+los datos asociados a las aplicaciones.
 
-Distinto es lo que sucede con las aplicaciones pre-instaladas en el sistema. Las mismas sí cuentan con
-una estructura definida por un registro, con la siguiente información: un identificador, el certificado
-con el que fue firmada, el manifiesto y un listado de los recursos y permisos que la aplicación define.
-Como estas aplicaciones no pueden ser desinstaladas ni modificadas, esta información se almacenará en
-forma de lista en la parte estática del estado del sistema.
+Distinto es lo que sucede con las aplicaciones pre-instaladas en el sistema. Las mismas sí cuentan
+con una estructura definida por un registro, con la siguiente información: un identificador, el
+certificado con el que fue firmada, el manifiesto y un listado de los recursos y permisos que la
+aplicación define. Como estas aplicaciones no pueden ser desinstaladas ni modificadas, esta
+información se almacenará en forma de lista en la parte estática del estado del sistema.
 
 \subsection{Definición de estado}
 Nuestra formalización del sistema de permisos de Android puede pensarse como una máquina de estado
-abstracta [CITA?]. En este modelo, los estados del sistema están conformados por dos componentes: uno
-que almacena la información dinámica del sistema, como las aplicaciones instaladas y los permisos otorgados
-a las mismas; y otro que contiene información estática como el manifiesto de cada aplicación. Formalmente:
+abstracta [CITA?]. En este modelo, los estados del sistema están conformados por dos componentes:
+uno que almacena la información dinámica del sistema, como las aplicaciones instaladas y los
+permisos otorgados a las mismas; y otro que contiene información estática como el manifiesto de cada
+aplicación. Formalmente:
 
 \begin{align*}
     System\ :=\ \{ state: State;\ environment: Environment \}
 \end{align*}
 
 
-El componente $State$ está conformado por los siguientes elementos:
+El componente $State$ es el que contiene la información dinámica y está conformado por los
+siguientes elementos:
 
 \begin{itemize}
     \item Una lista con los identificadores de las aplicaciones instaladas,
-    \item Una lista  información de las aplicaciones \textit{legacy} que ya han sido verificadas por
-          el usuario. Es un subconjunto de las aplicaciones inst.
+    \item Una lista con información de las aplicaciones \textit{legacy} que ya han sido verificadas
+          por el usuario. Es un subconjunto de las aplicaciones instaladas.
     \item Un mapeo entre las aplicaciones instaladas y los permisos otorgados a cada una de ellas.
     \item Un mapeo entre las aplicaciones instaladas y los grupos de permisos para los cuales el
-          usuario ha permitido el otorgamiento automático de permisos.
+          usuario ha permitido el otorgamiento automático de permisos individuales.
     \item Un mapeo entre los componentes que define una aplicación y las instancias en ejecución de
           ellos.
-    \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los permisos
-          permantentes otorgados sobre el mismo.
-    \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los permisos
-          temporales otorgados sobre el mismo.
+    \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los
+          permisos permantentes otorgados sobre el mismo.
+    \item Un mapeo entre los recursos de un proveedor de contenidos para una aplicación y los
+          permisos temporales otorgados sobre el mismo.
     \item Un mapeo indicando el valor de cada uno de los recursos de una aplicación.
     \item Una lista de los intents que han sido enviados, junto con su emisor.
 \end{itemize}
 
-Por otro lado, el componente $Environment$ contiene la siguiente información:
+Por otro lado, el componente $Environment$ contiene la siguiente información estática:
 
 \begin{itemize}
     \item Un mapeo que asocia a cada aplicación con su archivo de manifiesto
@@ -350,8 +360,8 @@ campos de cada componente es el mismo que el de las numeraciones previas.
 \end{flalign*}
 
 De aquí en adelante, al hablar del estado del sistema, nos estaremos refiriendo al componente
-$System$. En caso de que querramos referirnos a alguno de sus subcomponentes seremos explícitos con su
-nombre en inglés.
+$System$. En caso de que querramos referirnos a alguno de sus sub-componentes seremos explícitos con
+su nombre en inglés.
 
 \subsubsection{Estados válidos del sistema}
 No todos los elementos que habitan el conjunto definido anteriormente son relevantes al sistema que
@@ -366,16 +376,17 @@ cumplen ciertas condiciones que nos garantizarán que nuestros estados del model
 compararlos con estados reales del sistema. Vale aclarar, que nuestra definición de estado válido no
 es completa y que, de alguna manera, está focalizada en las propiedades que probaremos luego.
 
-Se definió formalmente un predicado $valid\_state$ que se satisface cuandos se cumplen las siguientes
-condiciones:
+Se definió formalmente un predicado $valid\_state$ que se satisface cuandos se cumplen las
+siguientes condiciones:
 
 \begin{itemize}
-    \item Todos los componentes, ya sea que pertenezcan a una aplicación instalada por el usuario o a
-          una aplicación pre-instalada en el sistema tienen identificadores diferentes.
+    \item Todos los componentes, ya sea que pertenezcan a una aplicación instalada por el usuario o
+          a una aplicación pre-instalada en el sistema tienen identificadores diferentes.
     \item Ningún componente pertenece a más de una aplicación.
-    \item Ningún componente en ejecución es una instancia de un proveedor de contenido (los mismos no se \textit{ejecutan}).
-    \item Todo permiso temporalmente otorgado ha sido otorgado a un componente en ejecución y es sobre
-          un recurso de un proveedor de contenido existente.
+    \item Ningún componente en ejecución es una instancia de un proveedor de contenido (los mismos
+          no se \textit{ejecutan}).
+    \item Todo permiso temporalmente otorgado ha sido otorgado a un componente en ejecución y es
+          sobre un recurso de un proveedor de contenido existente.
     \item Todo componente en ejecución pertenece a una aplicación instalada en el sistema.
     \item Toda aplicación que establece un valor a un recurso está instalada en el sistema.
     \item El dominio de las funciones parciales que definen el $manifest$, $cert$ y $defPerms$ es el
@@ -400,8 +411,8 @@ definimos los predicados $Pre$ y $Post$ de manera tal que para que una acción $
 el sistema desde un estado $s$ hacia otro estado $s'$, deberán cumplirse $Pre\ s\ a$ y $Post\ s\ s'\
     a$. Notaremos la transición de un estado a otro de la siguiente manera: $s\ \step{a}\ s'$.
 
-A continuación y a modo de ejemplo, describiremos informalmente las acciones que han sido introducidas
-o modificadas con las últimas actualizaciones del sistema.
+A continuación y a modo de ejemplo, describiremos informalmente las acciones que han sido
+introducidas o modificadas con las últimas actualizaciones del sistema.
 
 \subsubsection{Semántica de \texttt{grant}}
 
@@ -416,29 +427,36 @@ definido o bien por el sistema o por alguna aplicación), debe estar declarado c
 manifiesto de la aplicación $a$, debe ser un permiso peligroso y no debe haber sido otorgado a la
 aplicación previamente.
 
-Si la precondición se cumple, el sistema transicionará hacia un estado en dónde el permiso se agrega a
-los permisos otorgados a la aplicación, es decir, se agrega $p$ al conjunto $perms\ a$; y en caso de
-corresponder, ocurre lo análogo con el grupo de $p$ y $grantedPermGroups\ a$. El resto de los
+Si la precondición se cumple, el sistema transicionará hacia un estado en dónde el permiso se agrega
+a los permisos otorgados a la aplicación, es decir, se agrega $p$ al conjunto $perms\ a$; y en caso
+de corresponder, ocurre lo análogo con el grupo de $p$ y $grantedPermGroups\ a$. El resto de los
 componentes del sistema no se verán modificados.
 
 \subsubsection{Semántica de \texttt{grantAuto}}
 
 Para modelar en su totalidad a los cambios mencionados en la sección
 \ref{subsection:recent-changes:grouped-permissions}, además de los cambios en la semántica a la
-operación \texttt{grant}, se introdujo una nueva acción \texttt{grantAuto}. Esta última difiere de la
-primera en que el sistema solo podrá transicionar con ella si el permiso que se intenta otorgar
-pertenece a un grupo que el usuario ya ha autorizado. En caso de que esto se cumpla, el modelo mutará
-hacia un estado en donde la aplicación en cuestión obtuvo el permiso solicitado.
+operación \texttt{grant}, se introdujo una nueva acción \texttt{grantAuto}. Con esta nueva operación
+se busca representar al otorgamiento automático de un permiso por parte del sistema operativo. Su
+semántica difiere de la anterior en que el sistema solo podrá transicionar con \texttt{grantAuto} si
+el permiso que se intenta otorgar pertenece a un grupo que el usuario ya ha autorizado. En caso de
+que esto se cumpla, el modelo mutará hacia un estado en donde la aplicación en cuestión obtuvo el
+permiso solicitado.
+
+Decidimos representar el otorgamiento con consentimiento del usuario y el otorgamiento automático de
+permisos con dos acciones distintas para obtener una mayor granularidad en las trazas de ejecución.
+Esta decisión, en consecuencia, facilita la demostración de las propiedades que involucran
+otorgamiento de permisos.
 
 \subsubsection{Semántica de \texttt{revoke} y \texttt{revokePermGroup}}
 
 De manera similar a lo ocurrido con \texttt{grant} y \texttt{grantAuto}, la semántica de las
 operaciones  \texttt{revoke} y \texttt{revokeGroup} también se modificaron con los cambios de las
-últimas versiones. Decidimos modelar estas operaciones de manera tal que se mantenga una relación con
-la experiencia de usuario al revocar permsisos. De esta manera, la operación \texttt{revoke} es la
-encargada de revocar permisos individuales \textbf{no} agrupados mientras que \texttt{revokePermGroup}
-quita todos los permisos pertenecientes al grupo deseado. Nuestro modelo no permite revocar permisos
-que pertenezcan a un grupo de manera individual.
+últimas versiones. Decidimos modelar estas operaciones de manera tal que se mantenga una relación
+con la experiencia de usuario al revocar permsisos. De esta manera, la operación \texttt{revoke} es
+la encargada de revocar permisos individuales \textbf{no} agrupados mientras que
+\texttt{revokePermGroup} quita todos los permisos pertenecientes al grupo deseado. Nuestro modelo no
+permite revocar permisos que pertenezcan a un grupo de manera individual.
 
 Si el sistema transiciona con \texttt{revoke}, entonces dado un permiso $p$ y una aplicación $a$,
 obtendremos un estado en donde la aplicación $a$ ya no tendrá acceso a los recursos protegidos por
@@ -451,13 +469,13 @@ manera automática.
 \subsubsection{Semántica de \texttt{verifyOldApp}}
 
 Esta operación se agregó al modelo para razonar sobre el nuevo el comportamiento mencionado en la
-sección~\ref{subsection:recent-changes:legacy-apps}. Dada una aplicación $a$, para poder transicionar
-el sistema utilizando la operación $verifyOldApp\ a$, deben cumplirse las siguientes condiciones: $a$
-debe ser una aplicación instalada en el sistema, aún no debe haber sido ejecutada y debe estar
-orientada a una versión previa a la sexta versión de Android.
+sección~\ref{subsection:recent-changes:legacy-apps}. Dada una aplicación $a$, para poder
+transicionar el sistema utilizando la operación $verifyOldApp\ a$, deben cumplirse las siguientes
+condiciones: $a$ debe ser una aplicación instalada en el sistema, aún no debe haber sido ejecutada y
+debe estar orientada a una versión previa a la sexta versión de Android.
 
-En la implementación real de la plataforma, al momento de verificar una aplicación vieja se muestra al
-usuario un menú con los permisos otorgados a la misma en el momento en que fue instalada, junto
+En la implementación real de la plataforma, al momento de verificar una aplicación vieja se muestra
+al usuario un menú con los permisos otorgados a la misma en el momento en que fue instalada, junto
 con la posibilidad de elegir cuales de ellos se desea mantener y cuales revocar. Nuestra operación
 $verifyOldApp\ a$ simplemente transiciona hacia un estado en donde a la aplicación $a$ se le han
 revocado todos sus permisos y se ha marcado como verificada. Para modelar la acción en la que el
@@ -467,25 +485,30 @@ los permisos que se eligió mantener.
 
 \subsubsection{Semántica de \texttt{receiveIntent}}
 
-A raíz del cambio mencionado previamente y en la sección~\ref{subsection:recent-changes:legacy-apps},
-agregamos una nueva condición que deberá cumplirse para que una aplicación pueda recibir un
-\textit{intent}: para que una aplicación $a$ pueda recibir el intent $i$, entonces la misma no debe
-ser una aplicación \textit{legacy} o, en caso de serlo, debe haber sido previamente verificada por el
-usuario.
+A raíz del cambio mencionado previamente y en la
+sección~\ref{subsection:recent-changes:legacy-apps}, agregamos una nueva condición que deberá
+cumplirse para que una aplicación pueda recibir un \textit{intent}: para que una aplicación $a$
+pueda recibir el intent $i$, entonces la misma no debe ser una aplicación \textit{legacy} o, en caso
+de serlo, debe haber sido previamente verificada por el usuario. De esta manera, las aplicaciones
+\textit{legacy} que queden en el sistema, podrán ser visibles a la hora de resolver un
+\textit{intent} (es decir, un usuario podrá observarla entre las aplicaciones disponibles para
+realizar determinada acción); pero en caso de elegirla, el usuario primero deberá verificar los
+permisos antes de que la aplicación pueda ejecutar la acción.
 
 \input{tablas/acciones}
 
 \section{Ejecuciones}
 Cuando el sistema intenta ejecutar una acción $a$ en un estado válido $s$, hay dos posibles
-resultados. Si la precondición de la acción se cumple, el sistema transicionará hacia otro estado $s'$
-donde la postcondición de $a$ también se satisface. Sin embargo, si la precondición no se cumple, el
-sistema permanecerá en el mismo estado en el que se encontraba al intentar la ejecución de $a$ y
-responderá con un mensaje de error determinado por la relación $ErrorMsg$, definida a continuación.
-Dados el estado $s$ y la aplicación $a$ mencionados previamente, y un código de error $ec$, la
-relación $ErrorMsg s a ec$ se satisface si y sólo si el código $ec$ es una respuesta aceptable cuando
-el sistema falla al ejecutar $a$ en el estado $s$.
+resultados. Si la precondición de la acción se cumple, el sistema transicionará hacia otro estado
+$s'$ donde la postcondición de $a$ también se satisface. Sin embargo, si la precondición no se
+cumple, el sistema permanecerá en el mismo estado en el que se encontraba al intentar la ejecución
+de $a$ y responderá con un mensaje de error determinado por la relación $ErrorMsg$, definida a
+continuación. Dados el estado $s$ y la aplicación $a$ mencionados previamente, y un código de error
+$ec$, la relación $ErrorMsg s a ec$ se satisface si y sólo si el código $ec$ es una respuesta
+aceptable cuando el sistema falla al ejecutar $a$ en el estado $s$.
 
-Formalmente, las posibles respuestas de sistema se definen a través de la siguiente semántica operacional:
+Formalmente, las posibles respuestas de sistema se definen a través de la siguiente semántica
+operacional:
 \begin{displaymath}
     \begin{array}{c}
         \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$Pre(s, a)$$ \hspace{.2cm} $$Post(s, a, s')$$}{$$s\step{a/ok}s'$$}
@@ -496,22 +519,22 @@ Formalmente, las posibles respuestas de sistema se definen a través de la sigui
 
 El siguiente teorema garantiza que toda ejecución mantiene la validez del estado del sistema. Su
 demostración se realizó utilizando el asistente de pruebas \texttt{Coq} y puede encontrarse en el
-archivo \texttt{ValidityInvariance.v}. Consiste, fundamentalmente, en un análisis por cosas en la
+archivo \texttt{ValidityInvariance.v}. Consiste, fundamentalmente, en un análisis por casos en la
 acción a ejecutar ya que previamente se han demostrado por separado que cada acción preserva la
 validez del estado.
 
 \begin{theorem} [Las ejecuciones preservan la validez del estado]
     \label{lemma:valid-state-correct}
     \mbox{}\\
-    $\begin{array}{l}
-            \forall\ (s\ s':\AndroidState)(a:\Action) (r:Response),
-            s\step{a/r}s' \rightarrow valid\_state(s')
-        \end{array}$
+    $\begin{array}{l} \forall\ (s\ s':\AndroidState)(a:\Action) (r:Response), s\step{a/r}s'
+            \rightarrow valid\_state(s')\end{array}$
 \end{theorem}
 
-Demostrar este tipo de invariantes del sistema resulta muy útil para luego estudiar otro tipo de
-propiedades del mismo. En particular, todas las propiedades que presentaremos a continuación fueron
-analizadas solo en estados válidos del modelo.
+Demostrar este tipo de invariantes facilita el razonamiento cuando se estudian otros comportamientos
+más específicos del sistema. En particular, todas las propiedades que mencionamos a continuación,
+fueron probadas sobre estados válidos. De esta manera, infinidad de estados en los que la propiedad
+no hubiese sido verdadera fueron automáticamente descartados, dado que no se trataban de escenarios
+válidos.
 
 \section{Propiedades del modelo}
 \label{section:formalization:properties}
@@ -524,8 +547,8 @@ de pruebas \texttt{Coq}. Nos enfocamos en propiedades de \textit{safety}\footnot
 potencialmente peligrosos que no han sido considerados en la especificación informal de la
 plataforma.
 
-En la tabla \ref{table:auxiliary_functions} introducimos algunas funciones y predicados auxiliares que
-nos ayudarán a definir los teoremas presentados.
+En la tabla \ref{table:auxiliary_functions} introducimos algunas funciones y predicados auxiliares
+que nos ayudarán a definir los teoremas presentados.
 
 \input{tablas/funciones_auxiliares}
 
@@ -534,43 +557,40 @@ primer propiedad que formulamos establece una condición necesaria para que nues
 sistema sea consecuente con la documentación de la plataforma: solo los permisos que pertenecen a un
 grupo ya autorizado por el usuario pueden ser otorgados de manera automática por el sistema.
 
-\begin{prop} \label{section:formalization:property1}
-    \mbox{} \\ \\
+\begin{prop} \label{section:formalization:property1} \mbox{} \\ \\
     $\forall (s,s': \AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
-    $getPermissionLevel(p) = dangerous \land getPermissionGroup(p) = Some\ g\ \land
-        g \notin getAuthorizedGroups(app,s)
-        \rightarrow\ \neg \Mathexecrel{s}{\texttt{grantAuto}~p~app/ok}{s'}$ \\ \\
+    $getPermissionLevel(p) = dangerous \land getPermissionGroup(p) = Some\ g\ \land g \notin
+        getAuthorizedGroups(app,s) \rightarrow\ \neg
+        \Mathexecrel{s}{\texttt{grantAuto}~p~app/ok}{s'}$ \\ \\
     \textit{El sistema de permisos de Android garantiza que un otorgamiento automático de permisos peligrosos puede ocurrir solamente para aquellos permisos que pertenecen a grupos autorizados por el usuario.}
 \end{prop}
 
-Sin embargo, algunas incógnitas surgen al intentar formalizar en qué situaciones un grupo de permisos
-se encuentra autorizado. Por ejemplo, observamos que existen estados válidos del sistema en los que un
-permiso puede ser otorgado automáticamente a una aplicación, a pesar de que \textbf{actualmente} no
-existan otros permisos de ese mismo grupo ya otorgados a la misma. Esta situación podría alcanzarse
-con la siguiente secuencia de acciones:
+Sin embargo, algunas incógnitas surgen al intentar formalizar en qué situaciones un grupo de
+permisos se encuentra autorizado. Por ejemplo, observamos que existen estados válidos del sistema en
+los que un permiso puede ser otorgado automáticamente a una aplicación, a pesar de que
+\textbf{actualmente} no existan otros permisos de ese mismo grupo ya otorgados a la misma. Esta
+situación podría alcanzarse con la siguiente secuencia de acciones:
 
 \begin{enumerate}
     \item Una aplicación $A$ declara el permiso $P$ agrupado en el grupo $G$
     \item Una aplicación $B$ solicita el permiso $P$
     \item El usuario otorga el permiso $P$ a la aplicación $B$
-    \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son eliminados)
-    \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$ (a
-          pesar de que ya no cuenta con el permiso $P$)
+    \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son
+          eliminados)
+    \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$
+          (a pesar de que ya no cuenta con el permiso $P$)
 \end{enumerate}
 
-Es importante mencionar que este escenario no implica que existe un falla de seguridad en el sistema.
-Podría ser una decisión tomada al diseñar la plataforma con la intención de evitar abrumar al usuario
-con advertencias y cuadros de diálogos solicitando acciones. Sin embargo, esta decisión no está clara
-y no es desambiguada en ningún lugar de la documentación. A continuación formalizamos el
-escenario descripto:
+Es importante mencionar que este escenario no implica que existe un falla de seguridad en el
+sistema. Podría ser una decisión tomada al diseñar la plataforma con la intención de evitar abrumar
+al usuario con advertencias y cuadros de diálogos solicitando acciones. Sin embargo, esta decisión
+no está clara y no es desambiguada en ningún lugar de la documentación. A continuación formalizamos
+el escenario descripto:
 
-\begin{prop} \label{section:formalization:property2}
-    \mbox{} \\ \\
-    $\exists (s:\AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$
-    $valid\_state(s) \land \\
-        getPermissionLevel(p) = dangerous~ \land
-        getPermissionGroup(p) = Some\ g\ \land$
-    $\neg (\exists (p': \Perm), p' \in getGrantedPermsApp(app,s)~ \land$ \\
+\begin{prop} \label{section:formalization:property2} \mbox{} \\ \\
+    $\exists (s:\AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ $valid\_state(s) \land \\
+        getPermissionLevel(p) = dangerous~ \land getPermissionGroup(p) = Some\ g\ \land$ $\neg
+        (\exists (p': \Perm), p' \in getGrantedPermsApp(app,s)~ \land$ \\
     $ getPermissionGroup(p') = Some\ g) \land Pre(s, grantAuto~p~a) \\ \\$
 
     \textit{El sistema puede otorgar automáticamente un permiso a pesar de que no hay otro permiso del mismo grupo actualmente otorgado a la aplicación.}
@@ -579,15 +599,16 @@ escenario descripto:
 
 La siguiente propiedad formaliza el escenario mencionado en la sección
 \ref{subsection:recent-changes:grouped-permissions} sobre los permisos normales y peligrosos
-compartiendo el  mismo grupo. Como mencionamos previamente, formalizamos el peor escenario posible que
-satisface la especificación informal de la plataforma. Sin embargo, nuestra postura es que no debería
-permitirse que los permisos de distintos niveles de protección ya que podría facilitar un ataque por
-escalamiento de privilegios.
+compartiendo el  mismo grupo. Como mencionamos previamente, formalizamos el peor escenario posible
+que satisface la especificación informal de la plataforma. Sin embargo, nuestra postura es que no
+debería permitirse que los permisos de distintos niveles de protección ya que podría facilitar un
+ataque por escalamiento de privilegios.
 
-\begin{prop} \label{section:formalization:property3}
-    \mbox{} \\ \\
-    $\forall (s,s': \AndroidState)~(a: \AppId)~(m: \Manifest)~(c: \Cert)~(resources: list~\Res)~(g:\PermGrp)\\
-        (pDang~pNorm: \Perm), \Mathexecrel{s}{\texttt{install}~a~m~c~resources/ok}{s'} \rightarrow$ \\
+\begin{prop} \label{section:formalization:property3} \mbox{} \\ \\
+    $\forall (s,s': \AndroidState)~(a: \AppId)~(m: \Manifest)~(c: \Cert)~(resources:
+        list~\Res)~(g:\PermGrp)\\
+        (pDang~pNorm: \Perm), \Mathexecrel{s}{\texttt{install}~a~m~c~resources/ok}{s'} \rightarrow$
+    \\
     $getPermissionLevel(pDang) = dangerous~ \rightarrow \\
         getPermissionGroup(pDang) = Some\ g \rightarrow \\
         getPermissionLevel(pNorm) = normal~ \rightarrow \\
@@ -598,15 +619,14 @@ escalamiento de privilegios.
     \textit{Una aplicación que usa un permiso normal y uno peligroso del mismo grupo de permisos, puede obtener el segundo automáticamente luego de ser instalada.}
 \end{prop}
 
-Los usuarios tienen la posibilidad de revocar cualquier permiso previamente otorgado en cualquier
-momento. Sin embargo, en el caso de los permisos agrupados, no es posible hacerlo de manera granular.
-El grupo entero debe ser invalidado. Creemos que esta situación es deseable, considerando que al
-otorgar un permiso agrupado el sistema concede cierto privilegio sobre el grupo entero (en lugar del
-permiso solicitado en sí). Por lo tanto, probamos que nuestro sistema es consistente con este
-comportamiento.
+Como mencionamos previamente, los usuarios tienen la posibilidad de revocar cualquier permiso
+previamente otorgado en cualquier momento. Sin embargo, en el caso de los permisos agrupados, no es
+posible hacerlo de manera granular. El grupo entero debe ser invalidado. Creemos que esta situación
+es deseable, considerando que al otorgar un permiso agrupado el sistema concede cierto privilegio
+sobre el grupo entero (en lugar del permiso solicitado en sí). Por lo tanto, probamos que nuestro
+sistema es consistente con este comportamiento.
 
-\begin{prop} \label{section:formalization:property4}
-    \mbox{} \\ \\
+\begin{prop} \label{section:formalization:property4} \mbox{} \\ \\
     $\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
     $\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
     $\neg (\exists (p: \Perm), p \in getGrantedPermsApp(app,s')~ \\
@@ -618,13 +638,12 @@ comportamiento.
 El último cambio incorporado al modelo fue el que mencionamos en la sección
 \ref{subsection:recent-changes:legacy-apps}. El mismo agrega restricciones a las acciones que pueden
 ser ejecutadas por aplicaciones orientadas a versiones viejas de la plataforma, dado que las mismas
-consiguieron todos los permisos en tiempo de instalación. La siguiente propiedad establece que ninguna
-aplicación \textit{legacy} que \textbf{no ha sido verificada aún} puede recibir \textit{intents}. De
-esta manera, ninguna de esas aplicaciones estará en condiciones de iniciar nuevas actividades o
-o servicios maliciosos con los permisos adquiridos en la instalación.
+consiguieron todos los permisos en tiempo de instalación. La siguiente propiedad establece que
+ninguna aplicación \textit{legacy} que \textbf{no ha sido verificada aún} puede recibir
+\textit{intents}. De esta manera, ninguna de esas aplicaciones estará en condiciones de iniciar
+nuevas actividades o servicios maliciosos con los permisos adquiridos en la instalación.
 
-\begin{prop} \label{section:formalization:property5}
-    \mbox{} \\ \\
+\begin{prop} \label{section:formalization:property5} \mbox{} \\ \\
     $\forall (s,s': \AndroidState)~(i:\Intent)~(ic:\iComp)~(app:\AppId),$ \\
     $oldAppNotVerified(app, s) \rightarrow$ \\
     $\neg \Mathexecrel{s}{\texttt{receiveIntent}~i~ic~app/ok}{s'}$ \\ \\
@@ -633,21 +652,22 @@ o servicios maliciosos con los permisos adquiridos en la instalación.
 \end{prop}
 
 
-Finalmente, incluimos una propiedad que ha estado vigente en el modelo desde que fue actualizado para
-incluir los cambios de la versión 6 de Android. Cualquier aplicación que desee enviar información por
-internet deberá contar con un permiso llamado \texttt{INTERNET}. Sin embargo, como el nivel de
-protección del mismo es "normal", basta con listarlo en la sección de permisos usados del manifiesto
-para conseguirlo. Una vez más, criticamos esto dado que facilita escenarios de fuga de información. La
-propiedad siguiente formaliza este comportamiento, presentando un argumento razonable para volver
-atrás este cambio introducido en Android Marshmallow.
+Finalmente, incluimos una propiedad que ha estado vigente en el modelo desde que fue actualizado
+para incluir los cambios de la versión 6 de Android. Esta propiedad sigue siendo válida luego de la
+actualización del modelo. Cualquier aplicación que desee enviar información por internet deberá
+contar con un permiso llamado \texttt{INTERNET}. Sin embargo, como el nivel de protección del mismo
+es ``normal'', basta con listarlo en la sección de permisos usados del manifiesto para conseguirlo.
+Una vez más, criticamos esto dado que facilita escenarios de fuga de información. La propiedad
+siguiente formaliza este comportamiento, presentando un argumento razonable para volver atrás este
+cambio introducido en Android Marshmallow.
 
-\begin{prop} \label{section:formalization:property6}
-    \mbox{} \\ \\
+\begin{prop} \label{section:formalization:property6} \mbox{} \\ \\
     $ \forall (s:\AndroidState) (sac:SACall) (c:\Comp) (ic:\iComp) (p:\Perm), \\
         valid\_state(s) \rightarrow permSAC(p, sac) \rightarrow \\
         getPermissionLevel(p) = normal \rightarrow getPermissionId(p) \in \\
         getAppRequestedPerms(getManifestForApp(getAppFromCmp(c,s),s)) \rightarrow\\
-        (ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$ \\ \\
+        (ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$
+    \\ \\
 
     \textit{Si la ejecución de un llamado a la API de Android solo requiere permisos con nivel de protección normal, basta con listar dicho permiso en el manifiesto para estar habilitado a realizar el llamado.}
 \end{prop}
