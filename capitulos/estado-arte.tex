@@ -2,216 +2,176 @@
 \chapter{Trabajos relacionados}
 \label{chapter:estado}
 
-En esta sección se presentan algunos trabajos académicos relacionados con el
-modelo de seguridad de Android. Se organizará de la siguiente manera: primero,
-se describen trabajos informales\footnote{Entendemos por trabajo informal a
-    aquellos que describen coloquialmente el sistema, por más rigurosa que sea la
-    descripción} que son de interés por abarcar características nuevas, por la
-información que condensan o por ser pioneros en el área. Luego, se mencionan
-varias herramientas (o aplicaciones) que utilizan técnicas de análisis estático
-de código para detectar potenciales vulnerabilidades, todas desarrolladas dentro
-de un marco académico. A pesar de que este enfoque  es distinto al que se
-propone en esta tesina, se tomó la decisión de incluirlo en este capítulo ya que
-conforma gran parte de la investigación actual y de los últimos años. Por
-último, se analizan aquellos trabajos que utilizan métodos formales para dar una
-especificación de la plataforma. Estos trabajos se describen con más detalle que
-los anteriores e incluso se contemplan artículos que no son recientes pero
-presentan un enfoque novedoso o relevante a este trabajo.
+En esta sección se presentan algunos trabajos académicos relacionados con el modelo de seguridad de
+Android. Se organizará de la siguiente manera: primero, se describen trabajos
+informales\footnote{Entendemos por trabajo informal a aquellos que describen coloquialmente el
+    sistema, por más rigurosa que sea la descripción} que son de interés por abarcar características
+nuevas, por la información que condensan o por ser pioneros en el área. Luego, se mencionan varias
+herramientas (o aplicaciones) que utilizan técnicas de análisis estático de código para detectar
+potenciales vulnerabilidades, todas desarrolladas dentro de un marco académico. A pesar de que este
+enfoque  es distinto al que se propone en esta tesina, se tomó la decisión de incluirlo en este
+capítulo ya que conforma gran parte de la investigación actual y de los últimos años. Por último, se
+analizan aquellos trabajos que utilizan métodos formales para dar una especificación de la
+plataforma. Estos trabajos se describen con más detalle que los anteriores e incluso se contemplan
+artículos que no son recientes pero presentan un enfoque novedoso o relevante a este trabajo.
 
-Dentro del primer grupo, se encuentran artículos como el de William Enck
-\textit{et al.}~\cite{enck}: uno de los primeros trabajos académicos en
-describir el modelo de seguridad de Android. Los autores buscaban
-\textit{desenmascarar} la complejidad a la que debían enfrentarse los
-desarrolladores cuando se proponían construir aplicaciones seguras. A pesar de
-la antigüedad de este artículo, hoy en día sigue siendo relevante por la
-explicación concreta y concisa sobre las bases del sistema de permisos de
-Android. También se encuentra el trabajo de Wang y Wu~\cite{wang}, quienes
-resumen las vulnerabilidades que existen en el sistema de comunicación entre
-componentes, para luego discutir sobre el estado del arte en la detección y
-prevención de las mismas.
+Dentro del primer grupo, se encuentran artículos como el de William Enck \textit{et
+    al.}~\cite{enck}: uno de los primeros trabajos académicos en describir el modelo de seguridad de
+Android. Los autores buscaban \textit{desenmascarar} la complejidad a la que debían enfrentarse los
+desarrolladores cuando se proponían construir aplicaciones seguras. A pesar de la antigüedad de este
+artículo, hoy en día sigue siendo relevante por la explicación concreta y concisa sobre las bases
+del sistema de permisos de Android. También se encuentra el trabajo de Wang y Wu~\cite{wang},
+quienes resumen las vulnerabilidades que existen en el sistema de comunicación entre componentes,
+para luego discutir sobre el estado del arte en la detección y prevención de las mismas.
 
-Recientemente, René Mayrhofer \textit{et al.}~\cite{mayrhofer} realizaron un
-trabajo similar para la versión 9.0 de Android. En él, se definen los principios
-de seguridad del sistema en cuestión y un modelo de amenazas \textit{por capas},
-a partir cual se derivan amenazas concretas que dependen de la cercanía entre
-atacante y dispositivo móvil. Además, este artículo analiza los cambios que se
-fueron introduciento en el sistema operativo para mitigar estas amenazas.
+Recientemente, René Mayrhofer \textit{et al.}~\cite{mayrhofer} realizaron un trabajo similar para la
+versión 9.0 de Android. En él, se definen los principios de seguridad del sistema y un modelo de
+amenazas \textit{por capas}, a partir cual se derivan amenazas concretas que dependen de la cercanía
+entre atacante y dispositivo móvil. Además, este artículo analiza los cambios que se fueron
+introduciendo en el sistema operativo para mitigar estas amenazas.
 
-% Por otro lado, tenemos el trabajo de Yasemin Acar \textit{et al.}~\cite{sok},
-% quienes presentan una visión sistémica e integradora de las distintas líneas
-% de investigación en Android. Los autores realizan un análisis de los diversos
-% enfoques desde los cuales se aborda la seguridad de esta plataforma,
-% comparándolos, y estableciendo, según ellos, cuál es el camino para la
+% Por otro lado, tenemos el trabajo de Yasemin Acar \textit{et al.}~\cite{sok}, quienes presentan
+% una visión sistémica e integradora de las distintas líneas de investigación en Android. Los
+% autores realizan un análisis de los diversos enfoques desde los cuales se aborda la seguridad de
+% esta plataforma, comparándolos, y estableciendo, según ellos, cuál es el camino para la
 % investigación futura.
 
-Este tipo de trabajos constituyen un complemento importante a la documentación
-oficial de Android, brindándole referencias más claras a los desarrolladores y
-nuevas herramientas que permiten resguardar sus aplicaciones. Un ejemplo de esto
-fue el trabajo de Felt \textit{et al.}~\cite{felt}, quienes estudiaron un grupo
-de aplicaciones disponibles para la versión 2.2 de Android y detectaron que
-muchas de ellas pedían más permisos de los que realmente necesitaban. Los
-autores investigaron las causas de sobreprivilegio de estas aplicaciones y
-encontraron que, muchas veces, los desarrolladores intentaban otorgar la menor
-cantidad de privilegios necesarios, pero en reiteradas ocasiones fallaban por
-falta de una documentación precisa. En consecuencia, el grupo desarrolló
-Stowaway, una de las primeras herramientas dedicadas a la detección de permisos
-innecesarios.
+Este tipo de trabajos constituyen un complemento importante a la documentación oficial de Android,
+brindándole referencias más claras a los desarrolladores y nuevas herramientas que permiten
+resguardar sus aplicaciones. Un ejemplo de esto fue el trabajo de Felt \textit{et al.}~\cite{felt},
+quienes estudiaron un grupo de aplicaciones disponibles para la versión 2.2 de Android y detectaron
+que muchas de ellas pedían más permisos de los que realmente necesitaban. Los autores investigaron
+las causas de sobreprivilegio de estas aplicaciones y encontraron que, muchas veces, los
+desarrolladores intentaban otorgar la menor cantidad de privilegios necesarios, pero en reiteradas
+ocasiones fallaban por falta de una documentación precisa. En consecuencia, el grupo desarrolló
+Stowaway, una de las primeras herramientas dedicadas a la detección de permisos innecesarios.
 
-Actualmente existe una gran cantidad de herramientas de análisis estático que
-ayudan a detectar sobreprivilegios o un flujo de información indebido, siendo
-las más recientes:
+Actualmente existe una gran cantidad de herramientas de análisis estático que ayudan a detectar
+sobreprivilegios o un flujo de información indebido, siendo las más recientes:
 %
 M-Perm~\cite{mperm},
 %
 IC3~\cite{ic3},
-% que incorpora el concepto de \textit{propagación de constantes compuestas
-% multi-valuadas} para lograr una mayor eficiencia;
+% que incorpora el concepto de \textit{propagación de constantes compuestas multi-valuadas} para
+% lograr una mayor eficiencia;
 Droidtector~\cite{droidtector},
-% que a diferencia del resto no necesita el código fuente de las aplicaciones o
-% de Android para realizar el análisis.
+% que a diferencia del resto no necesita el código fuente de las aplicaciones o de Android para
+% realizar el análisis.
 Covert~\cite{covert} y Separ~\cite{separ}.
-% que combinan análisis estático con métodos formales para inferir
-% automáticamente propiedades sobre un conjunto de aplicaciones, a partir de las
-% cuales se derivarán políticas de seguridad
-Las dos últimas combinan análisis estático con métodos formales para inferir
-automáticamente propiedades sobre un conjunto de aplicaciones y luego derivar
-políticas de seguridad. La gran oferta que existe de este tipo de aplicaciones,
-da lugar a trabajos como el Lina Qiu \textit{et al.}~\cite{qiu}, en el que se
-analizan y comparan las herramientas, que según los autores, son las más
-destacadas: Flowdroid combinada con IccTA~\cite{iccta},
-Amandroid~\cite{amandroid} y DroidSafe~\cite{droidsafe}.
+% que combinan análisis estático con métodos formales para inferir automáticamente propiedades sobre
+% un conjunto de aplicaciones, a partir de las cuales se derivarán políticas de seguridad
+Las dos últimas combinan análisis estático con métodos formales para inferir automáticamente
+propiedades sobre un conjunto de aplicaciones y luego derivar políticas de seguridad. La gran oferta
+que existe de este tipo de aplicaciones, da lugar a trabajos como el Lina Qiu \textit{et
+    al.}~\cite{qiu}, en el que se analizan y comparan las herramientas, que según los autores las más
+destacadas son: Flowdroid combinada con IccTA~\cite{iccta}, Amandroid~\cite{amandroid} y
+DroidSafe~\cite{droidsafe}.
 
-Abordar la seguridad de Android con este enfoque presenta una diferencia
-fundamental con respecto a la que se propone en esta tesina: estas herramientas
-se focalizan en proteger una aplicación en particular (o en algunos casos, un
-conjunto de aplicaciones); mientras que una especificación formal de la
-plataforma subyacente permite extraer propiedades relevantes a \textbf{todas}
-las aplicaciones y al sistema en general. Por otro lado, este tipo de
-aplicaciones son un recurso más accesible para los usuarios que desean
-resguardar información sensible sin ser especialistas en el área.
+Abordar la seguridad de Android con este enfoque presenta una diferencia fundamental con respecto a
+la que se propone en esta tesina: estas herramientas se focalizan en proteger una aplicación en
+particular (o en algunos casos, un conjunto de aplicaciones); mientras que una especificación formal
+de la plataforma subyacente permite extraer propiedades relevantes a \textbf{todas} las aplicaciones
+y al sistema en general. Por otro lado, este tipo de aplicaciones son un recurso más accesible para
+los usuarios que desean resguardar información sensible sin ser especialistas en el área.
 
-% A pesar de ser el enfoque con más publicaciones relacionadas a la seguridad de
-% Android, presenta una diferencia fundamental con el que se propone en esta
-% tesina: estas herramientas se focalizan en estudidar una aplicación (o en
-% algunos casos, un conjunto de aplicaciones)
+% A pesar de ser el enfoque con más publicaciones relacionadas a la seguridad de Android, presenta
+% una diferencia fundamental con el que se propone en esta tesina: estas herramientas se focalizan
+% en estudidar una aplicación (o en algunos casos, un conjunto de aplicaciones)
 
 
-% Las herramientas e este tipo se focalizan en estudiar una aplicación en
-% particular (o en algunos casos, un conjunto de aplicaciones) y extraer
-% propiedades de seguridad que solo conciernen a ella. En cambio, en esta tesina
-% estudiamos el sistema de permisos subyacente, extrayendo propiedades
+% Las herramientas e este tipo se focalizan en estudiar una aplicación en particular (o en algunos
+% casos, un conjunto de aplicaciones) y extraer propiedades de seguridad que solo conciernen a ella.
+% En cambio, en esta tesina estudiamos el sistema de permisos subyacente, extrayendo propiedades
 % relevantes para todas las aplicaciones y para el sistema en general.
 
 
-Entrando en el terreno de los métodos formales, nos encontramos en primer lugar
-con el trabajo de Chaudhuri~\cite{chaudhuri}. En el mismo, se desarrolló un
-lenguaje que permite describir un subconjunto de aplicaciones de Android y
-razonar sobre ellas. Adicionalmente, se presentó un sistema de tipos para este
-lenguaje y se demostró un teorema que garantiza que las aplicaciones bien
-tipadas preservan la confidencialidad de los datos que manejan. Parcialmente
-inspirado en este trabajo, Bugliesi \textit{et al.} desarrollaron
-$\pi$-Perm~\cite{bugliesi}, un sistema de tipos y efectos que tiene como
-finalidad detectar problemas de \textit{privilege escalation}. De manera análoga
-al trabajo de Chaudhuri, una expresión bien tipada en $\pi$-Perm garantiza que
-la aplicación real a la cual está representando, no es vulnerable al ataque
-mencionado. Similarmente, Armando \textit{et al.} definen un
-lenguaje~\cite{armando}, acompañado por su semántica operacional, que permite
-describir interacciones entre aplicaciones. Al igual que en los trabajos
-anteriores, se define un sistema de tipos y efectos; pero este está basado en un
-formalismo del estilo del álgebra de procesos, conocido como \textit{history
-    expressions}~\cite{history-expressions}. Puesto en términos simples, una
-\textit{history expression} sirve para representar los efectos laterales
-vinculados a la seguridad del dispositivo, que se producen al realizar una
-computación. Finalmente, los autores prueban que cualquier comportamiento que la
-plataforma pueda tener en \textit{runtime}, está contenido en este modelo; y por
-lo tanto, puede analizarse estáticamente.
+Entrando en el terreno de los métodos formales, nos encontramos en primer lugar con el trabajo de
+Chaudhuri~\cite{chaudhuri}. En el mismo, se desarrolló un lenguaje que permite describir un
+subconjunto de aplicaciones de Android y razonar sobre ellas. Adicionalmente, se presentó un sistema
+de tipos para este lenguaje y se demostró un teorema que garantiza que las aplicaciones bien tipadas
+preservan la confidencialidad de los datos que manejan. Parcialmente inspirado en este trabajo,
+Bugliesi \textit{et al.} desarrollaron $\pi$-Perm~\cite{bugliesi}, un sistema de tipos y efectos que
+tiene como finalidad detectar problemas de \textit{privilege escalation}. De manera análoga al
+trabajo de Chaudhuri, una expresión bien tipada en $\pi$-Perm garantiza que la aplicación real a la
+cual está representando, no es vulnerable al ataque mencionado. Similarmente, Armando \textit{et
+    al.} definen un lenguaje~\cite{armando}, acompañado por su semántica operacional, que permite
+describir interacciones entre aplicaciones. Al igual que en los trabajos anteriores, se define un
+sistema de tipos y efectos; pero este está basado en un formalismo del estilo del álgebra de
+procesos, conocido como \textit{history expressions}~\cite{history-expressions}. Puesto en términos
+simples, una \textit{history expression} sirve para representar los efectos laterales vinculados a
+la seguridad del dispositivo, que se producen al realizar una computación. Finalmente, los autores
+prueban que cualquier comportamiento que la plataforma pueda tener en tiempo de ejecución, está
+contenido en este modelo; y por lo tanto, puede analizarse estáticamente.
 
-Recientemente, Wilayat Khan \textit{et al.}~\cite{khan} retomaron el trabajo de
-Chaudhuri y modelaron el lenguaje en él definido dentro del \textit{framework}
-lógico-matemático Coq~\cite{coq}. De esta forma, pudieron no solo estudiar la
-corrección y seguridad de las aplicaciones de manera mecánica y rigurosa, sino
-que también utilizaron este asistente para probar la corrección -o
-\textit{soundness}- del lenguaje en sí. En otro trabajo actual en el que
-participó Khan~\cite{crashsafe}, se definió en Coq un modelo para estudiar el
-sistema de comunicación entre componentes. El principal objetivo de este trabajo
-es analizar la robustez de la plataforma cuando una aplicación detiene su
-ejecución a causa de un fallo en la resolución de un \textit{intent}. A
-diferencia del resto de los trabajos citados, éste se concentra en estudiar
-propiedades de \textit{safety} y no de \textit{security}, a pesar de que este
-sistema puede ser explotado para filtrar información sensible de los
-usuarios~\cite{iccta}.
+Recientemente, Wilayat Khan \textit{et al.}~\cite{khan} retomaron el trabajo de Chaudhuri y
+modelaron el lenguaje en él definido dentro del \textit{framework} lógico-matemático Coq~\cite{coq}.
+De esta forma, pudieron no solo estudiar la corrección y seguridad de las aplicaciones de manera
+mecánica y rigurosa, sino que también utilizaron este asistente para probar la corrección -o
+\textit{soundness}- del lenguaje en sí. En otro trabajo actual en el que participó
+Khan~\cite{crashsafe}, se definió en Coq un modelo para estudiar el sistema de comunicación entre
+componentes. El principal objetivo de este trabajo es analizar la robustez de la plataforma cuando
+una aplicación detiene su ejecución a causa de un fallo en la resolución de un \textit{intent}. A
+diferencia del resto de los trabajos citados, éste se concentra en estudiar propiedades de
+\textit{safety} y no de \textit{security}, a pesar de que los \textit{intents} pueden ser explotados
+para filtrar información sensible de los usuarios~\cite{iccta}.
 
-Por otra parte, Sadeghi \textit{et al.}~\cite{sadeghi-temp} presentan una
-formalización de la plataforma escrita en TLA+, un lenguaje especificación
-basado en la lógica lineal temporal~\cite{tla+}. Al incoporar el aspecto
-temporal al modelo, los autores buscan definir propiedades cuya veracidad
-dependa del momento en el que se la evalúe y de esta forma, modelar el
-comportamiento del sistema a medida que evoluciona en el tiempo. Luego, proponen
-un monitor de seguridad que otorga permisos temporales a las aplicaciones
-siempre y cuando se cumplan todas las propiedades (o reglas) de seguridad
-previamente definidas. Este permiso ``prestado'' es automáticamente revocado si
-en algún momento el sistema se encuentra en un estado que compromete alguna de
-las reglas.
+Por otra parte, Sadeghi \textit{et al.}~\cite{sadeghi-temp} presentan una formalización de la
+plataforma escrita en TLA+, un lenguaje de especificación basado en la lógica lineal
+temporal~\cite{tla+}. Al incoporar el aspecto temporal al modelo, los autores buscan definir
+propiedades cuya veracidad dependa del momento en el que se la evalúe y de esta forma, modelar el
+comportamiento del sistema a medida que evoluciona en el tiempo. Luego, proponen un monitor de
+seguridad que otorga permisos temporales a las aplicaciones siempre y cuando se cumplan todas las
+propiedades (o reglas) de seguridad previamente definidas. Este permiso ``prestado'' es
+automáticamente revocado si en algún momento el sistema se encuentra en un estado que compromete
+alguna de las reglas.
 
-Similarmente, Bagheri \textit{et al.}~\cite{bagheri15} proponen una
-formalización del sistema de permisos de Android escrita en Alloy~\cite{alloy}:
-un lenguaje basado en la lógica relacional de primer orden, que incorpora una
-herramienta capaz de realizar análisis de satisfacibilidad automáticos sobre los
-modelos en él descriptos. Con la ayuda de esta formalización, los autores
-identificaron distintos tipos de vulnerabilidades que permiten esquivar el
-chequeo de permisos. Particularmente, estudiaron la vulnerabilidad de permisos
-personalizados, mediante la cual una aplicación maliciosa puede acceder a todos
-los recursos de otra que estén protegidos por permisos personalizados. Esta
-falla surge de que el sistema no impone restricciones con respecto al nombre de
-los nuevos permisos que definen y, como consecuencia, dos permisos distintos
-podrían tener el mismo nombre. Este trabajo luego se extendió para una nueva
-versión de Android~\cite{bagheri}. La falla por permisos personalizados había
-sido reportada previamente por Shin \textit{et al.}~\cite{shin-custom}. Una
-diferencia fundamental entre este enfoque y el de esta tesina es el tipo de
-análisis que se realizó. A pesar de que Alloy es capaz de producir
-contraejemplos de manera automática, algo realmente útil a la hora de buscar
-potenciales fallas; no es posible demostrar propiedades de una manera rigurosa y
-formal.
+Similarmente, Bagheri \textit{et al.}~\cite{bagheri15} proponen una formalización del sistema de
+permisos de Android escrita en Alloy~\cite{alloy}: un lenguaje basado en la lógica relacional de
+primer orden, que incorpora una herramienta capaz de realizar análisis de satisfacibilidad
+automáticos sobre los modelos en él descriptos. Con la ayuda de esta formalización, los autores
+identificaron distintos tipos de vulnerabilidades que permiten esquivar el chequeo de permisos.
+Particularmente, estudiaron la vulnerabilidad de permisos personalizados, mediante la cual una
+aplicación maliciosa puede acceder a todos los recursos de otra que estén protegidos por permisos
+personalizados. Esta falla surge de que el sistema no impone restricciones con respecto al nombre de
+los nuevos permisos que definen y, como consecuencia, dos permisos distintos podrían tener el mismo
+nombre. Este trabajo luego se extendió para una nueva versión de Android~\cite{bagheri}. La falla
+por permisos personalizados había sido reportada previamente por Shin \textit{et
+    al.}~\cite{shin-custom}. Una diferencia fundamental entre este enfoque y el de esta tesina es el
+tipo de análisis que se realizó. A pesar de que Alloy es capaz de producir contraejemplos de manera
+automática, algo realmente útil a la hora de buscar potenciales fallas; no es posible demostrar
+propiedades de una manera rigurosa y formal.
 
-En trabajos previos encabezados por Gustavo Betarte y Carlos
-Luna~\cite{betarte-2017, betarte-2016, luna-cleiej}, se utilizó el asistente de
-pruebas Coq para modelar un sistema de transición de estados que representa,
-principalmente, los distintos estados que atraviesa la plataforma cuando se
-realizan operaciones sobre ella (por ejemplo, al instalar o desinstalar una
-aplicación). A partir de esta especificación, no solo se probaron propiedades
-relevantes a la seguridad del modelo, sino que también se extrajo una
-implementación certificada del mismo. Los autores explican cómo esta
-implementación puede utilizarse para generar casos de pruebas abstractos dentro
-del \textit{testing} basado en modelos, o bien, cómo puede usarse para
-monitorear las acciones realizadas en un sistema real y evaluar si las
-propiedades deseadas efectivamente se cumplen. Estos trabajos presentan el
-modelo que será actualizado y extendido en esta tesina.
+En trabajos previos encabezados por Gustavo Betarte y Carlos Luna~\cite{betarte-2017, betarte-2016,
+    luna-cleiej}, se utilizó el asistente de pruebas Coq para modelar un sistema de transición de
+estados que representa, principalmente, los distintos estados que atraviesa la plataforma cuando se
+realizan operaciones sobre ella (por ejemplo, al instalar o desinstalar una aplicación). A partir de
+esta especificación, no solo se probaron propiedades relevantes a la seguridad del modelo, sino que
+también se extrajo una implementación certificada del mismo. Los autores explican cómo esta
+implementación puede utilizarse para generar casos de pruebas abstractos dentro del \textit{testing}
+basado en modelos, o bien, cómo puede usarse para monitorear las acciones realizadas en un sistema
+real y evaluar si las propiedades deseadas efectivamente se cumplen. Estos trabajos presentan el
+modelo que fue actualizado y extendido en esta tesina.
 
 %%%%%%%%%%
 % Fragmento tomado de \cite{luna-cleiej}
 %%%
-% In particular, Shin et al. [42, 43] build a formal framework that represents
-% the Android permission system, which is based on the Calculus of Inductive
-% Constructions and it is developed in Coq, as we do. However, that
-% formalization does not consider, for instance, several aspects of the platform
-% covered in our model, namely, the different types of components, the
-% interaction between a running instance and the system, the reading/writing
-% operation on a content provider and the semantics of the permission delegation
-% mechanism. They also do not consider novel aspects of the Android security
-% model, such as managing runtime permissions.
+% In particular, Shin et al. [42, 43] build a formal framework that represents the Android
+% permission system, which is based on the Calculus of Inductive Constructions and it is developed
+% in Coq, as we do. However, that formalization does not consider, for instance, several aspects of
+% the platform covered in our model, namely, the different types of components, the interaction
+% between a running instance and the system, the reading/writing operation on a content provider and
+% the semantics of the permission delegation mechanism. They also do not consider novel aspects of
+% the Android security model, such as managing runtime permissions.
 %%%
-Un enfoque similar a este, es el de Wook Shin \textit{et al.}, quienes también
-utilizaron Coq para modelar el sistema de permisos de Android~\cite{shin}. Sin
-embargo, esta formalización no considera aspectos de la plataforma que sí son
-considerados por los trabajos anteriores (y por ende, por esta tesina); como por
-ejemplo, los distintos tipos de componentes, la interacción entre instancias de
-aplicaciones en ejecución y el sistema, la operación de escritura/lectura en un
-\textit{content provider} y la semántica del sistema de delegación de permisos.
-Al mismo tiempo, cuando Android incorporó los permisos otorgados en
-\textit{runtime}, este modelo no fue actualizado. El trabajo de Fragkaki \textit{et al.}
-tambień presenta un modelo formal basado en transiciones de
-estado~\cite{fragkaki}, pero el mismo no está desarrolado dentro de un
-\textit{framework} que permita realizar pruebas asisistidas por computadora.
-Además, el modelo se corresponde con una de las primeras versiones de Android,
-por lo que tampoco contempla los cambios más recientes en el sistema de
-permisos.
+Un enfoque similar a este, es el de Wook Shin \textit{et al.}, quienes también utilizaron Coq para
+modelar el sistema de permisos de Android~\cite{shin}. Sin embargo, esta formalización no considera
+aspectos de la plataforma que sí son considerados por los trabajos anteriores (y por ende, por esta
+tesina); como por ejemplo, los distintos tipos de componentes, la interacción entre instancias de
+aplicaciones en ejecución y el sistema, la operación de escritura/lectura en un \textit{content
+    provider} y la semántica del sistema de delegación de permisos. Al mismo tiempo, cuando Android
+incorporó los permisos otorgados en tiempo de ejecución,  el modelo  de Shin \textit{et al.} no fue
+actualizado. El trabajo de Fragkaki \textit{et al.} tambień presenta un modelo formal basado en
+transiciones de estado~\cite{fragkaki}, pero el mismo no está desarrolado dentro de un
+\textit{framework} que permita realizar pruebas asisistidas por computadora. Además, el modelo se
+corresponde con una de las primeras versiones de Android, por lo que tampoco contempla los cambios
+más recientes en el sistema de permisos.
