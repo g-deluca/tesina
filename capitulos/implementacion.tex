@@ -13,8 +13,7 @@ matemáticamente. Este trabajo además de extender la especificación del sistem
 Android, extiende la implementación de la plataforma desarrollada en los trabajos previos
 \cite{betarte-2017,luna-cleiej}. Claro está, que al partir de un modelo tan abstracto como el
 nuestro, la implementación obtenida no estaría en condiciones de sustituir a la implementación real
-de Android. Sin embargo, sí podría utilizarse como un monitor de referencia.
-\todoGuido{Citar algún artículo que se explique lo que es un monitor de referencia?}
+de Android. Sin embargo, sí podría utilizarse como un monitor de referencia\cite{Anderson:1972}.
 
 A continuación, describiremos las principales características de nuestra implementación del sistema
 de permisos de Android y algunas propiedades demostradas sobre la misma.
@@ -32,8 +31,8 @@ sufre cambios y se devuelve un mensaje de error.
 
 A modo de ejemplo, explicaremos con un poco más de detalle la implementación de la acción $grant$.
 En la figura \ref{fig:install_action} puede observarse su definición formal. La definición formal
-completa del esta y el resto de las operaciones puede encontrarse en el anexo.
-\todoGuido{Tiene sentido agregar un anexo para esto? Si no referencio directamente el código}
+completa del esta y el resto de las operaciones puede encontrarse en el código en
+GitHub\cite{github-code}.
 
 \begin{figure}[ht]
     \begin{displaymath}
@@ -51,11 +50,18 @@ completa del esta y el resto de las operaciones puede encontrarse en el anexo.
 
 La función $grant\_pre$ se define como la conjunción de todas las condiciones establecidas por la
 precondición de $grant$. En ella también se especifica el error que debe mostrarse cuando alguna de
-ellas no se cumple. Por otro lado, la función $grant\_post$ implementa la modificación esperada en el
-estado: el permiso $perm$ pasa a formar parte de los permisos otorgados a la aplicación $app$ y, si
-el mismo estuviera agrupado, su grupo también se agregaría al listado de grupos autorizados por el
-usuario para el otorgamiento automático de permisos a la aplicación correspondiente.
-\todoGuido{en algún lugar de por acá tengo que mostrar el tipo Result}
+ellas no se cumple. Por otro lado, la función $grant\_post$ implementa la modificación esperada en
+el estado: el permiso $perm$ pasa a formar parte de los permisos otorgados a la aplicación $app$ y,
+si el mismo estuviera agrupado, su grupo también se agregaría al listado de grupos autorizados por
+el usuario para el otorgamiento automático de permisos a la aplicación correspondiente.
+
+Modelamos el resultado de la operación \texttt{grant\_safe} con el siguiente tipo de datos:
+
+\begin{align*}
+     & Response\ :=\ ok\ |\ error\ ec                                                                     \\
+     & \text{donde \textit{ec} es un código de error definido de manera enumerada por \texttt{ErrorCode}} \\ \\
+     & Result\:=\ \{response:\ Response;\ st:\ System\}                                                   \\
+\end{align*}
 
 Luego, tanto a $grant\_safe$ como al resto de las operaciones definidas de manera análoga, se las
 agrupa en una función llamada $step$, que actúa principalmente como un despachador de acciones. En
@@ -101,12 +107,10 @@ un estado válido, es un ejecución correcta del sistema.
 
 
 \begin{theorem}
-    [Corrección del monitor de referencia] \label{theorem:soundness}
-    \mbox{} \\
-    $ \begin{array}[t]{l}
-            \forall\ (s:\AndroidState)\ (a:\Action),     \\
-            \quad \quad \ap{valid\_state}{s} \rightarrow\
-            s\step{a/step(s,a).resp} \bap{step}{s}{a}.st \\
+    [Corrección del monitor de referencia] \label{theorem:soundness} \mbox{} \\
+    $ \begin{array}[t]{l} \forall\ (s:\AndroidState)\ (a:\Action), \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\ s\step{a/step(s,a).resp}
+            \bap{step}{s}{a}.st                             \\
         \end{array} $
 \end{theorem}
 
@@ -118,10 +122,9 @@ por otro, demostraremos que la ejecución también lo es cuando la pre-condició
 modo de ejemplo, presentamos el caso de la operación $grant$.
 
 \begin{lemma}
-    [Corrección de una ejecución válida de $grant$]
-    \mbox{} \\
-    $ \begin{array}[t]{l}
-            \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),                          \\
+    [Corrección de una ejecución válida de $grant$] \mbox{} \\
+    $ \begin{array}[t]{l} \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),
+            \\
             \quad \quad \ap{valid\_state}{s} \rightarrow\ Pre(s, grant\ p\ a) \rightarrow \\
             \quad \quad Post(                                                             \\
             \quad \quad \quad grant\_safe(p, app, s).st,\ grant\ p\ a)                    \\
@@ -129,14 +132,17 @@ modo de ejemplo, presentamos el caso de la operación $grant$.
 \end{lemma}
 
 \begin{lemma}
-    [Corrección de una ejecución errónea de $grant$]
-    \mbox{} \\
-    $ \begin{array}[t]{l}
-            \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),                                           \\
-            \quad \quad \ap{valid\_state}{s} \rightarrow\ \neg Pre(s, grant\ p\ a) \rightarrow             \\
-            \quad \quad grant\_safe(p, app, s).st = s\ \land                                               \\
-            \quad \quad \quad (\exists\ (ec: \ErrorCode),\ grant\_safe(p,\ app,\ s).response\ =\ error\ ec \\
-            \quad \quad \quad \quad \land\ ErrorMsg\ s\ (grant\ p\ a)\ ec)                                 \\
+    [Corrección de una ejecución errónea de $grant$] \mbox{} \\
+    $ \begin{array}[t]{l} \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),
+            \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\ \neg Pre(s, grant\ p\ a) \rightarrow
+            \\
+            \quad \quad grant\_safe(p, app, s).st = s\ \land
+            \\
+            \quad \quad \quad (\exists\ (ec: \ErrorCode),\ grant\_safe(p,\ app,\ s).response\ =\
+            error\ ec \\
+            \quad \quad \quad \quad \land\ ErrorMsg\ s\ (grant\ p\ a)\ ec)
+            \\
         \end{array} $
 \end{lemma}
 
@@ -145,12 +151,13 @@ reduce, a grandes rasgos, a diferenciar los casos en que la pre-condición se cu
 para luego aplicar el sub-lema correspondiente.
 
 \begin{lemma}
-    [Corrección de la operación $grant$] \label{lemma:soundness:grant}
-    \mbox{} \\
-    $ \begin{array}[t]{l}
-            \forall\ (s:\AndroidState)\ (app:\AppId) (p:\Perm),                                                    \\
-            \quad \quad \ap{valid\_state}{s} \rightarrow\                                                          \\
-            \quad \quad \quad s\step{grant\ p\ a\ /\ step(s,\ grant\ p\ a).response} \bap{step}{s}{grant\ p\ a}.st \\
+    [Corrección de la operación $grant$] \label{lemma:soundness:grant} \mbox{} \\
+    $ \begin{array}[t]{l} \forall\ (s:\AndroidState)\ (app:\AppId) (p:\Perm),
+            \\
+            \quad \quad \ap{valid\_state}{s} \rightarrow\
+            \\
+            \quad \quad \quad s\step{grant\ p\ a\ /\ step(s,\ grant\ p\ a).response}
+            \bap{step}{s}{grant\ p\ a}.st \\
         \end{array} $
 \end{lemma}
 
@@ -188,44 +195,33 @@ siguientes- propiedades, fue tomada en pos de mantener la sencillez en las demos
 \begin{prop}
     \label{section:implementation:oldapp}
     \mbox{} \\
-    $	\forall
-        (initState,lastState:\AndroidState)
-        (app:AppId)
-        (l: list\ \Action)$, \\
-    $	valid\_state(initState) \rightarrow
-        app \in getInstalledApps(initState) \rightarrow \\
-        oldAppNotVerified(a, initState) \rightarrow
-        canRun(a, lastState) \rightarrow \\
+    $	\forall (initState,lastState:\AndroidState) (app:AppId) (l: list\ \Action)$, \\
+    $	valid\_state(initState) \rightarrow app \in getInstalledApps(initState) \rightarrow \\
+        oldAppNotVerified(a, initState) \rightarrow canRun(a, lastState) \rightarrow \\
         last(trace(initState,l),initState) = lastState \rightarrow  \\
-        uninstall~app \notin l \rightarrow
-        verifyOldApp~app \in l $ \\ \\
+        uninstall~app \notin l \rightarrow verifyOldApp~app \in l $ \\ \\
     \textit{Si una aplicación vieja puede ser ejecutada entonces debe haber sido autorizada por el usuario previamente.}
 \end{prop}
 
 Similarmente, la siguiente propiedad establece que si al comenzar una traza de ejecución una
 aplicación no posee un permiso peligroso y en el estado final sí, entonces en algún momento de la
-ejecución de esa traza el permiso fue explícitamente otorgado. Notar que "explícitamente" significa
-que el permiso puede haber sido otorgado por el usuario o automáticamente por el sistema. Lo que se
-busca resaltar es que hay una entidad responsable de ese otorgamiento. Esta propiedad es importante
-para marcar la diferencia con lo que ocurría en versions previas de Android, explicado en la
-sección~\ref{subsection:recent-changes:grouped-permissions}.
+ejecución de esa traza el permiso fue explícitamente otorgado. Notar que ``explícitamente''
+significa que el permiso puede haber sido otorgado por el usuario o automáticamente por el sistema.
+Lo que se busca resaltar es que hay una entidad responsable de ese otorgamiento. Esta propiedad es
+importante para marcar la diferencia con lo que ocurría en versions previas de Android, explicado en
+la sección~\ref{subsection:recent-changes:grouped-permissions}.
 
 \begin{prop}
     \label{impproperty2}
     \mbox{} \\
-    $	\forall
-        (initState,lastState:\AndroidState)
-        (app:AppId)
-        (p:\Perm)
-        (l: list\ \Action)$, \\
-    $	valid\_state(initState) \rightarrow
-        app \in getInstalledApps(initState) \rightarrow$ \\
+    $	\forall (initState,lastState:\AndroidState) (app:AppId) (p:\Perm) (l: list\ \Action)$, \\
+    $	valid\_state(initState) \rightarrow app \in getInstalledApps(initState) \rightarrow$ \\
     $	getPermissionLevel(p)= dangerous \rightarrow $\\
     $	appHasPermission(app,p,lastState) \rightarrow$\\
-    $	\neg appHasPermission(app,p,initState)\rightarrow
-        \texttt{uninstall}~app \notin l \rightarrow $ \\
-    $	last(trace(initState,l),initState) = lastState \rightarrow
-        (\texttt{grant}~p~app \in l \lor \texttt{grantAuto}~p~app \in l)$ \\ \\
+    $	\neg appHasPermission(app,p,initState)\rightarrow \texttt{uninstall}~app \notin l \rightarrow
+    $ \\
+    $	last(trace(initState,l),initState) = lastState \rightarrow (\texttt{grant}~p~app \in l \lor
+        \texttt{grantAuto}~p~app \in l)$ \\ \\
     \textit{La única forma de que una aplicación consiga un permiso es si el usuario lo autoriza, o
         si el usuario había autorizado un grupo previamente y el sistema puede otorgar el permiso
         automáticamente.}
@@ -237,18 +233,13 @@ las operaciones conocidas.
 
 \begin{prop}
     \mbox{} \\
-    $	\forall
-        (initState,sndState,lastState:\AndroidState)
-        (app:\AppId)
-        (p:\Perm)
-        (l: list~\Action)$, \\
-    $	valid\_state(initState) \rightarrow
-        getPermissionLevel(p) = dangerous \rightarrow$ \\
+    $	\forall (initState,sndState,lastState:\AndroidState) (app:\AppId) (p:\Perm) (l:
+        list~\Action)$, \\
+    $	valid\_state(initState) \rightarrow getPermissionLevel(p) = dangerous \rightarrow$ \\
     $   p \notin getDefPermsForApp(app,initState) \rightarrow$ \\
     $	step(initState,\texttt{revoke}~p~app).st = sndState \rightarrow$ \\
     $	step(initState, \texttt{revoke}~p~app)).resp=ok \rightarrow \\
-        \texttt{uninstall}~app \notin l \rightarrow
-        \texttt{grant}~p~app \notin l \rightarrow
+        \texttt{uninstall}~app \notin l \rightarrow \texttt{grant}~p~app \notin l \rightarrow
         \texttt{grantAuto}~p~app \notin l \rightarrow $\\
     $	last(trace(sndState,l),sndState) = lastState \rightarrow$\\
     $	\neg appHasPermission(app,p,lastState)$ \\ \\
@@ -258,5 +249,5 @@ las operaciones conocidas.
 
 Más propiedades sobre nuestra implementación del modelo pueden encontrarse en el repositorio que
 contiene el código en \texttt{Coq}\cite{github-code}. Sin embargo, decidimos no agregarlas a este
-informe ya que no están estrictamente relacionadas con los cambios introducidos en este tesina. Sin
+informe ya que no están estrictamente relacionadas con los cambios introducidos en esta tesina. Sin
 embargo, dichas propiedades aún son válidas en la versión 10 de la plataforma.
