@@ -3,7 +3,7 @@
 Android~\cite{android-proyect} es uno de los sistemas operativos para celulares más utilizados en el
 mundo, capturando aproximadamente el 85\% del mercado mundial~\cite{idc-report}. Android también
 posee una tienda oficial, accesible desde cualquier versión del sistema, que permite instalar un
-sinfín de aplicaciones para facilitar tareas del usuario, muchas de ellas, críticas para la
+sinfín de aplicaciones para facilitar tareas del usuario, muchas de ellas críticas para la
 privacidad. Por ejemplo, una aplicación para editar fotos probablemente solicite acceso a todas las
 fotos de la galería para funcionar correctamente, o una aplicación que permita enviar mensajes de
 texto posiblemente solicite tener acceso a los mensajes históricos del usuario.
@@ -16,9 +16,9 @@ ese caso, necesitaremos el consenso de las siguientes partes:
 
 \begin{itemize}
     \item \textbf{El usuario:} al elegir qué aplicación utilizará y al otorgar explícitamente los
-          permisos que sean necesarios
+          permisos que sean necesarios.
     \item \textbf{Los desarrolladores:} al especificar los permisos que necesitan para que su
-          aplicación pueda acceder a los recursos necesarios para funcionar correctamente
+          aplicación pueda acceder a los recursos necesarios para funcionar correctamente.
     \item \textbf{La plataforma:} al actuar como mediador entre las otras dos partes,
           supervisando que el pacto se cumpla y que solo los recursos protegidos bajo el permiso
           otorgado sea accesible por la aplicación.
@@ -58,7 +58,7 @@ Android. Algunos de los cambios que los desarrolladores de la plataforma introdu
 versiones no implicaron cambios sobre el modelo abstracto. Para esos casos, se incluye un pequeño
 análisis informal sobre las mejoras de seguridad que implican para la plataforma. Además, extendimos
 una implementación funcional previa del MVR para que contemple los nuevos cambios en la
-especificación.
+especificación. Las contribuciones de este trabajo fueron presentadas en TYPES~\cite{types-deluca}.
 
 \paragraph{Organización del informe}
 El capítulo \ref{chapter:background} introduce infromalemnte los conceptos necesarios para entender
@@ -69,4 +69,6 @@ respectivamente. Al final de cada uno, se discuten propiedades de relevancia rel
 nuevos cambios. En el capítulo \ref{chapter:estado} se analizan trabajos similares que también
 estudian el sistema de permisos de Android. Se incluyeron diferentes enfoques y técnicas, a pesar de
 que no todos los trabajos citados son de índole formal. Por último, en el capítulo
-\ref{chapter:conclusion} contiene una conclsuión e ideas sobre trabajo futuro.
+\ref{chapter:conclusion} contiene una conclsuión e ideas sobre trabajo futuro. El código Coq con la
+formalización completa está disponible en
+\texttt{https://github.com/g-deluca/tesina}~\cite{github-code}.
