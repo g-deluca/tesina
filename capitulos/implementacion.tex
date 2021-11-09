@@ -1,13 +1,14 @@
 \chapter{Implementación de un prototipo certificado}
 \label{chapter:implementation}
-Formalizar sistemas sensibles, como un sistema de permisos de una plataforma usada masivamente, es
-una herramienta teórica muy importante. Permite establecer propiedades sobre el sistema en cuestión
-y razonar formalmente sobre ellas. Mantener esa formalización actualizada, por su parte, otorga la
-posibilidad de estudiar las características más recientes de la plataforma, y en muchas situaciones,
-detectar comporatmientos erróneos o inseguros antes de que sean aprovechados maliciosamente.
+Formalizar sistemas delicados en términos de seguridad, como un sistema de permisos de una
+plataforma usada masivamente, es en sí una herramienta teórica interesante. Permite establecer
+propiedades sobre el sistema en cuestión y razonar formalmente sobre ellas. Mantener esa
+formalización actualizada, por su parte, otorga la posibilidad de estudiar las características más
+recientes de la plataforma, y en muchas situaciones, detectar comporatmientos erróneos o inseguros
+antes de que sean aprovechados maliciosamente.
 
 Por otro lado, contar con una especificación formal de un sistema permite desarrollar
-implementaciones \textit{certificadas}. Una implementación certificada, es una implementación que
+implementaciones \textit{certificadas}. Una implementación certificada es una implementación que
 cumple correctamente con una especificación y que dicha corrección ha sido demostrada
 matemáticamente. Este trabajo además de extender la especificación del sistema de permisos de
 Android, extiende la implementación de la plataforma desarrollada en los trabajos previos~\cite{betarte-2017,luna-cleiej}. Claro está, que al partir de un modelo tan abstracto como el
@@ -23,14 +24,14 @@ manera tal que por cada acción dada en la especificación existe una función e
 cabo. Estas funciones son, básicamente, transformadores de estado. Si bien sus definiciones son
 distintas entre sí, pues tienen semánticas muy diferentes, todas respetan el mismo patrón. Primero,
 en un estado inicial, se evalúa si una expresión \textit{booleana} equivalente a la precondición de
-la acción se satisface. En caso de que la misma se satisfaga, se ejecuta una función auxiliar
+la acción se satisface. En caso de que la misma se cumpla, se ejecuta una función auxiliar
 encargada de mutar el estado de manera tal que el nuevo estado cumpla con la postcondición
 establecida por la acción del modelo. En caso de que la precondición no se cumpla, el estado no
 sufre cambios y se devuelve un mensaje de error.
 
 A modo de ejemplo, explicaremos con un poco más de detalle la implementación de la acción $grant$.
 En la figura \ref{fig:install_action} puede observarse su definición formal. La definición formal
-completa del esta y el resto de las operaciones puede encontrarse en el código en
+completa de esta y el resto de las operaciones puede encontrarse en el código en
 GitHub~\cite{github-code}.
 
 \begin{figure}[ht]
@@ -84,7 +85,7 @@ la figura \ref{fig:step} se muestra la estructura de la misma.
 
 Finalmente, definimos una función $trace$ que captura la idea de ejecutar acciones sucesivas en el
 sistema. Dado un estado inicial y una lista de acciones, esta función será la encargada de ir
-concatenandolas de manera tal que el estado obtenido como resultado de una acción sea utilizado como
+uniéndolas de manera tal que el estado obtenido como resultado de una acción sea utilizado como
 estado inicial de la siguiente. Mostramos su definición a continuación.
 
 \begin{displaymath}
@@ -98,7 +99,7 @@ estado inicial de la siguiente. Mostramos su definición a continuación.
 \end{displaymath}
 
 \section{Corrección de la implementación}
-Como mencionamos previamente, contar con una formalización de un sistema, permite desarrollar
+Como mencionamos previamente, contar con una formalización de un sistema permite desarrollar
 sistemas correctos, confiables, en el sentido de tener garantías de que el comportamiento de los
 mismos será adecuado según lo dictamine la especificación de cada uno. En este caso, demostramos un
 teorema en Coq que garantiza que cualquier acción ejecutada por nuestra implementación, partiendo de
@@ -125,8 +126,7 @@ modo de ejemplo, presentamos el caso de la operación $grant$.
     $ \begin{array}[t]{l} \forall\ (s:\AndroidState)\ (app:\AppId)\ (p:\Perm),
             \\
             \quad \quad \ap{valid\_state}{s} \rightarrow\ Pre(s, grant\ p\ a) \rightarrow \\
-            \quad \quad Post(                                                             \\
-            \quad \quad \quad grant\_safe(p, app, s).st,\ grant\ p\ a)                    \\
+            \quad \quad Post(grant\_safe(p, app, s).st,\ grant\ p\ a)                     \\
         \end{array} $
 \end{lemma}
 
@@ -161,10 +161,10 @@ para luego aplicar el sub-lema correspondiente.
 \end{lemma}
 
 La demostración completa del lema \ref{lemma:soundness:grant} puede encontrarse en el módulo
-\texttt{GrantIsSound.v} en el código de la formalización~\cite{github-code}. Análogamente, la
+\textit{GrantIsSound.v} en el código de la formalización~\cite{github-code}. Análogamente, la
 demostración para cada una de las otras acciones puede encontrarse en el módulo
-\texttt{<Action>IsSound.v}. La demostración del teorema \ref{theorem:soundness} se encuentra en el
-módulo \texttt{Soundness.v}.
+\textit{ActionIsSound.v} correspondiente. La demostración del teorema \ref{theorem:soundness} se
+encuentra en el módulo \textit{Soundness.v}.
 
 \section{Propiedades sobre la implementación}
 De la misma manera en la que en la sección \ref{section:formalization:properties} describimos las
@@ -183,13 +183,11 @@ solo sabemos que:
 \end{itemize}
 
 Además de estas condiciones necesarias y relevantes para la propiedad en cuestión, requerimos que
-durante la ejecución de la traza $t$, la aplicación no sea desinstalada. Esto es necesario porque,
+durante la ejecución de la traza $t$ la aplicación no sea desinstalada. Esto es necesario porque,
 dado el nivel de abstracción del modelo, si desinstalamos la aplicación e instalamos una nueva,
 ambas aplicaciones podrían recibir el mismo identificador. De esta manera, al evaluar una condición
 en el estado inicial de la traza estaríamos referenciando a una aplicación; mientras que al evaluar
-la isma condición en el estado final, estaríamos refiriéndonos a una aplicación distinta. La
-decisión de agregar la precondición de que la aplicación no sea desinstalada a esta -y a las
-siguientes- propiedades, fue tomada en pos de mantener la sencillez en las demostraciones.
+la misma condición en el estado final, estaríamos refiriéndonos a una aplicación distinta.
 
 \begin{prop}
     \label{section:implementation:oldapp}
@@ -249,4 +247,4 @@ las operaciones conocidas.
 Más propiedades sobre nuestra implementación del modelo pueden encontrarse en el repositorio que
 contiene el código en \texttt{Coq}~\cite{github-code}. Sin embargo, decidimos no agregarlas a este
 informe ya que no están estrictamente relacionadas con los cambios introducidos en esta tesina. Sin
-embargo, dichas propiedades aún son válidas en la versión 10 de la plataforma.
+embargo, dichas propiedades aún son válidas en la versión 10 de Android.
