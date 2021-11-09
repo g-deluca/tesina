@@ -16,7 +16,7 @@ plataforma. Estos trabajos se describen con más detalle que los anteriores e in
 artículos que no son recientes pero presentan un enfoque novedoso o relevante a este trabajo.
 
 Dentro del primer grupo, se encuentran artículos como el de William Enck \textit{et
-    al.}~\cite{enck}: uno de los primeros trabajos académicos en describir el modelo de seguridad de
+    al.}~\cite{enck}, uno de los primeros trabajos académicos en describir el modelo de seguridad de
 Android. Los autores buscaban \textit{desenmascarar} la complejidad a la que debían enfrentarse los
 desarrolladores cuando se proponían construir aplicaciones seguras. A pesar de la antigüedad de este
 artículo, hoy en día sigue siendo relevante por la explicación concreta y concisa sobre las bases
@@ -62,7 +62,7 @@ Covert~\cite{covert} y Separ~\cite{separ}.
 % un conjunto de aplicaciones, a partir de las cuales se derivarán políticas de seguridad
 Las dos últimas combinan análisis estático con métodos formales para inferir automáticamente
 propiedades sobre un conjunto de aplicaciones y luego derivar políticas de seguridad. La gran oferta
-que existe de este tipo de aplicaciones, da lugar a trabajos como el Lina Qiu \textit{et
+que existe de este tipo de aplicaciones da lugar a trabajos como el Lina Qiu \textit{et
     al.}~\cite{qiu}, en el que se analizan y comparan las herramientas, que según los autores las más
 destacadas son: Flowdroid combinada con IccTA~\cite{iccta}, Amandroid~\cite{amandroid} y
 DroidSafe~\cite{droidsafe}.
@@ -93,14 +93,14 @@ preservan la confidencialidad de los datos que manejan. Parcialmente inspirado e
 Bugliesi \textit{et al.} desarrollaron $\pi$-Perm~\cite{bugliesi}, un sistema de tipos y efectos que
 tiene como finalidad detectar problemas de \textit{privilege escalation}. De manera análoga al
 trabajo de Chaudhuri, una expresión bien tipada en $\pi$-Perm garantiza que la aplicación real a la
-cual está representando, no es vulnerable al ataque mencionado. Similarmente, Armando \textit{et
+cual está representando no es vulnerable al ataque mencionado. Similarmente, Armando \textit{et
     al.} definen un lenguaje~\cite{armando}, acompañado por su semántica operacional, que permite
 describir interacciones entre aplicaciones. Al igual que en los trabajos anteriores, se define un
 sistema de tipos y efectos; pero este está basado en un formalismo del estilo del álgebra de
 procesos, conocido como \textit{history expressions}~\cite{history-expressions}. Puesto en términos
 simples, una \textit{history expression} sirve para representar los efectos laterales vinculados a
 la seguridad del dispositivo, que se producen al realizar una computación. Finalmente, los autores
-prueban que cualquier comportamiento que la plataforma pueda tener en tiempo de ejecución, está
+prueban que cualquier comportamiento que la plataforma pueda tener en tiempo de ejecución está
 contenido en este modelo; y por lo tanto, puede analizarse estáticamente.
 
 Recientemente, Wilayat Khan \textit{et al.}~\cite{khan} retomaron el trabajo de Chaudhuri y
@@ -126,16 +126,16 @@ automáticamente revocado si en algún momento el sistema se encuentra en un est
 alguna de las reglas.
 
 Similarmente, Bagheri \textit{et al.}~\cite{bagheri15} proponen una formalización del sistema de
-permisos de Android escrita en Alloy~\cite{alloy}: un lenguaje basado en la lógica relacional de
-primer orden, que incorpora una herramienta capaz de realizar análisis de satisfacibilidad
-automáticos sobre los modelos en él descriptos. Con la ayuda de esta formalización, los autores
-identificaron distintos tipos de vulnerabilidades que permiten esquivar el chequeo de permisos.
-Particularmente, estudiaron la vulnerabilidad de permisos personalizados, mediante la cual una
-aplicación maliciosa puede acceder a todos los recursos de otra que estén protegidos por permisos
-personalizados. Esta falla surge de que el sistema no impone restricciones con respecto al nombre de
-los nuevos permisos que definen y, como consecuencia, dos permisos distintos podrían tener el mismo
-nombre. Este trabajo luego se extendió para una nueva versión de Android~\cite{bagheri}. La falla
-por permisos personalizados había sido reportada previamente por Shin \textit{et
+permisos de Android escrita en Alloy~\cite{alloy}. Alloy es un lenguaje basado en la lógica
+relacional de primer orden, que incorpora una herramienta capaz de realizar análisis de
+satisfacibilidad automáticos sobre los modelos en él descriptos. Con la ayuda de esta formalización,
+los autores identificaron distintos tipos de vulnerabilidades que permiten esquivar el chequeo de
+permisos. Particularmente, estudiaron la vulnerabilidad de permisos personalizados, mediante la cual
+una aplicación maliciosa puede acceder a todos los recursos de otra que estén protegidos por
+permisos personalizados. Esta falla surge de que el sistema no impone restricciones con respecto al
+nombre de los nuevos permisos que definen y, como consecuencia, dos permisos distintos podrían tener
+el mismo nombre. Este trabajo luego se extendió para una nueva versión de Android~\cite{bagheri}. La
+falla por permisos personalizados había sido reportada previamente por Shin \textit{et
     al.}~\cite{shin-custom}. Una diferencia fundamental entre este enfoque y el de esta tesina es el
 tipo de análisis que se realizó. A pesar de que Alloy es capaz de producir contraejemplos de manera
 automática, algo realmente útil a la hora de buscar potenciales fallas; no es posible demostrar
