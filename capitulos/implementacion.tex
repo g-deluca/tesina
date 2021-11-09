@@ -10,10 +10,9 @@ Por otro lado, contar con una especificación formal de un sistema permite desar
 implementaciones \textit{certificadas}. Una implementación certificada, es una implementación que
 cumple correctamente con una especificación y que dicha corrección ha sido demostrada
 matemáticamente. Este trabajo además de extender la especificación del sistema de permisos de
-Android, extiende la implementación de la plataforma desarrollada en los trabajos previos
-\cite{betarte-2017,luna-cleiej}. Claro está, que al partir de un modelo tan abstracto como el
+Android, extiende la implementación de la plataforma desarrollada en los trabajos previos~\cite{betarte-2017,luna-cleiej}. Claro está, que al partir de un modelo tan abstracto como el
 nuestro, la implementación obtenida no estaría en condiciones de sustituir a la implementación real
-de Android. Sin embargo, sí podría utilizarse como un monitor de referencia\cite{Anderson:1972}.
+de Android. Sin embargo, sí podría utilizarse como un monitor de referencia~\cite{Anderson:1972}.
 
 A continuación, describiremos las principales características de nuestra implementación del sistema
 de permisos de Android y algunas propiedades demostradas sobre la misma.
@@ -32,7 +31,7 @@ sufre cambios y se devuelve un mensaje de error.
 A modo de ejemplo, explicaremos con un poco más de detalle la implementación de la acción $grant$.
 En la figura \ref{fig:install_action} puede observarse su definición formal. La definición formal
 completa del esta y el resto de las operaciones puede encontrarse en el código en
-GitHub\cite{github-code}.
+GitHub~\cite{github-code}.
 
 \begin{figure}[ht]
     \begin{displaymath}
@@ -162,7 +161,7 @@ para luego aplicar el sub-lema correspondiente.
 \end{lemma}
 
 La demostración completa del lema \ref{lemma:soundness:grant} puede encontrarse en el módulo
-\texttt{GrantIsSound.v} en el código de la formalización\cite{github-code}. Análogamente, la
+\texttt{GrantIsSound.v} en el código de la formalización~\cite{github-code}. Análogamente, la
 demostración para cada una de las otras acciones puede encontrarse en el módulo
 \texttt{<Action>IsSound.v}. La demostración del teorema \ref{theorem:soundness} se encuentra en el
 módulo \texttt{Soundness.v}.
@@ -248,6 +247,6 @@ las operaciones conocidas.
 \end{prop}
 
 Más propiedades sobre nuestra implementación del modelo pueden encontrarse en el repositorio que
-contiene el código en \texttt{Coq}\cite{github-code}. Sin embargo, decidimos no agregarlas a este
+contiene el código en \texttt{Coq}~\cite{github-code}. Sin embargo, decidimos no agregarlas a este
 informe ya que no están estrictamente relacionadas con los cambios introducidos en esta tesina. Sin
 embargo, dichas propiedades aún son válidas en la versión 10 de la plataforma.

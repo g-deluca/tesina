@@ -1,7 +1,7 @@
 \chapter{Formalización del sistema de permisos}
 \label{chapter:formalization}
 
-En este capítulo se describe la extensión realizada sobre una formalización previa\cite{luna-cleiej}
+En este capítulo se describe la extensión realizada sobre una formalización previa~\cite{luna-cleiej}
 del sistema de permisos de la plataforma. El objetivo de la misma es poder modelar los nuevos
 comportamientos que se introdujeron con las versiones 7, 8, 9 y 10 del sistema operativo Android. Al
 final del capítulo se presentan las nuevas propiedades que se han probado sobre la formalización
@@ -70,7 +70,7 @@ A continuación detallaremos algunos de los tipos básicos de Coq más utilizado
 \end{flalign*}
 
 
-El tipo \texttt{option}, análogo a la mónada \texttt{Maybe} de Haskell\cite{maybe-haskell}, sirve
+El tipo \texttt{option}, análogo a la mónada \texttt{Maybe} de Haskell~\cite{maybe-haskell}, sirve
 para representar la posible ausencia de valores.
 
 \subsubsection*{Tipo \textit{list}}
@@ -89,7 +89,7 @@ El tipo utilizado para denotar una lista de elementos. Está definido de manera 
 
 Este tipo representa uno de los dos ``universos'' donde viven las proposiciones lógicas en Coq. El
 tipo $Prop$ es impredicativo y por lo tanto, una proposición de este tipo no contiene valor
-computacional\cite{proof-irrelevance} y puede ser descartada a la hora de extraer un programa.
+computacional~\cite{proof-irrelevance} y puede ser descartada a la hora de extraer un programa.
 Utilizaremos este tipo para escribir teoremas que nos permitan razonar sobre el modelo. El otro
 universo que contiene proposiciones lógicas se llama $Set$ y las proposiciones de este tipo sí
 tienen valor computacional y deben ser preservadas en los programas extraídos.
@@ -208,7 +208,7 @@ en conjunto entre la acción y la categoría. Por ejemplo, si una aplicación de
 \texttt{ACTION\_VIEW}, entonces estará en condiciones de ser elegida para abrir un \textit{link} que
 ha sido clickeado desde un navegador. En una implementación real, los filtros de intents pueden
 construirse con más campos. Sin embargo, para este modelo elegimos estos tres ya que los mismos
-representan las características definitorias de un intent implícito\cite{android-intents}.
+representan las características definitorias de un intent implícito~\cite{android-intents}.
 
 \subsubsection*{Componentes de una aplicación}
 Como mencionamos previamente en la sección \ref{section:preliminary:components}, existen cuatro
