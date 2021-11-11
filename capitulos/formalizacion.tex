@@ -671,8 +671,8 @@ cambio introducido en Android Marshmallow.
     $ \forall (s:\AndroidState) (sac:SACall) (c:\Comp) (ic:\iComp) (p:\Perm), \\
         valid\_state(s) \rightarrow permSAC(p, sac) \rightarrow \\
         getPermissionLevel(p) = normal \rightarrow getPermissionId(p) \in \\
-        getAppRequestedPerms(getManifestForApp(getAppFromCmp(c,s),s)) \rightarrow\\
-        (ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$
+        getAppRequestedPerms(getManifestForApp(getAppFromCmp(c,s),s))\\
+        \rightarrow (ic, c) \in getRunningComponents(s) \rightarrow \Mathexecrel{s}{\texttt{call}~ic~sac/ok}{s}$
     \\ \\
 
     \textit{Si la ejecución de un llamado a la API de Android solo requiere permisos con nivel de protección normal,
