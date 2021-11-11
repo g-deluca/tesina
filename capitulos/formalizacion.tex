@@ -400,8 +400,10 @@ siguientes condiciones:
 \section{Acciones}
 Modelamos las operaciones de Android que nos interesan estudiar como un conjunto de acciones
 (definidas a través del tipo \texttt{Action}), donde cada una de ellas determina la manera en la que
-nuestro sistema puede transicionar.  La tabla~\ref{table:actions} resume todas las acciones
-disponibles.
+nuestro sistema puede transicionar.  La tablas~\ref{table:actions:first} y
+\ref{table:actions:second} resumen todas las acciones disponibles.
+
+\input{tablas/acciones}
 
 La semántica de las mismas está dada en términos de pre-condición y post-condición. Para ello,
 definimos los predicados $Pre$ y $Post$ de manera tal que para que una acción $a$ pueda transicionar
@@ -493,7 +495,6 @@ de serlo, debe haber sido previamente verificada por el usuario. De esta manera,
 realizar determinada acción); pero en caso de elegirla, el usuario primero deberá verificar los
 permisos antes de que la aplicación pueda ejecutar la acción.
 
-\input{tablas/acciones}
 
 \section{Ejecuciones}
 Cuando el sistema intenta ejecutar una acción $a$ en un estado válido $s$, hay dos posibles

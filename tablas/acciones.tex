@@ -1,5 +1,5 @@
 \begin{table}
-    \label{table:actions}
+    \label{table:actions:first}
     \begin{tabularx}{\linewidth}{|l X|}
         \hline
         \textbf{Acción}                    & \textbf{Descripción}                                                                                                                                                                                                 \\
@@ -34,20 +34,30 @@
         \hline
         $\mathtt{call}~ic~sac$             & El componente en ejecución $ic$ realiza el llamado a una función del sistema denominada $sac$.                                                                                                                       \\
         \hline
-        $\mathtt{grant}~p~app$             & Otorga el permiso $p$ a la aplicación $app$ con la confirmación del usuario.                                                                                                                                         \\
+    \end{tabularx}
+    \caption{Acciones del sistema. Parte 1.}
+\end{table}
+
+\begin{table}
+    \label{table:actions:second}
+    \begin{tabularx}{\linewidth}{|l X|}
         \hline
-        $\mathtt{grantAuto}~p~app$         & Otorga automáticamente el permiso $p$ a la aplicación $app$ (sin requerir confirmación del usuario).                                                                                                                 \\
+        \textbf{Acción}                   & \textbf{Descripción}                                                                                                                                                                   \\
         \hline
-        $\mathtt{revoke}~p~app$            & Revoca un permiso no agrupado $p$ de la aplicación $app$.                                                                                                                                                            \\
+        $\mathtt{grant}~p~app$            & Otorga el permiso $p$ a la aplicación $app$ con la confirmación del usuario.                                                                                                           \\
         \hline
-        $\mathtt{revokePermGroup}~g~app$   & Revoca todos los permisos pertenecientes al grupo $g$ de la aplicación $app$.                                                                                                                                        \\
+        $\mathtt{grantAuto}~p~app$        & Otorga automáticamente el permiso $p$ a la aplicación $app$ (sin requerir confirmación del usuario).                                                                                   \\
         \hline
-        $\mathtt{hasPermission}~p~app$     & Chequea si la aplicación $app$ posee el permiso $p$.                                                                                                                                                                 \\
+        $\mathtt{revoke}~p~app$           & Revoca un permiso no agrupado $p$ de la aplicación $app$.                                                                                                                              \\
         \hline
-        $\mathtt{receiveIntent}~i~ic~app$  & La aplicación $app$ recibe el intent $i$, enviado por el componente en ejecución $ic$.                                                                                                                               \\
+        $\mathtt{revokePermGroup}~g~app$  & Revoca todos los permisos pertenecientes al grupo $g$ de la aplicación $app$.                                                                                                          \\
         \hline
-        $\mathtt{verifyOldApp}~app$        & El usuario verifica los permisos que han sido otorgados a la aplicación $app$. Solo se utiliza para aquellas aplicaciones que fueron instaladas previamente a la versión 6 de Android.                               \\
+        $\mathtt{hasPermission}~p~app$    & Chequea si la aplicación $app$ posee el permiso $p$.                                                                                                                                   \\
+        \hline
+        $\mathtt{receiveIntent}~i~ic~app$ & La aplicación $app$ recibe el intent $i$, enviado por el componente en ejecución $ic$.                                                                                                 \\
+        \hline
+        $\mathtt{verifyOldApp}~app$       & El usuario verifica los permisos que han sido otorgados a la aplicación $app$. Solo se utiliza para aquellas aplicaciones que fueron instaladas previamente a la versión 6 de Android. \\
         \hline
     \end{tabularx}
-    \caption{Acciones del sistema}
+    \caption{Acciones del sistema. Parte 2.}
 \end{table}
