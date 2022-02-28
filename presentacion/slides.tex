@@ -66,10 +66,10 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Un poco de contexto sobre Android}
+\begin{frame}{Un poco de contexto sobre Android}{Arquitectura de pila}
     \begin{columns}
         \begin{column}{.6\textwidth}
-            \textbf{Arquitectura de pila:} \pause
+            \textbf{Pila de software:} \pause
             \begin{enumerate}[<+->]
                 \item Aplicaciones del sistema y de terceros
                 \item \textit{API} de la plataforma
@@ -81,11 +81,89 @@
 
         \begin{column}{.4\textwidth}
             \begin{figure}
-                \includegraphics[scale=0.1]{../imagenes/android-stack.png}
+                \includegraphics[scale=0.09]{../imagenes/android-stack.png}
             \end{figure}
         \end{column}
     \end{columns}
+\end{frame}
 
+\begin{frame}{Un poco de contexto sobre Android}{Componentes del sistema}
+    \begin{itemize}[<+->]
+        \item \textbf{Actividad}: representa una pantalla individual con interfaz de usuario
+        \item \textbf{Servicio}: realiza operaciones de ejecución prolongada en segundo plano
+        \item \textbf{Receptor de emisiones}: permite que el sistema u otras aplicaciones entreguen
+              mensajes por fuera del flujo normal
+        \item \textbf{Proveedor de contenido}: administra los datos de una aplicación para que
+              puedan ser compartidos con otras
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Un poco de contexto sobre Android}{Interacción entre componentes}
+    \textit{Intents:} \\
+    \begin{itemize}
+        \item Mensajería utilizada para la comunicación entre componentes \pause
+        \item Puden ser explícitos o implícitos
+    \end{itemize}
+    \vspace{20px} \pause
+    Para recibir \textit{intents} implícitos, las aplicaciones declaran filtros de \textit{intents}.
+    Este filtro se define en el \textbf{manifiesto} de la aplicación.
+\end{frame}
+
+\begin{frame}{Un poco de contexto sobre Android}{Permisos}
+    Los recursos de una aplicación se protegen con distintos niveles de permisos.
+    \begin{itemize}[<+->]
+        \item Normal
+        \item Peligrosos
+        \item De misma firma
+    \end{itemize}
+    \vspace{20px} \pause Los permisos peligrosos se  otorgan en tiempo de ejecución. El resto, al
+    instalar la aplicación.
+
+    \vspace{20px} \pause Los permisos que pertenecen a una misma característica de una aplicación
+    se agrupan en lo que definimos \textbf{grupo de permisos.}
+\end{frame}
+
+\begin{frame}{Un poco de contexto sobre Android}{Cambios de comportamiento recientes I}
+    \textbf{Sistema de archivos}\\
+    \vspace{10px}
+    \begin{itemize}
+        \item Los directorios de las aplicaciones tienen permisos restringidos
+        \item Evita la fuga de metadatos
+        \item Utilizar el mecanismo de \textit{intents} como la única forma segura de compartir
+              archivos
+    \end{itemize}
+    \vspace{10px}
+    \pause
+    Cambio introducido en Android 7.
+\end{frame}
+
+\begin{frame}{Un poco de contexto sobre Android}{Cambios de comportamiento recientes II}
+    \textbf{Cambios en permisos agrupados} \\
+    \vspace{10px}
+    Antes de Android 8, al otorgar un permiso peligroso, se otorgaban de manera incorrecta el resto
+    de los permisos del grupo.\\
+    \vspace{5px}
+    A partir de esta versión de Android se corrige ese comportamiento y se define una noción de
+    ``otorgamiento automático'' para permisos peligrosos.
+
+    \vspace{10px} \pause
+    \textbf{Permisos normales y peligrosos compartiendo grupo} \\
+    \begin{block}{}
+        ``Cualquier permiso puede pertenecer a un grupo de permisos sin importar el nivel del
+        protección del mismo''
+    \end{block}
+    \pause
+    ¿Cómo se comporta el sistema en este caso?
+\end{frame}
+
+\begin{frame}{Un poco de contexto sobre Android}{Cambios de comportamiento recientes III}
+    \textbf{Chequeo de permisos en aplicaciones viejas} \\
+    \vspace{10px}
+    Alerta al usuario ante la ejecución de una aplicación cuyos permisos peligrosos fueron otorgados
+    en tiempo de instalación.
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}
 
 \end{frame}
 
