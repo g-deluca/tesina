@@ -15,6 +15,7 @@
 
 
 
+
 \title{Formalización del sistema de permisos de Android 10}
 
 \author[Universidad Nacional de Rosario]{Guido De Luca}
@@ -61,8 +62,30 @@
             conocido en ingles como \textit{tamper-proof}.}
 
         \only<4>{La implementación del validador de referencia debe ser lo suficientemente pequeña
-            para ser verificable y \textit{testeable} exhaustivamente.}
+            para ser verificable y \textit{testeable} de manera exhaustiva.}
     \end{block}
+\end{frame}
+
+\begin{frame}{Un poco de contexto sobre Android}
+    \begin{columns}
+        \begin{column}{.6\textwidth}
+            \textbf{Arquitectura de pila:} \pause
+            \begin{enumerate}[<+->]
+                \item Aplicaciones del sistema y de terceros
+                \item \textit{API} de la plataforma
+                \item Entorno de \textit{runtime} y bibliotecas nativas
+                \item Capa de abstracción del hardware
+                \item Núcleo de Linux
+            \end{enumerate}
+        \end{column}
+
+        \begin{column}{.4\textwidth}
+            \begin{figure}
+                \includegraphics[scale=0.1]{../imagenes/android-stack.png}
+            \end{figure}
+        \end{column}
+    \end{columns}
+
 
 \end{frame}
 
