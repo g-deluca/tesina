@@ -167,4 +167,56 @@
 
 \end{frame}
 
+\begin{frame}{Trabajos relacionados}
+    Divididos en tres categorías:
+    \pause
+    \begin{itemize}[<+->]
+        \item De análisis informal:
+              \begin{itemize}
+                  \item Características nuevas, resumen de vulnerabilidades, mitigaciones
+                  \item Complemento a la documentación oficial
+              \end{itemize}
+        \item Herramientas de análisis estático o dinámico:
+              \begin{itemize}
+                  \item Sobreprivilegios, flujo indebido de la información
+                  \item Estudia casos de uso específicos
+              \end{itemize}
+        \item De análisis formal:
+              \begin{itemize}
+                  \item Estudiar escenarios específicos mediante algún lenguaje formal
+                  \item Especificaciones de la plataforma (en lenguajes como TLA+, Alloy, Coq)
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusiones}
+    \begin{itemize}[<+->]
+        \item Actualizamos la formalización a una versión reciente de la plataforma
+        \item Analizamos la validez de las propiedades existentes y generamos nuevas, en particular,
+              relacionadas a los cambios de comportamiento de los grupos de permisos
+        \item Como consecuencia de la actualización en la formalización, actualizamos la
+              implementación informal  y su prueba de corrección.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Trabajo futuro}
+    \begin{itemize}[<+->]
+        \item Utilizar el código extraído para comparar y validar ejecuciones reales de la
+              plataforma
+        \item Utilizar el código extraído para generar casos de prueba
+        \item Continuar actualizando la especificación con los cambios introducidos en Android 11 y
+              12.
+              \begin{itemize}
+                  \item Reestablecimiento de permisos en aplicaciones inactivas
+                  \item Permisos de un único uso
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Fin}
+    \begin{center}
+        \huge¡Gracias!
+    \end{center}
+\end{frame}
+
 \end{document}
