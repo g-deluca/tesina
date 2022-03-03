@@ -1,20 +1,18 @@
-\documentclass[pdf]{beamer} % Add the [handout] option to group all of the items
+\documentclass[pdf, handout]{beamer} % Add the [handout] option to group all of the items
 \usetheme{Copenhagen}
+\setbeamertemplate{theorems}[numbered]
 
-\usepackage{pgfpages}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
 %\setbeameroption{show notes on second screen=right}
 %\setbeameroption{show only notes}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{paralist}
-\usepackage{stmaryrd}
-\usepackage{graphicx,xcolor}
-\usepackage{subcaption}
-\usepackage{array}
-\usepackage{color}
+\usepackage[inference]{semantic}
 
-
-
+\uselanguage{Spanish}
+\languagepath{Spanish}
 
 \title{Formalización del sistema de permisos de Android 10}
 
@@ -26,6 +24,8 @@
 
 
 \begin{document}
+
+\input{macros}
 
 \begin{frame}[plain]
     \titlepage
@@ -163,8 +163,138 @@
     en tiempo de instalación.
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}
+\begin{frame}{Nuestra formalización del sistema de permisos}{Consideraciones generales}
+    Lenguaje formal utilizado: Coq
+    \vspace{10px}
+    \begin{block}{}
+        Coq es un \textit{framework} que provee un lenguje formal para escribir definiciones
+        matemáticas, algoritmos ejecutables y teoremas, junto con un entorno semi-interactivo para
+        escribir demostraciones con la asistencia de una computadora.
+    \end{block}
+\end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Nuestra formalización del sistema de permisos}
+    \framesubtitle{Definiciones básicas I}
+    \textbf{Tipos atómicos}
+    \begin{verbatim}
+(* Certificado con el que se firma una aplicación *)
+Parameter Cert: Set.
+    \end{verbatim}
+    \pause
+
+    \textbf{Tipos inductivos}
+    \begin{verbatim}
+(* Tipos de Intents *)
+Inductive intentType : Set :=
+    | intActivity
+    | intService
+    | intBroadcast.
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Nuestra formalización del sistema de permisos}
+    \framesubtitle{Definiciones básicas II}
+    \textbf{Estructura de registros} (o tipos \textit{record})
+    \begin{verbatim}
+(* Manifiesto de una aplicación *)
+Record Manifest : Set := mf {  cmp: list Cmp;
+                            minSdk: option nat;
+                            targetSdk: option nat;
+                            use: list Perm;
+                            usrP: list Perm; 
+                            appE: option Perm }.
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Estado}
+    \begin{columns}[T]
+        \begin{column}{.45\textwidth}
+            \textbf{Parte estática}
+            \begin{itemize}
+                \item Manifiestos
+                \item Certificados
+                \item Permisos definidos por aplicaciones
+                \item Aplicaciones del sistema
+            \end{itemize}
+        \end{column}
+        \pause
+        \begin{column}{.55\textwidth}
+            \textbf{Parte dinámica}
+            \begin{itemize}
+                \item Aplicaciones instaladas
+                \item \textit{Apps legacy} verificadas
+                \item Permisos otorgados
+                \item Grupos de permisos validados
+                \item Componentes en ejecución
+                \item ...
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones I}
+    Acciones del modelo:
+    \begin{itemize}[<+->]
+        \item Representan operaciones reales de Android.
+        \item En términos de nuestro modelo, son transiciones de estado.
+        \item Su semántica está dada en términos de pre-condición y post-condición
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones II}
+    \texttt{grant}\\
+    \vspace{5px}
+    Acción utilizada para otorgar permisos no agrupados o el primer permiso de un grupo en ser
+    otorgado.\\
+    \pause
+    \vspace{10px}
+    \texttt{grantAuto}\\
+    \vspace{5px}
+    Acción que simboliza el otorgamiento automático de permisos. La precondición se cumple solamente
+    cuando el permiso está agrupado y cuando la aplicación ya cuenta con dicho grupo validado.
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones III}
+    \texttt{verifyOldApp}\\
+    \vspace{5px}
+    Modela el cambio introducido en Android 10 para re-chequear los permisos de las aplicaciones
+    \textit{legacy}.
+    \pause
+    \vspace{10px}
+    \texttt{receiveIntent}\\
+    \vspace{5px}
+    A partir de ahora, las aplicaciones \textit{legacy} podrán postularse para resolver
+    \textit{intents} implícitos pero no podrán recibirlos si no fueron verificadas.
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones IV}
+    \texttt{revoke} y \texttt{revokePermGroup}\\
+    \vspace{5px}
+    Estas acciones se modificaron para mantenerse alineadas con la experiencia de usuario:
+    \texttt{revoke} revoca permisos no agrupados y \texttt{revokePermGroup} elimina todos los
+    permisos pertenecientes a ese grupo.\\
+\end{frame}
+
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Ejecuciones}
+    Definimos una noción de ejecución a partir de una sucesión de acciones.
+
+    \begin{displaymath}
+        \fontsize{8pt}{9pt}\selectfont
+        \begin{array}{c}
+            \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$Pre(s, a)$$ \hspace{.2cm} $$Post(s, a, s')$$}{$$s\step{a/ok}s'$$}
+            \hspace{0.5cm}
+            \inference[]{$$valid\_state(s)$$ \hspace{.2cm} $$ErrorMsg(s, a, ec)$$}{$$s\step{a/error(ec)}s$$}
+        \end{array}
+    \end{displaymath}
+    \pause
+    \begin{theorem}{Las ejecuciones preservan la validez del estado}
+        \fontsize{9pt}{12pt}\selectfont
+        $\begin{array}{l} \forall\ (s\ s':\AndroidState)(a:\Action) (r:Response), s\step{a/r}s'
+                \rightarrow valid\_state(s')\end{array}$
+    \end{theorem}
 \end{frame}
 
 \begin{frame}{Trabajos relacionados}
@@ -219,4 +349,36 @@
     \end{center}
 \end{frame}
 
+% Extra slides just in case
+\begin{frame}{Definición formal del estado}{Parte dinámica}
+    \fontsize{10pt}{11pt}\selectfont
+    \begin{flalign*}
+        State\ &:=\ \{ &&\\
+        &apps:\ list\ idApp; \\
+        &alreadyVerified:\ list\ idApp; \\
+        &grantedPermGroups:\ mapping\ idApp\ (list\ idGrp); \\
+        &perms:\ mapping\ idApp\ (list\ Perm); \\
+        &running:\ mapping\ iCmp\ Cmp; \\
+        &delPPerms:\ mapping\ (idApp\ *\ CProvider\ *\ uri)\ PType; \\
+        &delTPerms:\ mapping\ (iCmp\ *\ CProvider\ *\ uri)\ PType; \\
+        &resCont:\ mapping\ (idApp\ *\ res)\ Val; \\
+        &sentIntents:\ list\ (iCmp*Intent) \\
+        \}
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}{Definición formal del estado}{Parte estática}
+    \fontsize{10pt}{11pt}\selectfont
+    \begin{flalign*}
+        Environment\ &:=\ \{ &&\\
+        &manifest:\ mapping\ idApp\ Manifest; \\
+        &cert:\ mapping\ idApp\ Cert; \\
+        &defPerms:\ mapping\ idApp\ (list\ Perm); \\
+        &systemImage:\ list\ SysImgApp; \\
+        \}
+    \end{flalign*}
+    \begin{align*}
+        System\ :=\ \{ state: State;\ environment: Environment \}
+    \end{align*}
+\end{frame}
 \end{document}
