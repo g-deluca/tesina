@@ -375,10 +375,8 @@ Record Manifest : Set := mf {  cmp: list Cmp;
         &cert:\ mapping\ idApp\ Cert; \\
         &defPerms:\ mapping\ idApp\ (list\ Perm); \\
         &systemImage:\ list\ SysImgApp; \\
-        \}
+        \}\\ \\ \\
+        System\ :=\ \{ & state: State;\ environment: Environment \}
     \end{flalign*}
-    \begin{align*}
-        System\ :=\ \{ state: State;\ environment: Environment \}
-    \end{align*}
 \end{frame}
 \end{document}
