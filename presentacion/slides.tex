@@ -298,6 +298,61 @@ Record Manifest : Set := mf {  cmp: list Cmp;
     \end{theorem}
 \end{frame}
 
+\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad I}
+    Solo los permisos pertenecientes a grupos autorizados puede ser otorgados automáticamente.
+    \pause \vspace{20px}
+    \begin{prop} \mbox{} \\
+        \fontsize{9pt}{15pt}\selectfont
+        $\forall (s,s': \AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
+        $getPermissionLevel(p) = dangerous\ \land$ \\
+        $getPermissionGroup(p) = Some\ g\ \land$ \\
+        $g \notin getAuthorizedGroups(app,s) \rightarrow\ \neg\ \Mathexecrel{s}{\texttt{grantAuto}~p~app/ok}{s'}$ \\
+    \end{prop}
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad II}
+    Un permiso puede ser otorgado automáticamente a una aplicación, a pesar de que
+    \textbf{actualmente} no existan otros permisos de ese mismo grupo ya otorgados a la misma
+    \pause \vspace{20px}
+    \begin{prop} \mbox{} \\
+        \fontsize{9pt}{15pt}\selectfont
+        $\exists (s:\AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
+        $valid\_state(s)\ \land$ \\
+        $getPermissionLevel(p) = dangerous\ \land$ \\
+        $getPermissionGroup(p) = Some\ g\ \land$ \\
+        $\neg (\exists\ p': \Perm,$\\
+        \hspace{10px}$p' \in getGrantedPermsApp(app,s)~ \land getPermissionGroup(p') = Some\ g)\ \land$\\
+        $Pre(s, grantAuto~p~a)$
+    \end{prop}
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad III}
+    Una aplicación que usa un permiso normal y uno peligroso del mismo grupo de permisos, puede obtener el segundo automáticamente luego de ser instalada.
+    \pause
+    \begin{prop} \mbox{} \\
+        \fontsize{9pt}{15pt}\selectfont
+        $\forall (s,s': \AndroidState)~(a: \AppId)~(m: \Manifest)~(c: \Cert)~(res: list~\Res)$\\
+        $(g:\PermGrp)~(pDang~pNorm: \Perm),$\\
+        \hspace{15px}$\Mathexecrel{s}{\texttt{install}~a~m~c~res/ok}{s'} \rightarrow$ \\
+        \hspace{15px}$getPermissionLevel(pDang) = dangerous~ \rightarrow$ \\
+        \hspace{15px}$getPermissionGroup(pDang) = Some\ g \rightarrow$ \\
+        \hspace{15px}$getPermissionLevel(pNorm) = normal~ \rightarrow$ \\
+        \hspace{15px}$getPermissionGroup(pNorm) = Some\ g \rightarrow$ \\
+        \hspace{15px}$\{pDang,~pNorm\} \subseteq getAppRequestedPerms(m) \rightarrow$\\
+        \hspace{15px}$Pre(s', grantAuto~pDang~a)$
+    \end{prop}
+\end{frame}
+
+\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad IV}
+    Una aplicación vieja que no ha sido verificada por el usuario no está autorizada a recibir intents.
+    \pause \vspace{20px}
+    \begin{prop} \mbox{} \\
+        $\forall (s,s': \AndroidState)~(i:\Intent)~(ic:\iComp)~(app:\AppId),$ \\
+        $oldAppNotVerified(app, s) \rightarrow$ \\
+        $\neg \Mathexecrel{s}{\texttt{receiveIntent}~i~ic~app/ok}{s'}$
+    \end{prop}
+\end{frame}
+
 \begin{frame}{Trabajos relacionados}
     Divididos en tres categorías:
     \pause
@@ -456,5 +511,27 @@ Record Manifest : Set := mf {  cmp: list Cmp;
             \hline
         \end{tabularx}
     \end{table}
+\end{frame}
+\begin{frame}{Ejemplo de la propiedad II}
+    \begin{enumerate}[<+->]
+        \item Una aplicación $A$ declara el permiso $P$ agrupado en el grupo $G$
+        \item Una aplicación $B$ solicita el permiso $P$
+        \item El usuario otorga el permiso $P$ a la aplicación $B$
+        \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son
+              eliminados)
+        \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$
+              (a pesar de que ya no cuenta con el permiso $P$)
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Propiedad extra I}
+    Cuando un usuario revoca el acceso a un grupo de permisos para determinada aplicación, todos los permisos individuales son revocados también.
+    \begin{prop} \mbox{} \\
+        \fontsize{9pt}{15pt}\selectfont
+        $\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
+        $\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
+        $\neg (\exists\ p: \Perm,$\\
+        \hspace{15px}$p \in getGrantedPermsApp(app,s')\ \land getPermissionGroup(p) = Some\ g)$
+    \end{prop}
 \end{frame}
 \end{document}
