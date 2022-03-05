@@ -55,26 +55,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Un poco de contexto sobre Android}{Arquitectura de pila}
-    \begin{columns}
-        \begin{column}{.6\textwidth}
-            \textbf{Pila de software:} \pause
-            \begin{enumerate}[<+->]
-                \item Aplicaciones del sistema y de terceros
-                \item \textit{API} de la plataforma
-                \item Entorno de \textit{runtime} y bibliotecas nativas
-                \item Capa de abstracción del hardware
-                \item Núcleo de Linux
-            \end{enumerate}
-        \end{column}
-
-        \begin{column}{.4\textwidth}
-            \begin{figure}
-                \includegraphics[scale=0.09]{../imagenes/android-stack.png}
-            \end{figure}
-        \end{column}
-    \end{columns}
-\end{frame}
 
 \begin{frame}{Un poco de contexto sobre Android}{Componentes del sistema}
     \begin{itemize}[<+->]
@@ -370,36 +350,51 @@
 \end{frame}
 
 % Extra slides just in case
-\begin{frame}{Definición formal del estado}{Parte dinámica}
-    \fontsize{10pt}{11pt}\selectfont
-    \begin{flalign*}
-        State\ &:=\ \{ &&\\
-        &apps:\ list\ idApp; \\
-        &alreadyVerified:\ list\ idApp; \\
-        &grantedPermGroups:\ mapping\ idApp\ (list\ idGrp); \\
-        &perms:\ mapping\ idApp\ (list\ Perm); \\
-        &running:\ mapping\ iCmp\ Cmp; \\
-        &delPPerms:\ mapping\ (idApp\ *\ CProvider\ *\ uri)\ PType; \\
-        &delTPerms:\ mapping\ (iCmp\ *\ CProvider\ *\ uri)\ PType; \\
-        &resCont:\ mapping\ (idApp\ *\ res)\ Val; \\
-        &sentIntents:\ list\ (iCmp*Intent) \\
-        \}
-    \end{flalign*}
+
+\begin{frame}{Arquitectura de la plataforma}
+    \begin{columns}
+        \begin{column}{.6\textwidth}
+            \textbf{Pila de software:} \pause
+            \begin{enumerate}[<+->]
+                \item Aplicaciones del sistema y de terceros
+                \item \textit{API} de la plataforma
+                \item Entorno de \textit{runtime} y bibliotecas nativas
+                \item Capa de abstracción del hardware
+                \item Núcleo de Linux
+            \end{enumerate}
+        \end{column}
+
+        \begin{column}{.4\textwidth}
+            \begin{figure}
+                \includegraphics[scale=0.09]{../imagenes/android-stack.png}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}{Definición formal del estado}{Parte estática}
-    \fontsize{10pt}{11pt}\selectfont
-    \begin{flalign*}
-        Environment\ &:=\ \{ &&\\
-        &manifest:\ mapping\ idApp\ Manifest; \\
-        &cert:\ mapping\ idApp\ Cert; \\
-        &defPerms:\ mapping\ idApp\ (list\ Perm); \\
-        &systemImage:\ list\ SysImgApp; \\
-        \}\\ \\ \\
-        System\ :=\ \{ & state: State;\ environment: Environment \}
-    \end{flalign*}
+
+\begin{frame}{Ejemplo de la propiedad II}
+    \begin{enumerate}[<+->]
+        \item Una aplicación $A$ declara el permiso $P$ agrupado en el grupo $G$
+        \item Una aplicación $B$ solicita el permiso $P$
+        \item El usuario otorga el permiso $P$ a la aplicación $B$
+        \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son
+              eliminados)
+        \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$
+              (a pesar de que ya no cuenta con el permiso $P$)
+    \end{enumerate}
 \end{frame}
 
+\begin{frame}{Propiedad extra I}
+    Cuando un usuario revoca el acceso a un grupo de permisos para determinada aplicación, todos los permisos individuales son revocados también.
+    \begin{prop} \mbox{} \\
+        \fontsize{9pt}{15pt}\selectfont
+        $\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
+        $\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
+        $\neg (\exists\ p: \Perm,$\\
+        \hspace{15px}$p \in getGrantedPermsApp(app,s')\ \land getPermissionGroup(p) = Some\ g)$
+    \end{prop}
+\end{frame}
 \begin{frame}{Todas las acciones}{Parte I}
     \fontsize{8pt}{9pt}\selectfont
     \begin{table}
@@ -475,27 +470,5 @@
             \hline
         \end{tabularx}
     \end{table}
-\end{frame}
-\begin{frame}{Ejemplo de la propiedad II}
-    \begin{enumerate}[<+->]
-        \item Una aplicación $A$ declara el permiso $P$ agrupado en el grupo $G$
-        \item Una aplicación $B$ solicita el permiso $P$
-        \item El usuario otorga el permiso $P$ a la aplicación $B$
-        \item La aplicación $A$ se desinstala (y por lo tanto los permisos declarados por ella son
-              eliminados)
-        \item La aplicación $B$ puede otorgar automáticamente los permisos pertenecientes al grupo $G$
-              (a pesar de que ya no cuenta con el permiso $P$)
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}{Propiedad extra I}
-    Cuando un usuario revoca el acceso a un grupo de permisos para determinada aplicación, todos los permisos individuales son revocados también.
-    \begin{prop} \mbox{} \\
-        \fontsize{9pt}{15pt}\selectfont
-        $\forall (s,s': \AndroidState)~(g:\PermGrp)~(app:\AppId),$ \\
-        $\Mathexecrel{s}{\texttt{revokePermGroup}~g~app/ok}{s'} \rightarrow$ \\
-        $\neg (\exists\ p: \Perm,$\\
-        \hspace{15px}$p \in getGrantedPermsApp(app,s')\ \land getPermissionGroup(p) = Some\ g)$
-    \end{prop}
 \end{frame}
 \end{document}
