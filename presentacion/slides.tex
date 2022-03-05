@@ -162,41 +162,6 @@
     \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-    \frametitle{Nuestra formalización del sistema de permisos}
-    \framesubtitle{Definiciones básicas I}
-    \textbf{Tipos atómicos}
-    \begin{verbatim}
-(* Certificado con el que se firma una aplicación *)
-Parameter Cert: Set.
-    \end{verbatim}
-    \pause
-
-    \textbf{Tipos inductivos}
-    \begin{verbatim}
-(* Tipos de Intents *)
-Inductive intentType : Set :=
-    | intActivity
-    | intService
-    | intBroadcast.
-    \end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{Nuestra formalización del sistema de permisos}
-    \framesubtitle{Definiciones básicas II}
-    \textbf{Estructura de registros} (o tipos \textit{record})
-    \begin{verbatim}
-(* Manifiesto de una aplicación *)
-Record Manifest : Set := mf {  cmp: list Cmp;
-                            minSdk: option nat;
-                            targetSdk: option nat;
-                            use: list Perm;
-                            usrP: list Perm; 
-                            appE: option Perm }.
-    \end{verbatim}
-\end{frame}
-
 \begin{frame}{Nuestra formalización del sistema de permisos}{Estado}
     \begin{columns}[T]
         \begin{column}{.45\textwidth}
