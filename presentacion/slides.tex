@@ -211,7 +211,7 @@
     \end{theorem}
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad I}
+\begin{frame}{Propiedades del modelo}
     Solo los permisos pertenecientes a grupos autorizados puede ser otorgados automáticamente.
     \pause \vspace{20px}
     \begin{prop} \mbox{} \\
@@ -223,7 +223,7 @@
     \end{prop}
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad II}
+\begin{frame}{Propiedades del modelo}
     Un permiso puede ser otorgado automáticamente a una aplicación, a pesar de que
     \textbf{actualmente} no existan otros permisos de ese mismo grupo ya otorgados a la misma
     \pause \vspace{20px}
@@ -239,7 +239,7 @@
     \end{prop}
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad III}
+\begin{frame}{Propiedades del modelo}
     Una aplicación que usa un permiso normal y uno peligroso del mismo grupo de permisos, puede obtener el segundo automáticamente luego de ser instalada.
     \pause
     \begin{prop} \mbox{} \\
@@ -256,7 +256,7 @@
     \end{prop}
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Propiedad IV}
+\begin{frame}{Propiedades del modelo}
     Una aplicación vieja que no ha sido verificada por el usuario no está autorizada a recibir intents.
     \pause \vspace{20px}
     \begin{prop} \mbox{} \\
@@ -279,6 +279,24 @@
         $ \forall\ (s:\AndroidState)\ (a:\Action),$ \\
         $\quad \quad \ap{valid\_state}{s} \rightarrow\ s\step{a/step(s,a).resp} \bap{step}{s}{a}.st$
     \end{theorem}
+\end{frame}
+
+\begin{frame}{Propiedades de la implementación}
+    \begin{prop}
+        Si una aplicación vieja está en condiciones de ser ejecutada entonces \textbf{debe} haber
+        sido verificada por el usuario previamente.
+    \end{prop}
+
+    \begin{prop}
+        La única forma de que una aplicación consiga un permiso es si el usuario lo autoriza, o
+        si el usuario había autorizado un grupo previamente y el sistema puede otorgar el permiso
+        automáticamente.
+    \end{prop}
+
+    \begin{prop}
+        Si un permiso fue revocado, solo volver a otorgarlo bajo la autorización del usuario
+        permitirá que una aplicación vuelva a tenerlo.
+    \end{prop}
 \end{frame}
 
 \begin{frame}{Trabajos relacionados}
