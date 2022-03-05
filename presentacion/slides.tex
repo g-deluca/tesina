@@ -341,6 +341,17 @@ Record Manifest : Set := mf {  cmp: list Cmp;
     \end{prop}
 \end{frame}
 
+
+\begin{frame}{Nuestra implementación del sistema de permisos}
+    Implementación funcional certificada con respecto a nuestro modelo formal.
+    \pause \vspace{20px}
+    \begin{theorem}
+        [Corrección de la implementación]
+        $ \forall\ (s:\AndroidState)\ (a:\Action),$ \\
+        $\quad \quad \ap{valid\_state}{s} \rightarrow\ s\step{a/step(s,a).resp} \bap{step}{s}{a}.st$
+    \end{theorem}
+\end{frame}
+
 \begin{frame}{Trabajos relacionados}
     Divididos en tres categorías:
     \pause
