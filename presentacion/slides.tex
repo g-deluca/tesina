@@ -132,7 +132,7 @@
     en tiempo de instalación.
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Consideraciones generales}
+\begin{frame}{Nuestra formalización del sistema de permisos}{Consideraciones generales I}
     Lenguaje formal utilizado: Coq
     \vspace{10px}
     \begin{block}{}
@@ -142,42 +142,22 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Estado}
-    \begin{columns}[T]
-        \begin{column}{.45\textwidth}
-            \textbf{Parte estática}
-            \begin{itemize}
-                \item Manifiestos
-                \item Certificados
-                \item Permisos definidos por aplicaciones
-                \item Aplicaciones del sistema
-            \end{itemize}
-        \end{column}
-        \pause
-        \begin{column}{.55\textwidth}
-            \textbf{Parte dinámica}
-            \begin{itemize}
-                \item Aplicaciones instaladas
-                \item \textit{Apps legacy} verificadas
-                \item Permisos otorgados
-                \item Grupos de permisos validados
-                \item Componentes en ejecución
-                \item ...
-            \end{itemize}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones I}
+\begin{frame}{Nuestra formalización del sistema de permisos}{Consideraciones generales II}
+    Estado del modelo: parte estática y parte dinámica
+    \begin{itemize}
+        \item Agregamos al estado previo un registro de las aplicaciones \textit{legacy} verificadas
+        \item Mantuvimos noción de estado válido
+    \end{itemize}
+    \pause \vspace{20px}
     Acciones del modelo:
-    \begin{itemize}[<+->]
+    \begin{itemize}
         \item Representan operaciones reales de Android.
         \item En términos de nuestro modelo, son transiciones de estado.
         \item Su semántica está dada en términos de pre-condición y post-condición
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones II}
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones I}
     \texttt{grant}\\
     \vspace{5px}
     Acción utilizada para otorgar permisos no agrupados o el primer permiso de un grupo en ser
@@ -190,7 +170,7 @@
     cuando el permiso está agrupado y cuando la aplicación ya cuenta con dicho grupo validado.
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones III}
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones II}
     \texttt{verifyOldApp}\\
     \vspace{5px}
     Modela el cambio introducido en Android 10 para re-chequear los permisos de las aplicaciones
@@ -203,7 +183,7 @@
     \textit{intents} implícitos pero no podrán recibirlos si no fueron verificadas.
 \end{frame}
 
-\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones IV}
+\begin{frame}{Nuestra formalización del sistema de permisos}{Acciones III}
     \texttt{revoke} y \texttt{revokePermGroup}\\
     \vspace{5px}
     Estas acciones se modificaron para mantenerse alineadas con la experiencia de usuario:
@@ -288,7 +268,11 @@
 
 
 \begin{frame}{Nuestra implementación del sistema de permisos}
-    Implementación funcional certificada con respecto a nuestro modelo formal.
+    Actualizamos la implementación funcional certificada con respecto a nuestro modelo formal.
+    \begin{itemize}
+        \item Actualizar definiciones de funciones existentes
+        \item Agregar funciones nuevas
+    \end{itemize}
     \pause \vspace{20px}
     \begin{theorem}
         [Corrección de la implementación]
