@@ -33,15 +33,10 @@
 \end{frame}
 
 \begin{frame}{Motivación}
-    \begin{itemize}
-        \item ¿Por qué Android? \pause Por su popularidad y alcance \pause
-        \item ¿Por qué un sistema de permisos? \pause Mediador entre usuarios y aplicaciones \pause
-        \item ¿Por qué métodos formales? \pause
-              \begin{itemize}[<+->]
-                  \item Pruebas rigurosas
-                  \item Aclarar comportamientos ambiguos
-                  \item Construir un framework para razonar sobre el sistema
-              \end{itemize}
+    \begin{itemize}[<+->]
+        \item ¿Por qué Android?
+        \item ¿Por qué un sistema de permisos?
+        \item ¿Por qué métodos formales?
     \end{itemize}
 \end{frame}
 
@@ -56,31 +51,24 @@
 \end{frame}
 
 
-\begin{frame}{Un poco de contexto sobre Android}{Componentes del sistema}
-    \begin{itemize}[<+->]
-        \item \textbf{Actividad}: representa una pantalla individual con interfaz de usuario
-        \item \textbf{Servicio}: realiza operaciones de ejecución prolongada en segundo plano
-        \item \textbf{Receptor de emisiones}: permite que el sistema u otras aplicaciones entreguen
-              mensajes por fuera del flujo normal
-        \item \textbf{Proveedor de contenido}: administra los datos de una aplicación para que
-              puedan ser compartidos con otras
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Un poco de contexto sobre Android}{Interacción entre componentes}
+\begin{frame}{Un poco de contexto sobre Android}{Componentes}
+    Una aplicación puede estar formada por varios componentes: actividades, servicios, receptores de
+    alertas y proveedores de contenido.\\
+    \pause
+    \vspace{20px}
     \textit{Intents:} \\
     \begin{itemize}
-        \item Mensajería utilizada para la comunicación entre componentes \pause
+        \item Mensajería utilizada para la comunicación entre componentes
         \item Puden ser explícitos o implícitos
     \end{itemize}
-    \vspace{20px} \pause
+    \vspace{10px}
     Para recibir \textit{intents} implícitos, las aplicaciones declaran filtros de \textit{intents}.
     Este filtro se define en el \textbf{manifiesto} de la aplicación.
 \end{frame}
 
 \begin{frame}{Un poco de contexto sobre Android}{Permisos}
     Los recursos de una aplicación se protegen con distintos niveles de permisos.
-    \begin{itemize}[<+->]
+    \begin{itemize}
         \item Normal
         \item Peligrosos
         \item De misma firma
@@ -93,7 +81,7 @@
 \end{frame}
 
 \begin{frame}{Un poco de contexto sobre Android}{Cambios de comportamiento recientes I}
-    \textbf{Sistema de archivos}\\
+    \textbf{Cambios en acceso a archivos}\\
     \vspace{10px}
     \begin{itemize}
         \item Los directorios de las aplicaciones tienen permisos restringidos
@@ -102,8 +90,6 @@
               archivos
     \end{itemize}
     \vspace{10px}
-    \pause
-    Cambio introducido en Android 7.
 \end{frame}
 
 \begin{frame}{Un poco de contexto sobre Android}{Cambios de comportamiento recientes II}
@@ -212,8 +198,8 @@
 \end{frame}
 
 \begin{frame}{Propiedades del modelo}
-    Solo los permisos pertenecientes a grupos autorizados puede ser otorgados automáticamente.
-    \pause \vspace{20px}
+    Solo los permisos pertenecientes a grupos ya autorizados puede ser otorgados automáticamente.
+    \vspace{20px}
     \begin{prop} \mbox{} \\
         \fontsize{9pt}{15pt}\selectfont
         $\forall (s,s': \AndroidState) (p:\Perm) (g:\PermGrp) (app:\AppId),$ \\
@@ -281,18 +267,19 @@
 
 \begin{frame}{Trabajos relacionados}
     Divididos en tres categorías:
-    \pause
-    \begin{itemize}[<+->]
+    \begin{itemize}
         \item De análisis informal:
               \begin{itemize}
                   \item Características nuevas, resumen de vulnerabilidades, mitigaciones
                   \item Complemento a la documentación oficial
               \end{itemize}
+              \pause
         \item Herramientas de análisis estático o dinámico:
               \begin{itemize}
                   \item Sobreprivilegios, flujo indebido de la información
                   \item Estudia casos de uso específicos
               \end{itemize}
+              \pause
         \item De análisis formal:
               \begin{itemize}
                   \item Estudiar escenarios específicos mediante algún lenguaje formal
@@ -302,7 +289,7 @@
 \end{frame}
 
 \begin{frame}{Conclusiones}
-    \begin{itemize}[<+->]
+    \begin{itemize}
         \item Actualizamos la formalización a una versión reciente de la plataforma
         \item Analizamos la validez de las propiedades existentes y generamos nuevas, en particular,
               relacionadas a los cambios de comportamiento de los grupos de permisos
@@ -312,7 +299,7 @@
 \end{frame}
 
 \begin{frame}{Trabajo futuro}
-    \begin{itemize}[<+->]
+    \begin{itemize}
         \item Utilizar el código extraído para comparar y validar ejecuciones reales de la
               plataforma
         \item Utilizar el código extraído para generar casos de prueba
@@ -354,6 +341,16 @@
     \end{columns}
 \end{frame}
 
+\begin{frame}{Componentes del sistema}
+    \begin{itemize}[<+->]
+        \item \textbf{Actividad}: representa una pantalla individual con interfaz de usuario
+        \item \textbf{Servicio}: realiza operaciones de ejecución prolongada en segundo plano
+        \item \textbf{Receptor de emisiones}: permite que el sistema u otras aplicaciones entreguen
+              mensajes por fuera del flujo normal
+        \item \textbf{Proveedor de contenido}: administra los datos de una aplicación para que
+              puedan ser compartidos con otras
+    \end{itemize}
+\end{frame}
 
 \begin{frame}{Ejemplo de la propiedad II}
     \begin{enumerate}[<+->]
