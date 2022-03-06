@@ -1,4 +1,4 @@
-\documentclass[pdf, handout]{beamer} % Add the [handout] option to group all of the items
+\documentclass[pdf]{beamer} % Add the [handout] option to group all of the items
 \usetheme{Copenhagen}
 \setbeamertemplate{theorems}[numbered]
 
@@ -46,10 +46,9 @@
     \begin{itemize}[<+->]
         \item Mediación completa
         \item A prueba de manipulaciones
-        \item Verificable
+        \item \textbf{Verificable}
     \end{itemize}
 \end{frame}
-
 
 \begin{frame}{Un poco de contexto sobre Android}{Componentes}
     Una aplicación puede estar formada por varios componentes: actividades, servicios, receptores de
@@ -107,7 +106,6 @@
         ``Cualquier permiso puede pertenecer a un grupo de permisos sin importar el nivel del
         protección del mismo''
     \end{block}
-    \pause
     ¿Cómo se comporta el sistema en este caso?
 \end{frame}
 
@@ -126,6 +124,8 @@
         matemáticas, algoritmos ejecutables y teoremas, junto con un entorno semi-interactivo para
         escribir demostraciones con la asistencia de una computadora.
     \end{block}
+    \pause \vspace{20px}
+    Partimos de una formalización existente para la versión 6 de Android
 \end{frame}
 
 \begin{frame}{Nuestra formalización del sistema de permisos}{Consideraciones generales II}
@@ -137,30 +137,31 @@
     \pause \vspace{20px}
     Acciones del modelo:
     \begin{itemize}
-        \item Representan operaciones reales de Android.
-        \item En términos de nuestro modelo, son transiciones de estado.
+        \item Representan operaciones reales de Android. En términos de nuestro modelo, son transiciones de estado.
         \item Su semántica está dada en términos de pre-condición y post-condición
+        \item 22 operaciones en total
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Nuestra formalización del sistema de permisos}{Acciones I}
     \texttt{grant}\\
     \vspace{5px}
-    Acción utilizada para otorgar permisos no agrupados o el primer permiso de un grupo en ser
-    otorgado.\\
+    Acción utilizada para otorgar permisos peligrosos no agrupados o el primer permiso peligroso de
+    un grupo que aún no fue validado.\\
     \pause
     \vspace{10px}
     \texttt{grantAuto}\\
     \vspace{5px}
-    Acción que simboliza el otorgamiento automático de permisos. La precondición se cumple solamente
-    cuando el permiso está agrupado y cuando la aplicación ya cuenta con dicho grupo validado.
+    Acción que simboliza el otorgamiento automático de permisos peligrosos. La precondición se
+    cumple solamente cuando el permiso está agrupado y cuando la aplicación ya cuenta con dicho
+    grupo validado.
 \end{frame}
 
 \begin{frame}{Nuestra formalización del sistema de permisos}{Acciones II}
     \texttt{verifyOldApp}\\
     \vspace{5px}
     Modela el cambio introducido en Android 10 para re-chequear los permisos de las aplicaciones
-    \textit{legacy}.
+    \textit{legacy}. \\
     \pause
     \vspace{10px}
     \texttt{receiveIntent}\\
@@ -236,8 +237,8 @@
 \begin{frame}{Nuestra implementación del sistema de permisos}
     Actualizamos la implementación funcional certificada con respecto a nuestro modelo formal.
     \begin{itemize}
-        \item Actualizar definiciones de funciones existentes
-        \item Agregar funciones nuevas
+        \item Actualizamos definiciones de funciones existentes
+        \item Agregamos funciones nuevas
     \end{itemize}
     \pause \vspace{20px}
     \begin{theorem}
@@ -254,14 +255,13 @@
     \end{prop}
 
     \begin{prop}
-        La única forma de que una aplicación consiga un permiso es si el usuario lo autoriza, o
-        si el usuario había autorizado un grupo previamente y el sistema puede otorgar el permiso
-        automáticamente.
+        La única forma de que una aplicación consiga un permiso es a través de las operaciones
+        \texttt{grant} o \texttt{grantAuto}.
     \end{prop}
 
     \begin{prop}
-        Si un permiso fue revocado, solo volver a otorgarlo bajo la autorización del usuario
-        permitirá que una aplicación vuelva a tenerlo.
+        Si un permiso fue revocado, solo volver a otorgarlo permitirá que una aplicación vuelva a
+        tenerlo.
     \end{prop}
 \end{frame}
 
@@ -293,8 +293,13 @@
         \item Actualizamos la formalización a una versión reciente de la plataforma
         \item Analizamos la validez de las propiedades existentes y generamos nuevas, en particular,
               relacionadas a los cambios de comportamiento de los grupos de permisos
-        \item Como consecuencia de la actualización en la formalización, actualizamos la
-              implementación informal  y su prueba de corrección.
+        \item A partir de la nueva formalización, desarrollamos un prototipo funcional certificado
+              que actualiza el existente para la versión 6 de Android
+        \item El código Coq de la formalización está disponible en Github.
+              \begin{itemize}
+                  \item Contiene alrededor de 23000 líneas de código (incluyendo pruebas)
+                  \item Total de 14 propiedades sobre el modelo/implementación
+              \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -323,8 +328,8 @@
 \begin{frame}{Arquitectura de la plataforma}
     \begin{columns}
         \begin{column}{.6\textwidth}
-            \textbf{Pila de software:} \pause
-            \begin{enumerate}[<+->]
+            \textbf{Pila de software:}
+            \begin{enumerate}
                 \item Aplicaciones del sistema y de terceros
                 \item \textit{API} de la plataforma
                 \item Entorno de \textit{runtime} y bibliotecas nativas
